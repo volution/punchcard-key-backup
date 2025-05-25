@@ -43,19 +43,16 @@ _style = """
 	.bits-main {
 		display : flex;
 		flex-direction : column;
-		width : 100%;
 	}
 	.bits-main-content {
 		display : flex;
 		flex-direction : column;
-		width : 100%;
 	}
 	.key-bits,
 	.crc-bits,
 	.outputs {
 		display : flex;
 		flex-direction : column;
-		width : 100%;
 	}
 	.bits-wrapper {
 		display : flex;
@@ -78,7 +75,6 @@ _style = """
 		display : flex;
 		flex-direction : row;
 		flex-wrap : wrap;
-		width : 100%;
 	}
 	
 	.key-bits .bits-wrapper,
@@ -105,17 +101,30 @@ _style = """
 		margin : 0.5ex;
 	}
 	.output-field {
+		border : solid 1px;
+		padding-left : 0.5ch;
+		padding-right : 0.5ch;
+	}
+	
+	.cr80 {
+		display : block;
+		margin : 0.5ex;
+		max-width : 180mm;
+	}
+	
+	.outputs,
+	.output-pair,
+	.cr80 {
+		width : 100%;
+		width : -moz-available;
+	}
+	.output-field {
 		min-width : 10ch;
 		max-width : 42ch;
 	}
 	.output-label {
 		width : 10ch;
 		flex-grow : 0;
-	}
-	.output-field {
-		border : solid 1px;
-		padding-left : 0.5ch;
-		padding-right : 0.5ch;
 	}
 	
 	
@@ -230,6 +239,11 @@ _script = """
 
 
 
+_cr80_svg = open ("./cr80.svg.b64") .read ()
+
+
+
+
 def _generate () :
 	
 	_blocks = []
@@ -259,6 +273,9 @@ def _generate () :
 	_blocks.append ("<main class='bits-main'>")
 	_blocks.append ("<div class='bits-main-content'>")
 	
+	_blocks.append (f"<h2>PunchCard Key Backup</h2>")
+	_blocks.append (f"<img class='cr80' src='data:image/svg+xml;base64,{_cr80_svg}' />")
+	
 	_blocks.append ("<div class='key-bits'>")
 	_blocks.append ("<div class='bits-wrapper'>")
 	for _word_index in range (2) :
@@ -269,7 +286,7 @@ def _generate () :
 			for _bit_column in range (8) :
 				_blocks.append ("<span class='bit-wrapper'>")
 				_bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column
-				_bit_tooltip = "key bit %d, (word %d, row %d, column %d)" % (_bit_index, _word_index + 1, _bit_row + 1, _bit_column + 1)
+				_bit_tooltip = "key bit %03d, (word %d, row %d, column %d)" % (_bit_index, _word_index + 1, _bit_row + 1, _bit_column + 1)
 				_blocks.append (f"<input id='key-bit-{_word_index}-{_bit_row}-{_bit_column}' type='checkbox' class='bit-checkbox' title='{_bit_tooltip}' onchange='_bit_changed()' />")
 				_blocks.append ("</span>")
 			_blocks.append ("</div>")
@@ -287,7 +304,7 @@ def _generate () :
 			for _bit_column in range (8) :
 				_blocks.append ("<span class='bit-wrapper'>")
 				_bit_index = (_word_index * 8) + _bit_column
-				_bit_tooltip = "crc bit %d, (word %d, column %d)" % (_bit_index, _word_index + 1, _bit_column + 1)
+				_bit_tooltip = "crc bit %02d, (word %d, column %d)" % (_bit_index, _word_index + 1, _bit_column + 1)
 				_blocks.append (f"<input id='crc-bit-{_bit_index}' type='checkbox' class='bit-checkbox' title='{_bit_tooltip}' disabled='disabled' />")
 				_blocks.append ("</span>")
 			_blocks.append ("</span>")
