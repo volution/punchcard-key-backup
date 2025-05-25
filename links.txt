@@ -1,0 +1,10 @@
+
+https://en.wikipedia.org/wiki/ISO_3098
+https://commons.wikimedia.org/wiki/File:ISO3098.svg
+https://github.com/hikikomori82/osifont
+https://github.com/octycs/norm-stroke
+
+https://en.wikipedia.org/wiki/ISO/IEC_7810
+
+https://github.com/dflook/python-minifier
+
