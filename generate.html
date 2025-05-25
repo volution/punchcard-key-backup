@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>PunchCard Key Backup</title>
+<meta charset='utf-8' />
+<meta name='viewport' content='width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes' />
+<meta name='color-scheme' content='dark light' />
+<style>
+
+	
+	
+	.bits-main,
+	.bits-main * {
+		display : block;
+		align-items : center;
+		align-content : center;
+		justify-content : center;
+		flex-wrap : nowrap;
+		flex-basis : auto;
+		flex-grow : 1;
+		flex-shrink : 1;
+		box-sizing : border-box;
+		left : 0px;
+		right : 0px;
+		top : 0px;
+		bottom : 0px;
+		margin : 0px;
+		padding : 0px;
+		color : inherit;
+		background : transparent;
+		font-family : inherit;
+		font-size : inherit;
+		line-height : inherit;
+	}
+	
+	.bits-main {
+		font-family : "JetBrains Mono NL", "JetBrains Mono", "Fira Mono", "Fira Sans", "Verdana", "Trebuchet MS", sans-serif;
+		font-size : 16px;
+		line-height : 24px;
+	}
+	
+	.bits-main {
+		overflow : auto;
+	}
+	
+	.bits-main {
+		display : flex;
+		flex-direction : column;
+		width : 100%;
+	}
+	.bits-main-content {
+		display : flex;
+		flex-direction : column;
+		width : 100%;
+	}
+	.key-bits,
+	.crc-bits,
+	.outputs {
+		display : flex;
+		flex-direction : column;
+		width : 100%;
+	}
+	.bits-wrapper {
+		display : flex;
+		flex-direction : row;
+		flex-wrap : wrap;
+	}
+	.word-bits {
+		display : flex;
+		flex-direction : column;
+	}
+	.word-bits-row {
+		display : flex;
+		flex-direction : row;
+	}
+	.bit-wrapper {
+		display : flex;
+		flex-direction : row;
+	}
+	.output-pair {
+		display : flex;
+		flex-direction : row;
+		flex-wrap : wrap;
+		width : 100%;
+	}
+	
+	.key-bits .bits-wrapper,
+	.crc-bits .bits-wrapper {
+		border : solid 1px;
+		margin : 0.5ex;
+	}
+	.word-bits {
+		margin : 0.5ex;
+	}
+	.bit-wrapper {
+		border : solid 1px;
+		margin : 0.5ex;
+	}
+	.bit-checkbox {
+		width : 2ex;
+		height : 2ex;
+		border : none;
+	}
+	
+	.output-label,
+	.output-field {
+		height : 1.1lh;
+		margin : 0.5ex;
+	}
+	.output-field {
+		min-width : 10ch;
+		max-width : 42ch;
+	}
+	.output-label {
+		width : 10ch;
+		flex-grow : 0;
+	}
+	.output-field {
+		border : solid 1px;
+		padding-left : 0.5ch;
+		padding-right : 0.5ch;
+	}
+	
+	
+
+</style>
+<script>
+
+	
+	
+	"use strict";
+	
+	function _bit_changed () {
+		let _key_b10 = BigInt (0);
+		for (let _word_index = 0; _word_index < 2; _word_index += 1) {
+			for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
+				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
+					const _bit_checkbox = document.getElementById ("key-bit-" + _word_index + "-" + _bit_row + "-" + _bit_column);
+					const _bit_value = (_bit_checkbox.checked ? 1 : 0);
+					_key_b10 <<= BigInt (1);
+					if (_bit_value)
+						_key_b10 |= BigInt (_bit_value);
+				}
+			}
+		}
+		_refresh (_key_b10);
+	}
+	
+	function _key_b10_changed () {
+		const _key_b10_input = document.getElementById ("key-base10");
+		const _key_b10_string = _key_b10_input.value.replaceAll (" ", "");
+		if (/^[0-9 ]*$/.test (_key_b10_string)) {
+			const _key_b10 = BigInt (_key_b10_string);
+			_refresh (_key_b10);
+		} else {
+			_bit_changed ();
+		}
+	}
+	
+	function _key_hex_changed () {
+		const _key_hex_input = document.getElementById ("key-hex");
+		const _key_hex_string = _key_hex_input.value.replaceAll (" ", "") .replaceAll (":", "") .replaceAll ("-", "");
+		if (/^[0-9a-fA-F ]*$/.test (_key_hex_string)) {
+			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
+			_refresh (_key_b10);
+		} else {
+			_bit_changed ();
+		}
+	}
+	
+	function _refresh (_key_b10_raw) {
+		const _bytes = new Array (16) .fill (0);
+		for (let _key_b10 = _key_b10_raw, _byte_index = 15; _key_b10 > 0; _key_b10 >>= BigInt (8), _byte_index -= 1) {
+			_bytes[_byte_index] = Number (BigInt.asUintN (8, _key_b10));
+		}
+		let _key_b10 = BigInt (0);
+		let _key_hex = "";
+		for (const _byte of _bytes) {
+			_key_b10 = (_key_b10 << BigInt (8)) | BigInt (_byte);
+			_key_hex += ((_byte <= 0x0f) ? "0" : "") + _byte.toString (16);
+		}
+		for (let _word_index = 0; _word_index < 2; _word_index += 1) {
+			for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
+				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
+					const _bit_checkbox = document.getElementById ("key-bit-" + _word_index + "-" + _bit_row + "-" + _bit_column);
+					const _bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column;
+					const _byte_subindex = _bit_index % 8;
+					const _byte_index = (_bit_index - _byte_subindex) / 8;
+					const _bit_value = (_bytes[_byte_index] >> (7 - _byte_subindex)) & 1;
+					_bit_checkbox.checked = _bit_value ? true : false;
+				}
+			}
+		}
+		let _crc = _crc16_ccitt (_bytes);
+		for (let _crc_bit = 0; _crc_bit < 16; _crc_bit += 1) {
+			const _bit_checkbox = document.getElementById ("crc-bit-" + (15 - _crc_bit));
+			_bit_checkbox.checked = (_crc >> _crc_bit) & 1;
+		}
+		if (_key_b10 > 0) {
+			_key_b10 = _key_b10.toString ();
+		} else {
+			_key_b10 = "";
+			_key_hex = "";
+		}
+		const _key_b10_input = document.getElementById ("key-base10");
+		const _key_hex_input = document.getElementById ("key-hex");
+		_key_b10_input.value = _key_b10;
+		_key_hex_input.value = _key_hex;
+	}
+	
+	function _crc16_ccitt (_bytes) {
+		let crc = 0;
+		for (const b of _bytes) {
+			for (let i = 0; i < 8; i++) {
+				const bit = ((b >> (7 - i) & 1) === 1);
+				const c15 = ((crc >> 15 & 1) === 1);
+				crc <<= 1;
+				if (c15 ^ bit) crc ^= 0x1021;
+			}
+		}
+		return (crc & 0xffff);
+	}
+	
+	document.addEventListener ("DOMContentLoaded", function () {
+			_bit_changed ();
+		});
+	
+	
+
+</script>
+</head>
+<body>
+<main class='bits-main'>
+<div class='bits-main-content'>
+<div class='key-bits'>
+<div class='bits-wrapper'>
+<div class='word-bits'>
+<p class='word-label'>key word 1</p>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-0-0-0' type='checkbox' class='bit-checkbox' title='key bit 0, (word 1, row 1, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-0-1' type='checkbox' class='bit-checkbox' title='key bit 1, (word 1, row 1, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-0-2' type='checkbox' class='bit-checkbox' title='key bit 2, (word 1, row 1, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-0-3' type='checkbox' class='bit-checkbox' title='key bit 3, (word 1, row 1, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-0-4' type='checkbox' class='bit-checkbox' title='key bit 4, (word 1, row 1, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-0-5' type='checkbox' class='bit-checkbox' title='key bit 5, (word 1, row 1, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-0-6' type='checkbox' class='bit-checkbox' title='key bit 6, (word 1, row 1, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-0-7' type='checkbox' class='bit-checkbox' title='key bit 7, (word 1, row 1, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-0-1-0' type='checkbox' class='bit-checkbox' title='key bit 8, (word 1, row 2, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-1-1' type='checkbox' class='bit-checkbox' title='key bit 9, (word 1, row 2, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-1-2' type='checkbox' class='bit-checkbox' title='key bit 10, (word 1, row 2, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-1-3' type='checkbox' class='bit-checkbox' title='key bit 11, (word 1, row 2, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-1-4' type='checkbox' class='bit-checkbox' title='key bit 12, (word 1, row 2, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-1-5' type='checkbox' class='bit-checkbox' title='key bit 13, (word 1, row 2, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-1-6' type='checkbox' class='bit-checkbox' title='key bit 14, (word 1, row 2, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-1-7' type='checkbox' class='bit-checkbox' title='key bit 15, (word 1, row 2, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-0-2-0' type='checkbox' class='bit-checkbox' title='key bit 16, (word 1, row 3, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-2-1' type='checkbox' class='bit-checkbox' title='key bit 17, (word 1, row 3, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-2-2' type='checkbox' class='bit-checkbox' title='key bit 18, (word 1, row 3, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-2-3' type='checkbox' class='bit-checkbox' title='key bit 19, (word 1, row 3, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-2-4' type='checkbox' class='bit-checkbox' title='key bit 20, (word 1, row 3, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-2-5' type='checkbox' class='bit-checkbox' title='key bit 21, (word 1, row 3, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-2-6' type='checkbox' class='bit-checkbox' title='key bit 22, (word 1, row 3, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-2-7' type='checkbox' class='bit-checkbox' title='key bit 23, (word 1, row 3, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-0-3-0' type='checkbox' class='bit-checkbox' title='key bit 24, (word 1, row 4, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-3-1' type='checkbox' class='bit-checkbox' title='key bit 25, (word 1, row 4, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-3-2' type='checkbox' class='bit-checkbox' title='key bit 26, (word 1, row 4, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-3-3' type='checkbox' class='bit-checkbox' title='key bit 27, (word 1, row 4, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-3-4' type='checkbox' class='bit-checkbox' title='key bit 28, (word 1, row 4, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-3-5' type='checkbox' class='bit-checkbox' title='key bit 29, (word 1, row 4, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-3-6' type='checkbox' class='bit-checkbox' title='key bit 30, (word 1, row 4, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-3-7' type='checkbox' class='bit-checkbox' title='key bit 31, (word 1, row 4, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-0-4-0' type='checkbox' class='bit-checkbox' title='key bit 32, (word 1, row 5, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-4-1' type='checkbox' class='bit-checkbox' title='key bit 33, (word 1, row 5, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-4-2' type='checkbox' class='bit-checkbox' title='key bit 34, (word 1, row 5, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-4-3' type='checkbox' class='bit-checkbox' title='key bit 35, (word 1, row 5, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-4-4' type='checkbox' class='bit-checkbox' title='key bit 36, (word 1, row 5, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-4-5' type='checkbox' class='bit-checkbox' title='key bit 37, (word 1, row 5, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-4-6' type='checkbox' class='bit-checkbox' title='key bit 38, (word 1, row 5, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-4-7' type='checkbox' class='bit-checkbox' title='key bit 39, (word 1, row 5, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-0-5-0' type='checkbox' class='bit-checkbox' title='key bit 40, (word 1, row 6, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-5-1' type='checkbox' class='bit-checkbox' title='key bit 41, (word 1, row 6, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-5-2' type='checkbox' class='bit-checkbox' title='key bit 42, (word 1, row 6, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-5-3' type='checkbox' class='bit-checkbox' title='key bit 43, (word 1, row 6, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-5-4' type='checkbox' class='bit-checkbox' title='key bit 44, (word 1, row 6, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-5-5' type='checkbox' class='bit-checkbox' title='key bit 45, (word 1, row 6, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-5-6' type='checkbox' class='bit-checkbox' title='key bit 46, (word 1, row 6, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-5-7' type='checkbox' class='bit-checkbox' title='key bit 47, (word 1, row 6, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-0-6-0' type='checkbox' class='bit-checkbox' title='key bit 48, (word 1, row 7, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-6-1' type='checkbox' class='bit-checkbox' title='key bit 49, (word 1, row 7, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-6-2' type='checkbox' class='bit-checkbox' title='key bit 50, (word 1, row 7, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-6-3' type='checkbox' class='bit-checkbox' title='key bit 51, (word 1, row 7, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-6-4' type='checkbox' class='bit-checkbox' title='key bit 52, (word 1, row 7, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-6-5' type='checkbox' class='bit-checkbox' title='key bit 53, (word 1, row 7, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-6-6' type='checkbox' class='bit-checkbox' title='key bit 54, (word 1, row 7, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-6-7' type='checkbox' class='bit-checkbox' title='key bit 55, (word 1, row 7, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-0-7-0' type='checkbox' class='bit-checkbox' title='key bit 56, (word 1, row 8, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-7-1' type='checkbox' class='bit-checkbox' title='key bit 57, (word 1, row 8, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-7-2' type='checkbox' class='bit-checkbox' title='key bit 58, (word 1, row 8, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-7-3' type='checkbox' class='bit-checkbox' title='key bit 59, (word 1, row 8, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-7-4' type='checkbox' class='bit-checkbox' title='key bit 60, (word 1, row 8, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-7-5' type='checkbox' class='bit-checkbox' title='key bit 61, (word 1, row 8, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-7-6' type='checkbox' class='bit-checkbox' title='key bit 62, (word 1, row 8, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-0-7-7' type='checkbox' class='bit-checkbox' title='key bit 63, (word 1, row 8, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+</div>
+<div class='word-bits'>
+<p class='word-label'>key word 2</p>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-1-0-0' type='checkbox' class='bit-checkbox' title='key bit 64, (word 2, row 1, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-0-1' type='checkbox' class='bit-checkbox' title='key bit 65, (word 2, row 1, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-0-2' type='checkbox' class='bit-checkbox' title='key bit 66, (word 2, row 1, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-0-3' type='checkbox' class='bit-checkbox' title='key bit 67, (word 2, row 1, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-0-4' type='checkbox' class='bit-checkbox' title='key bit 68, (word 2, row 1, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-0-5' type='checkbox' class='bit-checkbox' title='key bit 69, (word 2, row 1, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-0-6' type='checkbox' class='bit-checkbox' title='key bit 70, (word 2, row 1, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-0-7' type='checkbox' class='bit-checkbox' title='key bit 71, (word 2, row 1, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-1-1-0' type='checkbox' class='bit-checkbox' title='key bit 72, (word 2, row 2, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-1-1' type='checkbox' class='bit-checkbox' title='key bit 73, (word 2, row 2, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-1-2' type='checkbox' class='bit-checkbox' title='key bit 74, (word 2, row 2, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-1-3' type='checkbox' class='bit-checkbox' title='key bit 75, (word 2, row 2, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-1-4' type='checkbox' class='bit-checkbox' title='key bit 76, (word 2, row 2, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-1-5' type='checkbox' class='bit-checkbox' title='key bit 77, (word 2, row 2, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-1-6' type='checkbox' class='bit-checkbox' title='key bit 78, (word 2, row 2, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-1-7' type='checkbox' class='bit-checkbox' title='key bit 79, (word 2, row 2, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-1-2-0' type='checkbox' class='bit-checkbox' title='key bit 80, (word 2, row 3, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-2-1' type='checkbox' class='bit-checkbox' title='key bit 81, (word 2, row 3, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-2-2' type='checkbox' class='bit-checkbox' title='key bit 82, (word 2, row 3, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-2-3' type='checkbox' class='bit-checkbox' title='key bit 83, (word 2, row 3, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-2-4' type='checkbox' class='bit-checkbox' title='key bit 84, (word 2, row 3, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-2-5' type='checkbox' class='bit-checkbox' title='key bit 85, (word 2, row 3, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-2-6' type='checkbox' class='bit-checkbox' title='key bit 86, (word 2, row 3, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-2-7' type='checkbox' class='bit-checkbox' title='key bit 87, (word 2, row 3, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-1-3-0' type='checkbox' class='bit-checkbox' title='key bit 88, (word 2, row 4, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-3-1' type='checkbox' class='bit-checkbox' title='key bit 89, (word 2, row 4, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-3-2' type='checkbox' class='bit-checkbox' title='key bit 90, (word 2, row 4, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-3-3' type='checkbox' class='bit-checkbox' title='key bit 91, (word 2, row 4, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-3-4' type='checkbox' class='bit-checkbox' title='key bit 92, (word 2, row 4, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-3-5' type='checkbox' class='bit-checkbox' title='key bit 93, (word 2, row 4, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-3-6' type='checkbox' class='bit-checkbox' title='key bit 94, (word 2, row 4, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-3-7' type='checkbox' class='bit-checkbox' title='key bit 95, (word 2, row 4, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-1-4-0' type='checkbox' class='bit-checkbox' title='key bit 96, (word 2, row 5, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-4-1' type='checkbox' class='bit-checkbox' title='key bit 97, (word 2, row 5, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-4-2' type='checkbox' class='bit-checkbox' title='key bit 98, (word 2, row 5, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-4-3' type='checkbox' class='bit-checkbox' title='key bit 99, (word 2, row 5, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-4-4' type='checkbox' class='bit-checkbox' title='key bit 100, (word 2, row 5, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-4-5' type='checkbox' class='bit-checkbox' title='key bit 101, (word 2, row 5, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-4-6' type='checkbox' class='bit-checkbox' title='key bit 102, (word 2, row 5, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-4-7' type='checkbox' class='bit-checkbox' title='key bit 103, (word 2, row 5, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-1-5-0' type='checkbox' class='bit-checkbox' title='key bit 104, (word 2, row 6, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-5-1' type='checkbox' class='bit-checkbox' title='key bit 105, (word 2, row 6, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-5-2' type='checkbox' class='bit-checkbox' title='key bit 106, (word 2, row 6, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-5-3' type='checkbox' class='bit-checkbox' title='key bit 107, (word 2, row 6, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-5-4' type='checkbox' class='bit-checkbox' title='key bit 108, (word 2, row 6, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-5-5' type='checkbox' class='bit-checkbox' title='key bit 109, (word 2, row 6, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-5-6' type='checkbox' class='bit-checkbox' title='key bit 110, (word 2, row 6, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-5-7' type='checkbox' class='bit-checkbox' title='key bit 111, (word 2, row 6, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-1-6-0' type='checkbox' class='bit-checkbox' title='key bit 112, (word 2, row 7, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-6-1' type='checkbox' class='bit-checkbox' title='key bit 113, (word 2, row 7, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-6-2' type='checkbox' class='bit-checkbox' title='key bit 114, (word 2, row 7, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-6-3' type='checkbox' class='bit-checkbox' title='key bit 115, (word 2, row 7, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-6-4' type='checkbox' class='bit-checkbox' title='key bit 116, (word 2, row 7, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-6-5' type='checkbox' class='bit-checkbox' title='key bit 117, (word 2, row 7, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-6-6' type='checkbox' class='bit-checkbox' title='key bit 118, (word 2, row 7, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-6-7' type='checkbox' class='bit-checkbox' title='key bit 119, (word 2, row 7, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='key-bit-1-7-0' type='checkbox' class='bit-checkbox' title='key bit 120, (word 2, row 8, column 1)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-7-1' type='checkbox' class='bit-checkbox' title='key bit 121, (word 2, row 8, column 2)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-7-2' type='checkbox' class='bit-checkbox' title='key bit 122, (word 2, row 8, column 3)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-7-3' type='checkbox' class='bit-checkbox' title='key bit 123, (word 2, row 8, column 4)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-7-4' type='checkbox' class='bit-checkbox' title='key bit 124, (word 2, row 8, column 5)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-7-5' type='checkbox' class='bit-checkbox' title='key bit 125, (word 2, row 8, column 6)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-7-6' type='checkbox' class='bit-checkbox' title='key bit 126, (word 2, row 8, column 7)' onchange='_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='key-bit-1-7-7' type='checkbox' class='bit-checkbox' title='key bit 127, (word 2, row 8, column 8)' onchange='_bit_changed()' />
+</span>
+</div>
+</div>
+</div>
+</div>
+<div class='crc-bits'>
+<div class='bits-wrapper'>
+<div class='word-bits'>
+<p class='word-label'>crc word 1</p>
+<span class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='crc-bit-0' type='checkbox' class='bit-checkbox' title='crc bit 0, (word 1, column 1)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-1' type='checkbox' class='bit-checkbox' title='crc bit 1, (word 1, column 2)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-2' type='checkbox' class='bit-checkbox' title='crc bit 2, (word 1, column 3)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-3' type='checkbox' class='bit-checkbox' title='crc bit 3, (word 1, column 4)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-4' type='checkbox' class='bit-checkbox' title='crc bit 4, (word 1, column 5)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-5' type='checkbox' class='bit-checkbox' title='crc bit 5, (word 1, column 6)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-6' type='checkbox' class='bit-checkbox' title='crc bit 6, (word 1, column 7)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-7' type='checkbox' class='bit-checkbox' title='crc bit 7, (word 1, column 8)' disabled='disabled' />
+</span>
+</span>
+</div>
+<div class='word-bits'>
+<p class='word-label'>crc word 2</p>
+<span class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='crc-bit-8' type='checkbox' class='bit-checkbox' title='crc bit 8, (word 2, column 1)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-9' type='checkbox' class='bit-checkbox' title='crc bit 9, (word 2, column 2)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-10' type='checkbox' class='bit-checkbox' title='crc bit 10, (word 2, column 3)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-11' type='checkbox' class='bit-checkbox' title='crc bit 11, (word 2, column 4)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-12' type='checkbox' class='bit-checkbox' title='crc bit 12, (word 2, column 5)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-13' type='checkbox' class='bit-checkbox' title='crc bit 13, (word 2, column 6)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-14' type='checkbox' class='bit-checkbox' title='crc bit 14, (word 2, column 7)' disabled='disabled' />
+</span>
+<span class='bit-wrapper'>
+<input id='crc-bit-15' type='checkbox' class='bit-checkbox' title='crc bit 15, (word 2, column 8)' disabled='disabled' />
+</span>
+</span>
+</div>
+</div>
+</div>
+<div class='outputs'>
+<div class='output-pair'><label class='output-label'>key base10</label><input id='key-base10' class='output-field' onchange='_key_b10_changed()' pattern='[0-9 ]*' /></div>
+<div class='output-pair'><label class='output-label'>key hex</label><input id='key-hex' class='output-field' onchange='_key_hex_changed()' pattern='[0-9a-fA-F :]*' /></div>
+</div>
+</div>
+</main>
+</body>
+</html>
