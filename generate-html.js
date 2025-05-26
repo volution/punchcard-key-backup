@@ -96,6 +96,7 @@ function pckb (pckb) {
 			const _key_b10 = BigInt (_key_b10_string);
 			return key_refresh (_key_b10);
 		} else {
+			alert ("key b10 invalid!");
 			return key_refresh (undefined);
 		}
 	}
@@ -106,6 +107,7 @@ function pckb (pckb) {
 			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
 			return key_refresh (_key_b10);
 		} else {
+			alert ("key hex invalid!");
 			return key_refresh (undefined);
 		}
 	}
@@ -124,6 +126,7 @@ function pckb (pckb) {
 				_key_b10 = (_key_b10 * BigInt (26)) + BigInt (_char_index);
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (26);
+					alert ("key txt truncated!");
 					break;
 				}
 			}
@@ -137,27 +140,29 @@ function pckb (pckb) {
 				_key_b10 = (_key_b10 * BigInt (36)) + BigInt (_char_index);
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (36);
+					alert ("key txt truncated!");
 					break;
 				}
 			}
 			_key_b10 = _key_b10 | (BigInt (2) << BigInt (126));
 			return key_refresh (_key_b10);
 		} else if (/^[a-zA-Z0-9.-]*$/.test (_key_txt_string)) {
-			let _key_b10 = BigInt (0);
+			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
 				let _char_index;
-				if ((_char_code >= 97) && (_char_code <= 122))
-					_char_index = (_char_code - 97) + 0
-				else if ((_char_code >= 65) && (_char_code <= 90))
-					_char_index = (_char_code - 65) + 26
+				if ((_char_code >= 65) && (_char_code <= 90))
+					_char_index = (_char_code - 65) + 0;
+				else if ((_char_code >= 97) && (_char_code <= 122))
+					_char_index = (_char_code - 97) + 26;
 				else if ((_char_code >= 48) && (_char_code <= 57))
-					_char_index = (_char_code - 48) + 26 + 26
+					_char_index = (_char_code - 48) + 26 + 26;
 				else
 					_char_index = (_char_code - 45) + 26 + 26 + 10;
 				_key_b10 = (_key_b10 * BigInt (64)) + BigInt (_char_index);
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (64);
+					alert ("key txt truncated!");
 					break;
 				}
 			}
@@ -171,6 +176,7 @@ function pckb (pckb) {
 				_key_b10 = (_key_b10 * BigInt (94)) + BigInt (_char_index);
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (94);
+					alert ("key txt truncated!");
 					break;
 				}
 			}
@@ -210,21 +216,10 @@ function pckb (pckb) {
 			_key_txt_seed = _key_txt_seed & ~ (BigInt (3) << BigInt (126));
 			while (true) {
 				if (_key_txt_seed == 1) {
-					if (_key_txt_mode != 0) {
-						break;
-					}
+					break;
 				} else if (_key_txt_seed == 0) {
-					if (_key_txt_mode != 0) {
-						_key_txt = "";
-						if (false) {
-							_key_txt_mode = 0;
-							_key_txt_seed = _key_b10 & ~ (BigInt (3) << BigInt (126));
-						} else {
-							break;
-						}
-					} else {
-						break;
-					}
+					_key_txt = "";
+					break;
 				}
 				if (_key_txt_mode == 1) {
 					const _char_index = Number (_key_txt_seed % BigInt (26));
@@ -249,9 +244,9 @@ function pckb (pckb) {
 					_key_txt_seed = _key_txt_seed / BigInt (64);
 					let _char_code;
 					if (_char_index < 26)
-						_char_code = (97 + _char_index - 0);
+						_char_code = (65 + _char_index - 0);
 					else if (_char_index < (26 + 26))
-						_char_code = (65 + _char_index - 26);
+						_char_code = (97 + _char_index - 26);
 					else if (_char_index < (26 + 26 + 10))
 						_char_code = (48 + _char_index - 26 - 26);
 					else
@@ -277,6 +272,10 @@ function pckb (pckb) {
 			__key_txt_string = "";
 			__key_b10_string = "";
 			__key_hex_string = "";
+		}
+		
+		if (__key_b10_number != _key_b10_raw) {
+			alert ("key truncated!");
 		}
 		
 		return __dom_refresh ();
