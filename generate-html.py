@@ -3,8 +3,19 @@
 
 
 
+import math
+
+
+
+
 _style = """
 	
+	
+	html:root,
+	html:root > body {
+		margin : 0px;
+		padding : 0px;
+	}
 	
 	.bits-main,
 	.bits-main * {
@@ -80,7 +91,6 @@ _style = """
 	.key-bits .bits-wrapper,
 	.crc-bits .bits-wrapper {
 		border : solid 1px;
-		margin : 0.5ex;
 	}
 	.word-bits {
 		margin : 0.5ex;
@@ -106,25 +116,34 @@ _style = """
 		padding-right : 0.5ch;
 	}
 	
-	.cr80 {
-		display : block;
-		margin : 0.5ex;
-		max-width : 180mm;
-	}
 	
-	.outputs,
-	.output-pair,
-	.cr80 {
+	.bits-main-content > * {
+		margin : 0.5ex;
+	}
+	.bits-main {
+		max-width : 100vw;
+	}
+	.bits-main-content > *,
+	.output-pair {
 		width : 100%;
 		width : -moz-available;
+		max-width : 95vw;
 	}
 	.output-field {
+		text-align: center;
 		min-width : 10ch;
 		max-width : 42ch;
+		flex-grow : 1;
+		flex-shrink : 1;
 	}
 	.output-label {
-		width : 10ch;
+		text-align: center;
+		min-width : 8ch;
 		flex-grow : 0;
+		flex-shrink : 0;
+	}
+	.bits-main-content > h2 {
+		text-align : center;
 	}
 	
 	
@@ -155,7 +174,7 @@ _script = """
 	}
 	
 	function _key_b10_changed () {
-		const _key_b10_input = document.getElementById ("key-base10");
+		const _key_b10_input = document.getElementById ("key-b10");
 		const _key_b10_string = _key_b10_input.value.replaceAll (" ", "");
 		if (/^[0-9 ]*$/.test (_key_b10_string)) {
 			const _key_b10 = BigInt (_key_b10_string);
@@ -170,6 +189,25 @@ _script = """
 		const _key_hex_string = _key_hex_input.value.replaceAll (" ", "") .replaceAll (":", "") .replaceAll ("-", "");
 		if (/^[0-9a-fA-F ]*$/.test (_key_hex_string)) {
 			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
+			_refresh (_key_b10);
+		} else {
+			_bit_changed ();
+		}
+	}
+	
+	function _key_txt_changed () {
+		const _key_txt_input = document.getElementById ("key-txt");
+		const _key_txt_string = _key_txt_input.value.replaceAll (" ", "");
+		if (/^[!-~]*$/.test (_key_txt_string)) {
+			let _key_b10 = BigInt (1);
+			if (_key_txt_string == "") {
+				_key_b10 = BigInt (0);
+			} else {
+				for (const _char_txt of _key_txt_string) {
+					const _char_index = _char_txt.codePointAt (0) - 33;
+					_key_b10 = (_key_b10 * BigInt (94)) + BigInt (_char_index);
+				}
+			}
 			_refresh (_key_b10);
 		} else {
 			_bit_changed ();
@@ -204,16 +242,41 @@ _script = """
 			const _bit_checkbox = document.getElementById ("crc-bit-" + (15 - _crc_bit));
 			_bit_checkbox.checked = (_crc >> _crc_bit) & 1;
 		}
+		let _key_txt = "";
+		{
+			let _key_txt_seed = _key_b10;
+			while (true) {
+				if (_key_txt_seed == 1) {
+					break;
+				}
+				if (_key_txt_seed == 0) {
+					_key_txt = "";
+					break;
+				}
+				const _char_index = Number (_key_txt_seed % BigInt (94));
+				_key_txt_seed = _key_txt_seed / BigInt (94);
+				const _char_txt = String.fromCodePoint (33 + _char_index);
+				_key_txt = _char_txt + _key_txt;
+			}
+		}
 		if (_key_b10 > 0) {
 			_key_b10 = _key_b10.toString ();
 		} else {
 			_key_b10 = "";
 			_key_hex = "";
 		}
-		const _key_b10_input = document.getElementById ("key-base10");
+		const _key_txt_input = document.getElementById ("key-txt");
+		const _key_b10_input = document.getElementById ("key-b10");
 		const _key_hex_input = document.getElementById ("key-hex");
+		_key_txt_input.value = _key_txt;
 		_key_b10_input.value = _key_b10;
 		_key_hex_input.value = _key_hex;
+		
+		if ((_key_txt == "") && (_key_b10 != "")) {
+			_key_txt_input.placeholder = "(invalid)";
+		} else {
+			_key_txt_input.placeholder = "";
+		}
 	}
 	
 	function _crc16_ccitt (_bytes) {
@@ -312,9 +375,20 @@ def _generate () :
 	_blocks.append ("</div>")
 	_blocks.append ("</div>")
 	
+	_key_txt_length_max = math.floor (math.log (math.pow (2, 128), 94))
+	_key_b10_length_max = math.ceil (math.log (math.pow (2, 128), 10))
+	_key_hex_length_max = 128 // 8 * 2
+	
 	_blocks.append ("<div class='outputs'>")
-	_blocks.append ("<div class='output-pair'><label class='output-label'>key base10</label><input id='key-base10' class='output-field' onchange='_key_b10_changed()' pattern='[0-9 ]*' /></div>")
-	_blocks.append ("<div class='output-pair'><label class='output-label'>key hex</label><input id='key-hex' class='output-field' onchange='_key_hex_changed()' pattern='[0-9a-fA-F :]*' /></div>")
+	_blocks.append ("<div class='output-pair'><label class='output-label'>key txt</label>")
+	_blocks.append (f"<input id='key-txt' class='output-field' onchange='_key_txt_changed()' pattern='[!-~]*' minlength='0' maxlength='{_key_txt_length_max}' />")
+	_blocks.append ("</div>")
+	_blocks.append ("<div class='output-pair'><label class='output-label'>key b10</label>")
+	_blocks.append (f"<input id='key-b10' class='output-field' onchange='_key_b10_changed()' pattern='[0-9]*' minlength='0' maxlength='{_key_b10_length_max}' />")
+	_blocks.append ("</div>")
+	_blocks.append ("<div class='output-pair'><label class='output-label'>key hex</label>")
+	_blocks.append (f"<input id='key-hex' class='output-field' onchange='_key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='{_key_hex_length_max}' />")
+	_blocks.append ("</div>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("</div>")
