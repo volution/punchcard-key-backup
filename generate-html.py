@@ -129,7 +129,11 @@ _style = """
 	.bits-main {
 		max-width : 100vw;
 	}
-	.bits-main-content > *,
+	.bits-main-content > * {
+		width : 100%;
+		width : -moz-available;
+		max-width : 95vw;
+	}
 	.output-pair {
 		width : 100%;
 		width : -moz-available;
