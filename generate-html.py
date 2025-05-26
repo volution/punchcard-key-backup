@@ -158,167 +158,7 @@ _style = """
 
 
 
-_script = """
-	
-	
-	"use strict";
-	
-	function _bit_changed () {
-		let _key_b10 = BigInt (0);
-		for (let _word_index = 0; _word_index < 2; _word_index += 1) {
-			for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
-				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
-					const _bit_checkbox = document.getElementById ("key-bit-" + _word_index + "-" + _bit_row + "-" + _bit_column);
-					const _bit_value = (_bit_checkbox.checked ? 1 : 0);
-					_key_b10 <<= BigInt (1);
-					if (_bit_value)
-						_key_b10 |= BigInt (_bit_value);
-				}
-			}
-		}
-		_refresh (_key_b10);
-	}
-	
-	function _key_b10_changed () {
-		const _key_b10_input = document.getElementById ("key-b10");
-		const _key_b10_string = _key_b10_input.value.replaceAll (" ", "");
-		if (/^[0-9 ]*$/.test (_key_b10_string)) {
-			const _key_b10 = BigInt (_key_b10_string);
-			_refresh (_key_b10);
-		} else {
-			_bit_changed ();
-		}
-	}
-	
-	function _key_hex_changed () {
-		const _key_hex_input = document.getElementById ("key-hex");
-		const _key_hex_string = _key_hex_input.value.replaceAll (" ", "") .replaceAll (":", "") .replaceAll ("-", "");
-		if (/^[0-9a-fA-F ]*$/.test (_key_hex_string)) {
-			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
-			_refresh (_key_b10);
-		} else {
-			_bit_changed ();
-		}
-	}
-	
-	function _key_txt_changed () {
-		const _key_txt_input = document.getElementById ("key-txt");
-		const _key_txt_string = _key_txt_input.value.replaceAll (" ", "");
-		if (/^[!-~]*$/.test (_key_txt_string)) {
-			let _key_b10 = BigInt (1);
-			if (_key_txt_string == "") {
-				_key_b10 = BigInt (0);
-			} else {
-				for (const _char_txt of _key_txt_string) {
-					const _char_index = _char_txt.codePointAt (0) - 33;
-					_key_b10 = (_key_b10 * BigInt (94)) + BigInt (_char_index);
-				}
-			}
-			_refresh (_key_b10);
-		} else {
-			_bit_changed ();
-		}
-	}
-	
-	function _refresh (_key_b10_raw) {
-		const _bytes = new Array (16) .fill (0);
-		for (let _key_b10 = _key_b10_raw, _byte_index = 15; _key_b10 > 0; _key_b10 >>= BigInt (8), _byte_index -= 1) {
-			_bytes[_byte_index] = Number (BigInt.asUintN (8, _key_b10));
-		}
-		let _key_b10 = BigInt (0);
-		let _key_hex = "";
-		for (const _byte of _bytes) {
-			_key_b10 = (_key_b10 << BigInt (8)) | BigInt (_byte);
-			_key_hex += ((_byte <= 0x0f) ? "0" : "") + _byte.toString (16);
-		}
-		for (let _word_index = 0; _word_index < 2; _word_index += 1) {
-			for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
-				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
-					const _bit_checkbox = document.getElementById ("key-bit-" + _word_index + "-" + _bit_row + "-" + _bit_column);
-					const _bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column;
-					const _byte_subindex = _bit_index % 8;
-					const _byte_index = (_bit_index - _byte_subindex) / 8;
-					const _bit_value = (_bytes[_byte_index] >> (7 - _byte_subindex)) & 1;
-					_bit_checkbox.checked = _bit_value ? true : false;
-				}
-			}
-		}
-		let _crc = _crc16_ccitt (_bytes);
-		for (let _crc_bit = 0; _crc_bit < 16; _crc_bit += 1) {
-			const _bit_checkbox = document.getElementById ("crc-bit-" + (15 - _crc_bit));
-			_bit_checkbox.checked = (_crc >> _crc_bit) & 1;
-		}
-		let _key_txt = "";
-		{
-			let _key_txt_seed = _key_b10;
-			while (true) {
-				if (_key_txt_seed == 1) {
-					break;
-				}
-				if (_key_txt_seed == 0) {
-					_key_txt = "";
-					break;
-				}
-				const _char_index = Number (_key_txt_seed % BigInt (94));
-				_key_txt_seed = _key_txt_seed / BigInt (94);
-				const _char_txt = String.fromCodePoint (33 + _char_index);
-				_key_txt = _char_txt + _key_txt;
-			}
-		}
-		if (_key_b10 > 0) {
-			_key_b10 = _key_b10.toString ();
-		} else {
-			_key_b10 = "";
-			_key_hex = "";
-		}
-		const _key_txt_input = document.getElementById ("key-txt");
-		const _key_b10_input = document.getElementById ("key-b10");
-		const _key_hex_input = document.getElementById ("key-hex");
-		_key_txt_input.value = _key_txt;
-		_key_b10_input.value = _key_b10;
-		_key_hex_input.value = _key_hex;
-		
-		if ((_key_txt == "") && (_key_b10 != "")) {
-			_key_txt_input.placeholder = "(invalid)";
-		} else {
-			_key_txt_input.placeholder = "";
-		}
-	}
-	
-	function _crc16_ccitt (_bytes) {
-		let crc = 0;
-		for (const b of _bytes) {
-			for (let i = 0; i < 8; i++) {
-				const bit = ((b >> (7 - i) & 1) === 1);
-				const c15 = ((crc >> 15 & 1) === 1);
-				crc <<= 1;
-				if (c15 ^ bit) crc ^= 0x1021;
-			}
-		}
-		return (crc & 0xffff);
-	}
-	
-	function _bits_reset () {
-		_refresh (BigInt (0));
-	}
-	
-	function _bits_random () {
-		const _key_seeds = new BigUint64Array (2);
-		crypto.getRandomValues (_key_seeds);
-		const _key_b10 = _key_seeds[0] * _key_seeds[1];
-		_refresh (BigInt (_key_b10));
-	}
-	
-	document.addEventListener ("DOMContentLoaded", function () {
-			_bit_changed ();
-		});
-	
-	
-"""
-
-
-
-
+_script = open ("./generate-html.js") .read ()
 _cr80_svg = open ("./cr80.svg.b64") .read ()
 
 
@@ -368,7 +208,7 @@ def _generate () :
 				_blocks.append ("<span class='bit-wrapper'>")
 				_bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column
 				_bit_tooltip = "key bit %03d, (word %d, row %d, column %d)" % (_bit_index, _word_index + 1, _bit_row + 1, _bit_column + 1)
-				_blocks.append (f"<input id='key-bit-{_word_index}-{_bit_row}-{_bit_column}' type='checkbox' class='bit-checkbox' title='{_bit_tooltip}' onchange='_bit_changed()' />")
+				_blocks.append (f"<input id='key-bit-{_word_index}-{_bit_row}-{_bit_column}' type='checkbox' class='bit-checkbox' title='{_bit_tooltip}' onchange='pckb.key_bit_changed()' />")
 				_blocks.append ("</span>")
 			_blocks.append ("</div>")
 		_blocks.append ("</div>")
@@ -399,19 +239,19 @@ def _generate () :
 	
 	_blocks.append ("<div class='outputs'>")
 	_blocks.append ("<div class='output-pair'><label class='output-label'>key txt</label>")
-	_blocks.append (f"<input id='key-txt' class='output-field' onchange='_key_txt_changed()' pattern='[!-~]*' minlength='0' maxlength='{_key_txt_length_max}' />")
+	_blocks.append (f"<input id='key-txt' class='output-field' onchange='pckb.key_txt_changed()' pattern='[!-~]*' minlength='0' maxlength='{_key_txt_length_max}' />")
 	_blocks.append ("</div>")
 	_blocks.append ("<div class='output-pair'><label class='output-label'>key b10</label>")
-	_blocks.append (f"<input id='key-b10' class='output-field' onchange='_key_b10_changed()' pattern='[0-9]*' minlength='0' maxlength='{_key_b10_length_max}' />")
+	_blocks.append (f"<input id='key-b10' class='output-field' onchange='pckb.key_b10_changed()' pattern='[0-9]*' minlength='0' maxlength='{_key_b10_length_max}' />")
 	_blocks.append ("</div>")
 	_blocks.append ("<div class='output-pair'><label class='output-label'>key hex</label>")
-	_blocks.append (f"<input id='key-hex' class='output-field' onchange='_key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='{_key_hex_length_max}' />")
+	_blocks.append (f"<input id='key-hex' class='output-field' onchange='pckb.key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='{_key_hex_length_max}' />")
 	_blocks.append ("</div>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("<div class='buttons'>")
-	_blocks.append ("<button type='button' class='button' onclick='_bits_random()'>random</button>")
-	_blocks.append ("<button type='button' class='button' onclick='_bits_reset()'>reset</button>")
+	_blocks.append ("<button type='button' class='button' onclick='pckb.key_random()'>random</button>")
+	_blocks.append ("<button type='button' class='button' onclick='pckb.key_reset()'>reset</button>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("</div>")
