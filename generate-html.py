@@ -233,7 +233,7 @@ def _generate () :
 	_blocks.append ("</div>")
 	_blocks.append ("</div>")
 	
-	_key_txt_length_max = math.floor (math.log (math.pow (2, 128), 94))
+	_key_txt_length_max = math.floor (math.log (math.pow (2, 128), 26))
 	_key_b10_length_max = math.ceil (math.log (math.pow (2, 128), 10))
 	_key_hex_length_max = 128 // 8 * 2
 	
