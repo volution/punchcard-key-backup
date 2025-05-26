@@ -65,6 +65,10 @@ _style = """
 		display : flex;
 		flex-direction : column;
 	}
+	.buttons {
+		display : flex;
+		flex-direction : row;
+	}
 	.bits-wrapper {
 		display : flex;
 		flex-direction : row;
@@ -106,11 +110,13 @@ _style = """
 	}
 	
 	.output-label,
-	.output-field {
+	.output-field,
+	.button {
 		height : 1.1lh;
 		margin : 0.5ex;
 	}
-	.output-field {
+	.output-field,
+	.button {
 		border : solid 1px;
 		padding-left : 0.5ch;
 		padding-right : 0.5ch;
@@ -292,6 +298,17 @@ _script = """
 		return (crc & 0xffff);
 	}
 	
+	function _bits_reset () {
+		_refresh (BigInt (0));
+	}
+	
+	function _bits_random () {
+		const _key_seeds = new BigUint64Array (2);
+		crypto.getRandomValues (_key_seeds);
+		const _key_b10 = _key_seeds[0] * _key_seeds[1];
+		_refresh (BigInt (_key_b10));
+	}
+	
 	document.addEventListener ("DOMContentLoaded", function () {
 			_bit_changed ();
 		});
@@ -337,6 +354,7 @@ def _generate () :
 	_blocks.append ("<div class='bits-main-content'>")
 	
 	_blocks.append (f"<h2>PunchCard Key Backup</h2>")
+	
 	_blocks.append (f"<img class='cr80' src='data:image/svg+xml;base64,{_cr80_svg}' />")
 	
 	_blocks.append ("<div class='key-bits'>")
@@ -389,6 +407,11 @@ def _generate () :
 	_blocks.append ("<div class='output-pair'><label class='output-label'>key hex</label>")
 	_blocks.append (f"<input id='key-hex' class='output-field' onchange='_key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='{_key_hex_length_max}' />")
 	_blocks.append ("</div>")
+	_blocks.append ("</div>")
+	
+	_blocks.append ("<div class='buttons'>")
+	_blocks.append ("<button type='button' class='button' onclick='_bits_random()'>random</button>")
+	_blocks.append ("<button type='button' class='button' onclick='_bits_reset()'>reset</button>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("</div>")
