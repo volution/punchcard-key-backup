@@ -59,7 +59,7 @@ def _generate () :
 				_blocks.append ("<span class='bit-wrapper'>")
 				_bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column
 				_bit_tooltip = "key bit %03d, (word %d, row %d, column %d)" % (_bit_index, _word_index + 1, _bit_row + 1, _bit_column + 1)
-				_blocks.append (f"<input id='key-bit-{_word_index}-{_bit_row}-{_bit_column}' type='checkbox' class='bit-checkbox' title='{_bit_tooltip}' onchange='pckb.key_bit_changed()' />")
+				_blocks.append (f"<input id='pckb--key-bit-checkbox--{_word_index}-{_bit_row}-{_bit_column}' type='checkbox' class='bit-checkbox' title='{_bit_tooltip}' onchange='pckb.key_bit_changed()' />")
 				_blocks.append ("</span>")
 			_blocks.append ("</div>")
 		_blocks.append ("</div>")
@@ -77,7 +77,7 @@ def _generate () :
 				_blocks.append ("<span class='bit-wrapper'>")
 				_bit_index = (_word_index * 8) + _bit_column
 				_bit_tooltip = "crc bit %02d, (word %d, column %d)" % (_bit_index, _word_index + 1, _bit_column + 1)
-				_blocks.append (f"<input id='crc-bit-{_bit_index}' type='checkbox' class='bit-checkbox' title='{_bit_tooltip}' disabled='disabled' />")
+				_blocks.append (f"<input id='pckb--crc-bit-checkbox--{_bit_index}' type='checkbox' class='bit-checkbox' title='{_bit_tooltip}' disabled='disabled' />")
 				_blocks.append ("</span>")
 			_blocks.append ("</span>")
 		_blocks.append ("</div>")
@@ -90,19 +90,19 @@ def _generate () :
 	
 	_blocks.append ("<div class='outputs'>")
 	_blocks.append ("<div class='output-pair'><label class='output-label'>key txt</label>")
-	_blocks.append (f"<input id='key-txt' class='output-field' onchange='pckb.key_txt_changed()' pattern='[!-~]*' minlength='0' maxlength='{_key_txt_length_max}' />")
+	_blocks.append (f"<input id='pckb--key-txt--input' class='output-field' onchange='pckb.key_txt_changed()' pattern='[!-~]*' minlength='0' maxlength='{_key_txt_length_max}' />")
 	_blocks.append ("</div>")
 	_blocks.append ("<div class='output-pair'><label class='output-label'>key b10</label>")
-	_blocks.append (f"<input id='key-b10' class='output-field' onchange='pckb.key_b10_changed()' pattern='[0-9]*' minlength='0' maxlength='{_key_b10_length_max}' />")
+	_blocks.append (f"<input id='pckb--key-b10--input' class='output-field' onchange='pckb.key_b10_changed()' pattern='[0-9]*' minlength='0' maxlength='{_key_b10_length_max}' />")
 	_blocks.append ("</div>")
 	_blocks.append ("<div class='output-pair'><label class='output-label'>key hex</label>")
-	_blocks.append (f"<input id='key-hex' class='output-field' onchange='pckb.key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='{_key_hex_length_max}' />")
+	_blocks.append (f"<input id='pckb--key-hex--input' class='output-field' onchange='pckb.key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='{_key_hex_length_max}' />")
 	_blocks.append ("</div>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("<div class='buttons'>")
-	_blocks.append ("<button type='button' class='button' onclick='pckb.key_random()'>random</button>")
-	_blocks.append ("<button type='button' class='button' onclick='pckb.key_reset()'>reset</button>")
+	_blocks.append ("<button id='pckb--key-random--button' type='button' class='button' onclick='pckb.key_random()'>random</button>")
+	_blocks.append ("<button id='pckb--key-reset--button' type='button' class='button' onclick='pckb.key_reset()'>reset</button>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("</div>")

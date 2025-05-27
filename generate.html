@@ -188,19 +188,19 @@ function pckb (pckb) {
 			for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
 				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
 					const _bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column;
-					__key_bit_checkboxes[_bit_index] = document.getElementById ("key-bit-" + _word_index + "-" + _bit_row + "-" + _bit_column);
+					__key_bit_checkboxes[_bit_index] = document.getElementById ("pckb--key-bit-checkbox--" + _word_index + "-" + _bit_row + "-" + _bit_column);
 				}
 			}
 		}
 		
 		__crc_bit_checkboxes = new Array (16);
 		for (let _bit_column = 0; _bit_column < 16; _bit_column += 1) {
-			__crc_bit_checkboxes[_bit_column] = document.getElementById ("crc-bit-" + _bit_column);
+			__crc_bit_checkboxes[_bit_column] = document.getElementById ("pckb--crc-bit-checkbox--" + _bit_column);
 		}
 		
-		__key_txt_input = document.getElementById ("key-txt");
-		__key_b10_input = document.getElementById ("key-b10");
-		__key_hex_input = document.getElementById ("key-hex");
+		__key_txt_input = document.getElementById ("pckb--key-txt--input");
+		__key_b10_input = document.getElementById ("pckb--key-b10--input");
+		__key_hex_input = document.getElementById ("pckb--key-hex--input");
 		
 		return key_refresh (undefined);
 	}
@@ -499,210 +499,210 @@ document.addEventListener ("DOMContentLoaded", function () {
 <p class='word-label'>key word 1</p>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-0-0-0' type='checkbox' class='bit-checkbox' title='key bit 000, (word 1, row 1, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-0-0' type='checkbox' class='bit-checkbox' title='key bit 000, (word 1, row 1, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-0-1' type='checkbox' class='bit-checkbox' title='key bit 001, (word 1, row 1, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-0-1' type='checkbox' class='bit-checkbox' title='key bit 001, (word 1, row 1, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-0-2' type='checkbox' class='bit-checkbox' title='key bit 002, (word 1, row 1, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-0-2' type='checkbox' class='bit-checkbox' title='key bit 002, (word 1, row 1, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-0-3' type='checkbox' class='bit-checkbox' title='key bit 003, (word 1, row 1, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-0-3' type='checkbox' class='bit-checkbox' title='key bit 003, (word 1, row 1, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-0-4' type='checkbox' class='bit-checkbox' title='key bit 004, (word 1, row 1, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-0-4' type='checkbox' class='bit-checkbox' title='key bit 004, (word 1, row 1, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-0-5' type='checkbox' class='bit-checkbox' title='key bit 005, (word 1, row 1, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-0-5' type='checkbox' class='bit-checkbox' title='key bit 005, (word 1, row 1, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-0-6' type='checkbox' class='bit-checkbox' title='key bit 006, (word 1, row 1, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-0-6' type='checkbox' class='bit-checkbox' title='key bit 006, (word 1, row 1, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-0-7' type='checkbox' class='bit-checkbox' title='key bit 007, (word 1, row 1, column 8)' onchange='pckb.key_bit_changed()' />
-</span>
-</div>
-<div class='word-bits-row'>
-<span class='bit-wrapper'>
-<input id='key-bit-0-1-0' type='checkbox' class='bit-checkbox' title='key bit 008, (word 1, row 2, column 1)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-1-1' type='checkbox' class='bit-checkbox' title='key bit 009, (word 1, row 2, column 2)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-1-2' type='checkbox' class='bit-checkbox' title='key bit 010, (word 1, row 2, column 3)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-1-3' type='checkbox' class='bit-checkbox' title='key bit 011, (word 1, row 2, column 4)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-1-4' type='checkbox' class='bit-checkbox' title='key bit 012, (word 1, row 2, column 5)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-1-5' type='checkbox' class='bit-checkbox' title='key bit 013, (word 1, row 2, column 6)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-1-6' type='checkbox' class='bit-checkbox' title='key bit 014, (word 1, row 2, column 7)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-1-7' type='checkbox' class='bit-checkbox' title='key bit 015, (word 1, row 2, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-0-7' type='checkbox' class='bit-checkbox' title='key bit 007, (word 1, row 1, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-0-2-0' type='checkbox' class='bit-checkbox' title='key bit 016, (word 1, row 3, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-1-0' type='checkbox' class='bit-checkbox' title='key bit 008, (word 1, row 2, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-2-1' type='checkbox' class='bit-checkbox' title='key bit 017, (word 1, row 3, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-1-1' type='checkbox' class='bit-checkbox' title='key bit 009, (word 1, row 2, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-2-2' type='checkbox' class='bit-checkbox' title='key bit 018, (word 1, row 3, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-1-2' type='checkbox' class='bit-checkbox' title='key bit 010, (word 1, row 2, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-2-3' type='checkbox' class='bit-checkbox' title='key bit 019, (word 1, row 3, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-1-3' type='checkbox' class='bit-checkbox' title='key bit 011, (word 1, row 2, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-2-4' type='checkbox' class='bit-checkbox' title='key bit 020, (word 1, row 3, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-1-4' type='checkbox' class='bit-checkbox' title='key bit 012, (word 1, row 2, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-2-5' type='checkbox' class='bit-checkbox' title='key bit 021, (word 1, row 3, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-1-5' type='checkbox' class='bit-checkbox' title='key bit 013, (word 1, row 2, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-2-6' type='checkbox' class='bit-checkbox' title='key bit 022, (word 1, row 3, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-1-6' type='checkbox' class='bit-checkbox' title='key bit 014, (word 1, row 2, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-2-7' type='checkbox' class='bit-checkbox' title='key bit 023, (word 1, row 3, column 8)' onchange='pckb.key_bit_changed()' />
-</span>
-</div>
-<div class='word-bits-row'>
-<span class='bit-wrapper'>
-<input id='key-bit-0-3-0' type='checkbox' class='bit-checkbox' title='key bit 024, (word 1, row 4, column 1)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-3-1' type='checkbox' class='bit-checkbox' title='key bit 025, (word 1, row 4, column 2)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-3-2' type='checkbox' class='bit-checkbox' title='key bit 026, (word 1, row 4, column 3)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-3-3' type='checkbox' class='bit-checkbox' title='key bit 027, (word 1, row 4, column 4)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-3-4' type='checkbox' class='bit-checkbox' title='key bit 028, (word 1, row 4, column 5)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-3-5' type='checkbox' class='bit-checkbox' title='key bit 029, (word 1, row 4, column 6)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-3-6' type='checkbox' class='bit-checkbox' title='key bit 030, (word 1, row 4, column 7)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-3-7' type='checkbox' class='bit-checkbox' title='key bit 031, (word 1, row 4, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-1-7' type='checkbox' class='bit-checkbox' title='key bit 015, (word 1, row 2, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-0-4-0' type='checkbox' class='bit-checkbox' title='key bit 032, (word 1, row 5, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-2-0' type='checkbox' class='bit-checkbox' title='key bit 016, (word 1, row 3, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-4-1' type='checkbox' class='bit-checkbox' title='key bit 033, (word 1, row 5, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-2-1' type='checkbox' class='bit-checkbox' title='key bit 017, (word 1, row 3, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-4-2' type='checkbox' class='bit-checkbox' title='key bit 034, (word 1, row 5, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-2-2' type='checkbox' class='bit-checkbox' title='key bit 018, (word 1, row 3, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-4-3' type='checkbox' class='bit-checkbox' title='key bit 035, (word 1, row 5, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-2-3' type='checkbox' class='bit-checkbox' title='key bit 019, (word 1, row 3, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-4-4' type='checkbox' class='bit-checkbox' title='key bit 036, (word 1, row 5, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-2-4' type='checkbox' class='bit-checkbox' title='key bit 020, (word 1, row 3, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-4-5' type='checkbox' class='bit-checkbox' title='key bit 037, (word 1, row 5, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-2-5' type='checkbox' class='bit-checkbox' title='key bit 021, (word 1, row 3, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-4-6' type='checkbox' class='bit-checkbox' title='key bit 038, (word 1, row 5, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-2-6' type='checkbox' class='bit-checkbox' title='key bit 022, (word 1, row 3, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-4-7' type='checkbox' class='bit-checkbox' title='key bit 039, (word 1, row 5, column 8)' onchange='pckb.key_bit_changed()' />
-</span>
-</div>
-<div class='word-bits-row'>
-<span class='bit-wrapper'>
-<input id='key-bit-0-5-0' type='checkbox' class='bit-checkbox' title='key bit 040, (word 1, row 6, column 1)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-5-1' type='checkbox' class='bit-checkbox' title='key bit 041, (word 1, row 6, column 2)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-5-2' type='checkbox' class='bit-checkbox' title='key bit 042, (word 1, row 6, column 3)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-5-3' type='checkbox' class='bit-checkbox' title='key bit 043, (word 1, row 6, column 4)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-5-4' type='checkbox' class='bit-checkbox' title='key bit 044, (word 1, row 6, column 5)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-5-5' type='checkbox' class='bit-checkbox' title='key bit 045, (word 1, row 6, column 6)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-5-6' type='checkbox' class='bit-checkbox' title='key bit 046, (word 1, row 6, column 7)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-0-5-7' type='checkbox' class='bit-checkbox' title='key bit 047, (word 1, row 6, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-2-7' type='checkbox' class='bit-checkbox' title='key bit 023, (word 1, row 3, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-0-6-0' type='checkbox' class='bit-checkbox' title='key bit 048, (word 1, row 7, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-3-0' type='checkbox' class='bit-checkbox' title='key bit 024, (word 1, row 4, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-6-1' type='checkbox' class='bit-checkbox' title='key bit 049, (word 1, row 7, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-3-1' type='checkbox' class='bit-checkbox' title='key bit 025, (word 1, row 4, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-6-2' type='checkbox' class='bit-checkbox' title='key bit 050, (word 1, row 7, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-3-2' type='checkbox' class='bit-checkbox' title='key bit 026, (word 1, row 4, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-6-3' type='checkbox' class='bit-checkbox' title='key bit 051, (word 1, row 7, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-3-3' type='checkbox' class='bit-checkbox' title='key bit 027, (word 1, row 4, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-6-4' type='checkbox' class='bit-checkbox' title='key bit 052, (word 1, row 7, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-3-4' type='checkbox' class='bit-checkbox' title='key bit 028, (word 1, row 4, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-6-5' type='checkbox' class='bit-checkbox' title='key bit 053, (word 1, row 7, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-3-5' type='checkbox' class='bit-checkbox' title='key bit 029, (word 1, row 4, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-6-6' type='checkbox' class='bit-checkbox' title='key bit 054, (word 1, row 7, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-3-6' type='checkbox' class='bit-checkbox' title='key bit 030, (word 1, row 4, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-6-7' type='checkbox' class='bit-checkbox' title='key bit 055, (word 1, row 7, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-3-7' type='checkbox' class='bit-checkbox' title='key bit 031, (word 1, row 4, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-0-7-0' type='checkbox' class='bit-checkbox' title='key bit 056, (word 1, row 8, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-4-0' type='checkbox' class='bit-checkbox' title='key bit 032, (word 1, row 5, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-7-1' type='checkbox' class='bit-checkbox' title='key bit 057, (word 1, row 8, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-4-1' type='checkbox' class='bit-checkbox' title='key bit 033, (word 1, row 5, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-7-2' type='checkbox' class='bit-checkbox' title='key bit 058, (word 1, row 8, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-4-2' type='checkbox' class='bit-checkbox' title='key bit 034, (word 1, row 5, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-7-3' type='checkbox' class='bit-checkbox' title='key bit 059, (word 1, row 8, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-4-3' type='checkbox' class='bit-checkbox' title='key bit 035, (word 1, row 5, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-7-4' type='checkbox' class='bit-checkbox' title='key bit 060, (word 1, row 8, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-4-4' type='checkbox' class='bit-checkbox' title='key bit 036, (word 1, row 5, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-7-5' type='checkbox' class='bit-checkbox' title='key bit 061, (word 1, row 8, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-4-5' type='checkbox' class='bit-checkbox' title='key bit 037, (word 1, row 5, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-7-6' type='checkbox' class='bit-checkbox' title='key bit 062, (word 1, row 8, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-4-6' type='checkbox' class='bit-checkbox' title='key bit 038, (word 1, row 5, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-0-7-7' type='checkbox' class='bit-checkbox' title='key bit 063, (word 1, row 8, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--0-4-7' type='checkbox' class='bit-checkbox' title='key bit 039, (word 1, row 5, column 8)' onchange='pckb.key_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-5-0' type='checkbox' class='bit-checkbox' title='key bit 040, (word 1, row 6, column 1)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-5-1' type='checkbox' class='bit-checkbox' title='key bit 041, (word 1, row 6, column 2)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-5-2' type='checkbox' class='bit-checkbox' title='key bit 042, (word 1, row 6, column 3)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-5-3' type='checkbox' class='bit-checkbox' title='key bit 043, (word 1, row 6, column 4)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-5-4' type='checkbox' class='bit-checkbox' title='key bit 044, (word 1, row 6, column 5)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-5-5' type='checkbox' class='bit-checkbox' title='key bit 045, (word 1, row 6, column 6)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-5-6' type='checkbox' class='bit-checkbox' title='key bit 046, (word 1, row 6, column 7)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-5-7' type='checkbox' class='bit-checkbox' title='key bit 047, (word 1, row 6, column 8)' onchange='pckb.key_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-6-0' type='checkbox' class='bit-checkbox' title='key bit 048, (word 1, row 7, column 1)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-6-1' type='checkbox' class='bit-checkbox' title='key bit 049, (word 1, row 7, column 2)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-6-2' type='checkbox' class='bit-checkbox' title='key bit 050, (word 1, row 7, column 3)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-6-3' type='checkbox' class='bit-checkbox' title='key bit 051, (word 1, row 7, column 4)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-6-4' type='checkbox' class='bit-checkbox' title='key bit 052, (word 1, row 7, column 5)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-6-5' type='checkbox' class='bit-checkbox' title='key bit 053, (word 1, row 7, column 6)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-6-6' type='checkbox' class='bit-checkbox' title='key bit 054, (word 1, row 7, column 7)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-6-7' type='checkbox' class='bit-checkbox' title='key bit 055, (word 1, row 7, column 8)' onchange='pckb.key_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-7-0' type='checkbox' class='bit-checkbox' title='key bit 056, (word 1, row 8, column 1)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-7-1' type='checkbox' class='bit-checkbox' title='key bit 057, (word 1, row 8, column 2)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-7-2' type='checkbox' class='bit-checkbox' title='key bit 058, (word 1, row 8, column 3)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-7-3' type='checkbox' class='bit-checkbox' title='key bit 059, (word 1, row 8, column 4)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-7-4' type='checkbox' class='bit-checkbox' title='key bit 060, (word 1, row 8, column 5)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-7-5' type='checkbox' class='bit-checkbox' title='key bit 061, (word 1, row 8, column 6)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-7-6' type='checkbox' class='bit-checkbox' title='key bit 062, (word 1, row 8, column 7)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--0-7-7' type='checkbox' class='bit-checkbox' title='key bit 063, (word 1, row 8, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 </div>
@@ -710,210 +710,210 @@ document.addEventListener ("DOMContentLoaded", function () {
 <p class='word-label'>key word 2</p>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-1-0-0' type='checkbox' class='bit-checkbox' title='key bit 064, (word 2, row 1, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-0-0' type='checkbox' class='bit-checkbox' title='key bit 064, (word 2, row 1, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-0-1' type='checkbox' class='bit-checkbox' title='key bit 065, (word 2, row 1, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-0-1' type='checkbox' class='bit-checkbox' title='key bit 065, (word 2, row 1, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-0-2' type='checkbox' class='bit-checkbox' title='key bit 066, (word 2, row 1, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-0-2' type='checkbox' class='bit-checkbox' title='key bit 066, (word 2, row 1, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-0-3' type='checkbox' class='bit-checkbox' title='key bit 067, (word 2, row 1, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-0-3' type='checkbox' class='bit-checkbox' title='key bit 067, (word 2, row 1, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-0-4' type='checkbox' class='bit-checkbox' title='key bit 068, (word 2, row 1, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-0-4' type='checkbox' class='bit-checkbox' title='key bit 068, (word 2, row 1, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-0-5' type='checkbox' class='bit-checkbox' title='key bit 069, (word 2, row 1, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-0-5' type='checkbox' class='bit-checkbox' title='key bit 069, (word 2, row 1, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-0-6' type='checkbox' class='bit-checkbox' title='key bit 070, (word 2, row 1, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-0-6' type='checkbox' class='bit-checkbox' title='key bit 070, (word 2, row 1, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-0-7' type='checkbox' class='bit-checkbox' title='key bit 071, (word 2, row 1, column 8)' onchange='pckb.key_bit_changed()' />
-</span>
-</div>
-<div class='word-bits-row'>
-<span class='bit-wrapper'>
-<input id='key-bit-1-1-0' type='checkbox' class='bit-checkbox' title='key bit 072, (word 2, row 2, column 1)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-1-1' type='checkbox' class='bit-checkbox' title='key bit 073, (word 2, row 2, column 2)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-1-2' type='checkbox' class='bit-checkbox' title='key bit 074, (word 2, row 2, column 3)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-1-3' type='checkbox' class='bit-checkbox' title='key bit 075, (word 2, row 2, column 4)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-1-4' type='checkbox' class='bit-checkbox' title='key bit 076, (word 2, row 2, column 5)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-1-5' type='checkbox' class='bit-checkbox' title='key bit 077, (word 2, row 2, column 6)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-1-6' type='checkbox' class='bit-checkbox' title='key bit 078, (word 2, row 2, column 7)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-1-7' type='checkbox' class='bit-checkbox' title='key bit 079, (word 2, row 2, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-0-7' type='checkbox' class='bit-checkbox' title='key bit 071, (word 2, row 1, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-1-2-0' type='checkbox' class='bit-checkbox' title='key bit 080, (word 2, row 3, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-1-0' type='checkbox' class='bit-checkbox' title='key bit 072, (word 2, row 2, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-2-1' type='checkbox' class='bit-checkbox' title='key bit 081, (word 2, row 3, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-1-1' type='checkbox' class='bit-checkbox' title='key bit 073, (word 2, row 2, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-2-2' type='checkbox' class='bit-checkbox' title='key bit 082, (word 2, row 3, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-1-2' type='checkbox' class='bit-checkbox' title='key bit 074, (word 2, row 2, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-2-3' type='checkbox' class='bit-checkbox' title='key bit 083, (word 2, row 3, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-1-3' type='checkbox' class='bit-checkbox' title='key bit 075, (word 2, row 2, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-2-4' type='checkbox' class='bit-checkbox' title='key bit 084, (word 2, row 3, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-1-4' type='checkbox' class='bit-checkbox' title='key bit 076, (word 2, row 2, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-2-5' type='checkbox' class='bit-checkbox' title='key bit 085, (word 2, row 3, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-1-5' type='checkbox' class='bit-checkbox' title='key bit 077, (word 2, row 2, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-2-6' type='checkbox' class='bit-checkbox' title='key bit 086, (word 2, row 3, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-1-6' type='checkbox' class='bit-checkbox' title='key bit 078, (word 2, row 2, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-2-7' type='checkbox' class='bit-checkbox' title='key bit 087, (word 2, row 3, column 8)' onchange='pckb.key_bit_changed()' />
-</span>
-</div>
-<div class='word-bits-row'>
-<span class='bit-wrapper'>
-<input id='key-bit-1-3-0' type='checkbox' class='bit-checkbox' title='key bit 088, (word 2, row 4, column 1)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-3-1' type='checkbox' class='bit-checkbox' title='key bit 089, (word 2, row 4, column 2)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-3-2' type='checkbox' class='bit-checkbox' title='key bit 090, (word 2, row 4, column 3)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-3-3' type='checkbox' class='bit-checkbox' title='key bit 091, (word 2, row 4, column 4)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-3-4' type='checkbox' class='bit-checkbox' title='key bit 092, (word 2, row 4, column 5)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-3-5' type='checkbox' class='bit-checkbox' title='key bit 093, (word 2, row 4, column 6)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-3-6' type='checkbox' class='bit-checkbox' title='key bit 094, (word 2, row 4, column 7)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-3-7' type='checkbox' class='bit-checkbox' title='key bit 095, (word 2, row 4, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-1-7' type='checkbox' class='bit-checkbox' title='key bit 079, (word 2, row 2, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-1-4-0' type='checkbox' class='bit-checkbox' title='key bit 096, (word 2, row 5, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-2-0' type='checkbox' class='bit-checkbox' title='key bit 080, (word 2, row 3, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-4-1' type='checkbox' class='bit-checkbox' title='key bit 097, (word 2, row 5, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-2-1' type='checkbox' class='bit-checkbox' title='key bit 081, (word 2, row 3, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-4-2' type='checkbox' class='bit-checkbox' title='key bit 098, (word 2, row 5, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-2-2' type='checkbox' class='bit-checkbox' title='key bit 082, (word 2, row 3, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-4-3' type='checkbox' class='bit-checkbox' title='key bit 099, (word 2, row 5, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-2-3' type='checkbox' class='bit-checkbox' title='key bit 083, (word 2, row 3, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-4-4' type='checkbox' class='bit-checkbox' title='key bit 100, (word 2, row 5, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-2-4' type='checkbox' class='bit-checkbox' title='key bit 084, (word 2, row 3, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-4-5' type='checkbox' class='bit-checkbox' title='key bit 101, (word 2, row 5, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-2-5' type='checkbox' class='bit-checkbox' title='key bit 085, (word 2, row 3, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-4-6' type='checkbox' class='bit-checkbox' title='key bit 102, (word 2, row 5, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-2-6' type='checkbox' class='bit-checkbox' title='key bit 086, (word 2, row 3, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-4-7' type='checkbox' class='bit-checkbox' title='key bit 103, (word 2, row 5, column 8)' onchange='pckb.key_bit_changed()' />
-</span>
-</div>
-<div class='word-bits-row'>
-<span class='bit-wrapper'>
-<input id='key-bit-1-5-0' type='checkbox' class='bit-checkbox' title='key bit 104, (word 2, row 6, column 1)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-5-1' type='checkbox' class='bit-checkbox' title='key bit 105, (word 2, row 6, column 2)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-5-2' type='checkbox' class='bit-checkbox' title='key bit 106, (word 2, row 6, column 3)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-5-3' type='checkbox' class='bit-checkbox' title='key bit 107, (word 2, row 6, column 4)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-5-4' type='checkbox' class='bit-checkbox' title='key bit 108, (word 2, row 6, column 5)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-5-5' type='checkbox' class='bit-checkbox' title='key bit 109, (word 2, row 6, column 6)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-5-6' type='checkbox' class='bit-checkbox' title='key bit 110, (word 2, row 6, column 7)' onchange='pckb.key_bit_changed()' />
-</span>
-<span class='bit-wrapper'>
-<input id='key-bit-1-5-7' type='checkbox' class='bit-checkbox' title='key bit 111, (word 2, row 6, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-2-7' type='checkbox' class='bit-checkbox' title='key bit 087, (word 2, row 3, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-1-6-0' type='checkbox' class='bit-checkbox' title='key bit 112, (word 2, row 7, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-3-0' type='checkbox' class='bit-checkbox' title='key bit 088, (word 2, row 4, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-6-1' type='checkbox' class='bit-checkbox' title='key bit 113, (word 2, row 7, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-3-1' type='checkbox' class='bit-checkbox' title='key bit 089, (word 2, row 4, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-6-2' type='checkbox' class='bit-checkbox' title='key bit 114, (word 2, row 7, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-3-2' type='checkbox' class='bit-checkbox' title='key bit 090, (word 2, row 4, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-6-3' type='checkbox' class='bit-checkbox' title='key bit 115, (word 2, row 7, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-3-3' type='checkbox' class='bit-checkbox' title='key bit 091, (word 2, row 4, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-6-4' type='checkbox' class='bit-checkbox' title='key bit 116, (word 2, row 7, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-3-4' type='checkbox' class='bit-checkbox' title='key bit 092, (word 2, row 4, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-6-5' type='checkbox' class='bit-checkbox' title='key bit 117, (word 2, row 7, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-3-5' type='checkbox' class='bit-checkbox' title='key bit 093, (word 2, row 4, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-6-6' type='checkbox' class='bit-checkbox' title='key bit 118, (word 2, row 7, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-3-6' type='checkbox' class='bit-checkbox' title='key bit 094, (word 2, row 4, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-6-7' type='checkbox' class='bit-checkbox' title='key bit 119, (word 2, row 7, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-3-7' type='checkbox' class='bit-checkbox' title='key bit 095, (word 2, row 4, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 <div class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='key-bit-1-7-0' type='checkbox' class='bit-checkbox' title='key bit 120, (word 2, row 8, column 1)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-4-0' type='checkbox' class='bit-checkbox' title='key bit 096, (word 2, row 5, column 1)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-7-1' type='checkbox' class='bit-checkbox' title='key bit 121, (word 2, row 8, column 2)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-4-1' type='checkbox' class='bit-checkbox' title='key bit 097, (word 2, row 5, column 2)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-7-2' type='checkbox' class='bit-checkbox' title='key bit 122, (word 2, row 8, column 3)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-4-2' type='checkbox' class='bit-checkbox' title='key bit 098, (word 2, row 5, column 3)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-7-3' type='checkbox' class='bit-checkbox' title='key bit 123, (word 2, row 8, column 4)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-4-3' type='checkbox' class='bit-checkbox' title='key bit 099, (word 2, row 5, column 4)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-7-4' type='checkbox' class='bit-checkbox' title='key bit 124, (word 2, row 8, column 5)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-4-4' type='checkbox' class='bit-checkbox' title='key bit 100, (word 2, row 5, column 5)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-7-5' type='checkbox' class='bit-checkbox' title='key bit 125, (word 2, row 8, column 6)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-4-5' type='checkbox' class='bit-checkbox' title='key bit 101, (word 2, row 5, column 6)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-7-6' type='checkbox' class='bit-checkbox' title='key bit 126, (word 2, row 8, column 7)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-4-6' type='checkbox' class='bit-checkbox' title='key bit 102, (word 2, row 5, column 7)' onchange='pckb.key_bit_changed()' />
 </span>
 <span class='bit-wrapper'>
-<input id='key-bit-1-7-7' type='checkbox' class='bit-checkbox' title='key bit 127, (word 2, row 8, column 8)' onchange='pckb.key_bit_changed()' />
+<input id='pckb--key-bit-checkbox--1-4-7' type='checkbox' class='bit-checkbox' title='key bit 103, (word 2, row 5, column 8)' onchange='pckb.key_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-5-0' type='checkbox' class='bit-checkbox' title='key bit 104, (word 2, row 6, column 1)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-5-1' type='checkbox' class='bit-checkbox' title='key bit 105, (word 2, row 6, column 2)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-5-2' type='checkbox' class='bit-checkbox' title='key bit 106, (word 2, row 6, column 3)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-5-3' type='checkbox' class='bit-checkbox' title='key bit 107, (word 2, row 6, column 4)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-5-4' type='checkbox' class='bit-checkbox' title='key bit 108, (word 2, row 6, column 5)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-5-5' type='checkbox' class='bit-checkbox' title='key bit 109, (word 2, row 6, column 6)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-5-6' type='checkbox' class='bit-checkbox' title='key bit 110, (word 2, row 6, column 7)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-5-7' type='checkbox' class='bit-checkbox' title='key bit 111, (word 2, row 6, column 8)' onchange='pckb.key_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-6-0' type='checkbox' class='bit-checkbox' title='key bit 112, (word 2, row 7, column 1)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-6-1' type='checkbox' class='bit-checkbox' title='key bit 113, (word 2, row 7, column 2)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-6-2' type='checkbox' class='bit-checkbox' title='key bit 114, (word 2, row 7, column 3)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-6-3' type='checkbox' class='bit-checkbox' title='key bit 115, (word 2, row 7, column 4)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-6-4' type='checkbox' class='bit-checkbox' title='key bit 116, (word 2, row 7, column 5)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-6-5' type='checkbox' class='bit-checkbox' title='key bit 117, (word 2, row 7, column 6)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-6-6' type='checkbox' class='bit-checkbox' title='key bit 118, (word 2, row 7, column 7)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-6-7' type='checkbox' class='bit-checkbox' title='key bit 119, (word 2, row 7, column 8)' onchange='pckb.key_bit_changed()' />
+</span>
+</div>
+<div class='word-bits-row'>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-7-0' type='checkbox' class='bit-checkbox' title='key bit 120, (word 2, row 8, column 1)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-7-1' type='checkbox' class='bit-checkbox' title='key bit 121, (word 2, row 8, column 2)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-7-2' type='checkbox' class='bit-checkbox' title='key bit 122, (word 2, row 8, column 3)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-7-3' type='checkbox' class='bit-checkbox' title='key bit 123, (word 2, row 8, column 4)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-7-4' type='checkbox' class='bit-checkbox' title='key bit 124, (word 2, row 8, column 5)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-7-5' type='checkbox' class='bit-checkbox' title='key bit 125, (word 2, row 8, column 6)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-7-6' type='checkbox' class='bit-checkbox' title='key bit 126, (word 2, row 8, column 7)' onchange='pckb.key_bit_changed()' />
+</span>
+<span class='bit-wrapper'>
+<input id='pckb--key-bit-checkbox--1-7-7' type='checkbox' class='bit-checkbox' title='key bit 127, (word 2, row 8, column 8)' onchange='pckb.key_bit_changed()' />
 </span>
 </div>
 </div>
@@ -925,28 +925,28 @@ document.addEventListener ("DOMContentLoaded", function () {
 <p class='word-label'>crc word 1</p>
 <span class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='crc-bit-0' type='checkbox' class='bit-checkbox' title='crc bit 00, (word 1, column 1)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--0' type='checkbox' class='bit-checkbox' title='crc bit 00, (word 1, column 1)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-1' type='checkbox' class='bit-checkbox' title='crc bit 01, (word 1, column 2)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--1' type='checkbox' class='bit-checkbox' title='crc bit 01, (word 1, column 2)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-2' type='checkbox' class='bit-checkbox' title='crc bit 02, (word 1, column 3)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--2' type='checkbox' class='bit-checkbox' title='crc bit 02, (word 1, column 3)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-3' type='checkbox' class='bit-checkbox' title='crc bit 03, (word 1, column 4)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--3' type='checkbox' class='bit-checkbox' title='crc bit 03, (word 1, column 4)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-4' type='checkbox' class='bit-checkbox' title='crc bit 04, (word 1, column 5)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--4' type='checkbox' class='bit-checkbox' title='crc bit 04, (word 1, column 5)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-5' type='checkbox' class='bit-checkbox' title='crc bit 05, (word 1, column 6)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--5' type='checkbox' class='bit-checkbox' title='crc bit 05, (word 1, column 6)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-6' type='checkbox' class='bit-checkbox' title='crc bit 06, (word 1, column 7)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--6' type='checkbox' class='bit-checkbox' title='crc bit 06, (word 1, column 7)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-7' type='checkbox' class='bit-checkbox' title='crc bit 07, (word 1, column 8)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--7' type='checkbox' class='bit-checkbox' title='crc bit 07, (word 1, column 8)' disabled='disabled' />
 </span>
 </span>
 </div>
@@ -954,28 +954,28 @@ document.addEventListener ("DOMContentLoaded", function () {
 <p class='word-label'>crc word 2</p>
 <span class='word-bits-row'>
 <span class='bit-wrapper'>
-<input id='crc-bit-8' type='checkbox' class='bit-checkbox' title='crc bit 08, (word 2, column 1)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--8' type='checkbox' class='bit-checkbox' title='crc bit 08, (word 2, column 1)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-9' type='checkbox' class='bit-checkbox' title='crc bit 09, (word 2, column 2)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--9' type='checkbox' class='bit-checkbox' title='crc bit 09, (word 2, column 2)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-10' type='checkbox' class='bit-checkbox' title='crc bit 10, (word 2, column 3)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--10' type='checkbox' class='bit-checkbox' title='crc bit 10, (word 2, column 3)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-11' type='checkbox' class='bit-checkbox' title='crc bit 11, (word 2, column 4)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--11' type='checkbox' class='bit-checkbox' title='crc bit 11, (word 2, column 4)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-12' type='checkbox' class='bit-checkbox' title='crc bit 12, (word 2, column 5)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--12' type='checkbox' class='bit-checkbox' title='crc bit 12, (word 2, column 5)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-13' type='checkbox' class='bit-checkbox' title='crc bit 13, (word 2, column 6)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--13' type='checkbox' class='bit-checkbox' title='crc bit 13, (word 2, column 6)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-14' type='checkbox' class='bit-checkbox' title='crc bit 14, (word 2, column 7)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--14' type='checkbox' class='bit-checkbox' title='crc bit 14, (word 2, column 7)' disabled='disabled' />
 </span>
 <span class='bit-wrapper'>
-<input id='crc-bit-15' type='checkbox' class='bit-checkbox' title='crc bit 15, (word 2, column 8)' disabled='disabled' />
+<input id='pckb--crc-bit-checkbox--15' type='checkbox' class='bit-checkbox' title='crc bit 15, (word 2, column 8)' disabled='disabled' />
 </span>
 </span>
 </div>
@@ -983,18 +983,18 @@ document.addEventListener ("DOMContentLoaded", function () {
 </div>
 <div class='outputs'>
 <div class='output-pair'><label class='output-label'>key txt</label>
-<input id='key-txt' class='output-field' onchange='pckb.key_txt_changed()' pattern='[!-~]*' minlength='0' maxlength='27' />
+<input id='pckb--key-txt--input' class='output-field' onchange='pckb.key_txt_changed()' pattern='[!-~]*' minlength='0' maxlength='27' />
 </div>
 <div class='output-pair'><label class='output-label'>key b10</label>
-<input id='key-b10' class='output-field' onchange='pckb.key_b10_changed()' pattern='[0-9]*' minlength='0' maxlength='39' />
+<input id='pckb--key-b10--input' class='output-field' onchange='pckb.key_b10_changed()' pattern='[0-9]*' minlength='0' maxlength='39' />
 </div>
 <div class='output-pair'><label class='output-label'>key hex</label>
-<input id='key-hex' class='output-field' onchange='pckb.key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='32' />
+<input id='pckb--key-hex--input' class='output-field' onchange='pckb.key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='32' />
 </div>
 </div>
 <div class='buttons'>
-<button type='button' class='button' onclick='pckb.key_random()'>random</button>
-<button type='button' class='button' onclick='pckb.key_reset()'>reset</button>
+<button id='pckb--key-random--button' type='button' class='button' onclick='pckb.key_random()'>random</button>
+<button id='pckb--key-reset--button' type='button' class='button' onclick='pckb.key_reset()'>reset</button>
 </div>
 </div>
 </main>

@@ -29,19 +29,19 @@ function pckb (pckb) {
 			for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
 				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
 					const _bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column;
-					__key_bit_checkboxes[_bit_index] = document.getElementById ("key-bit-" + _word_index + "-" + _bit_row + "-" + _bit_column);
+					__key_bit_checkboxes[_bit_index] = document.getElementById ("pckb--key-bit-checkbox--" + _word_index + "-" + _bit_row + "-" + _bit_column);
 				}
 			}
 		}
 		
 		__crc_bit_checkboxes = new Array (16);
 		for (let _bit_column = 0; _bit_column < 16; _bit_column += 1) {
-			__crc_bit_checkboxes[_bit_column] = document.getElementById ("crc-bit-" + _bit_column);
+			__crc_bit_checkboxes[_bit_column] = document.getElementById ("pckb--crc-bit-checkbox--" + _bit_column);
 		}
 		
-		__key_txt_input = document.getElementById ("key-txt");
-		__key_b10_input = document.getElementById ("key-b10");
-		__key_hex_input = document.getElementById ("key-hex");
+		__key_txt_input = document.getElementById ("pckb--key-txt--input");
+		__key_b10_input = document.getElementById ("pckb--key-b10--input");
+		__key_hex_input = document.getElementById ("pckb--key-hex--input");
 		
 		return key_refresh (undefined);
 	}

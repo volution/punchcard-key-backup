@@ -20,3 +20,10 @@
 	exec -- python3 ./generate-html.py >| ./generate.html
 !!
 
+
+<< generate / html / open
+	test "${#}" -eq 0
+	exec -- x-www firefox-guest:pckb open file://"$( exec -- readlink -e -- ./generate.html )"
+!!
+
+
