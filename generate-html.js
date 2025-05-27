@@ -126,11 +126,15 @@ function pckb (pckb) {
 	function key_b10_changed () {
 		if (!__test__succeeded) return;
 		const _key_b10_string = __key_b10_input.value.replaceAll (" ", "");
-		if (/^[0-9]*$/.test (_key_b10_string)) {
+		if ((/^[0-9]*$/).test (_key_b10_string)) {
 			const _key_b10 = BigInt (_key_b10_string);
 			return key_refresh (_key_b10);
 		} else {
-			alert ("key b10 invalid!");
+			if (__test__index === undefined) {
+				alert ("key b10 invalid!");
+			} else {
+				__test__failed += 1;
+			}
 			return key_refresh (undefined);
 		}
 	}
@@ -138,11 +142,15 @@ function pckb (pckb) {
 	function key_hex_changed () {
 		if (!__test__succeeded) return;
 		const _key_hex_string = __key_hex_input.value.replaceAll (" ", "");
-		if (/^[0-9a-fA-F]*$/.test (_key_hex_string)) {
+		if ((/^[0-9a-fA-F]*$/).test (_key_hex_string)) {
 			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
 			return key_refresh (_key_b10);
 		} else {
-			alert ("key hex invalid!");
+			if (__test__index === undefined) {
+				alert ("key hex invalid!");
+			} else {
+				__test__failed += 1;
+			}
 			return key_refresh (undefined);
 		}
 	}
@@ -154,7 +162,7 @@ function pckb (pckb) {
 			return key_refresh (BigInt (0));
 		}
 		const _limit = (BigInt (1) << BigInt (126)) - BigInt (1);
-		if (/^[a-z]*$/.test (_key_txt_string)) {
+		if ((/^[a-z]*$/).test (_key_txt_string)) {
 			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
@@ -162,13 +170,17 @@ function pckb (pckb) {
 				_key_b10 = (_key_b10 * BigInt (26)) + BigInt (_char_index);
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (26);
-					alert ("key txt truncated!");
+					if (__test__index === undefined) {
+						alert ("key txt truncated!");
+					} else {
+						__test__failed += 1;
+					}
 					break;
 				}
 			}
 			_key_b10 = _key_b10 | (BigInt (1) << BigInt (126));
 			return key_refresh (_key_b10);
-		} else if (/^[a-z0-9]*$/.test (_key_txt_string)) {
+		} else if ((/^[a-z0-9]*$/).test (_key_txt_string)) {
 			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
@@ -176,13 +188,17 @@ function pckb (pckb) {
 				_key_b10 = (_key_b10 * BigInt (36)) + BigInt (_char_index);
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (36);
-					alert ("key txt truncated!");
+					if (__test__index === undefined) {
+						alert ("key txt truncated!");
+					} else {
+						__test__failed += 1;
+					}
 					break;
 				}
 			}
 			_key_b10 = _key_b10 | (BigInt (2) << BigInt (126));
 			return key_refresh (_key_b10);
-		} else if (/^[a-zA-Z0-9.-]*$/.test (_key_txt_string)) {
+		} else if ((/^[a-zA-Z0-9.-]*$/).test (_key_txt_string)) {
 			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
@@ -198,13 +214,17 @@ function pckb (pckb) {
 				_key_b10 = (_key_b10 * BigInt (64)) + BigInt (_char_index);
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (64);
-					alert ("key txt truncated!");
+					if (__test__index === undefined) {
+						alert ("key txt truncated!");
+					} else {
+						__test__failed += 1;
+					}
 					break;
 				}
 			}
 			_key_b10 = _key_b10 | (BigInt (0) << BigInt (126));
 			return key_refresh (_key_b10);
-		} else if (/^[!-~]*$/.test (_key_txt_string)) {
+		} else if ((/^[!-~]*$/).test (_key_txt_string)) {
 			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
@@ -212,7 +232,11 @@ function pckb (pckb) {
 				_key_b10 = (_key_b10 * BigInt (94)) + BigInt (_char_index);
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (94);
-					alert ("key txt truncated!");
+					if (__test__index === undefined) {
+						alert ("key txt truncated!");
+					} else {
+						__test__failed += 1;
+					}
 					break;
 				}
 			}
@@ -313,7 +337,11 @@ function pckb (pckb) {
 		}
 		
 		if (__key_b10_number != _key_b10_raw) {
-			alert ("key truncated!");
+			if (__test__index === undefined) {
+				alert ("key truncated!");
+			} else {
+				__test__failed += 1;
+			}
 		}
 		
 		return __dom_refresh ();
@@ -413,9 +441,9 @@ function pckb (pckb) {
 	
 	let __test__index = undefined;
 	let __test__subindex = undefined;
-	let __test__interval = 1;
 	let __test__failed = 0;
 	let __test__succeeded = true;
+	const __test__interval = 1;
 	
 	function __test__execute () {
 		if (__test__index !== undefined) {
@@ -455,6 +483,7 @@ function pckb (pckb) {
 		if (__test__index >= __test__vectors.length) {
 			if (__test__failed == 0) {
 				__test__succeeded = true;
+				__test__index = undefined;
 				key_random ();
 				__dom_enable (true);
 			} else {
@@ -466,7 +495,7 @@ function pckb (pckb) {
 		}
 		{
 			if ((__test__vectors[__test__index] == null) || (__test__vectors[__test__index].generated)) {
-				let _key_b10 = _key_generate ();
+				const _key_b10 = _key_generate ();
 				key_refresh (_key_b10);
 				__test__vectors[__test__index] = {
 						key_b10_number : _key_b10,
@@ -505,9 +534,9 @@ function pckb (pckb) {
 	function _crc16_ccitt (_bytes) {
 		let crc = 0;
 		for (const b of _bytes) {
-			for (let i = 0; i < 8; i++) {
-				const bit = ((b >> (7 - i) & 1) == 1);
-				const c15 = ((crc >> 15 & 1) == 1);
+			for (let i = 0; i < 8; i += 1) {
+				const bit = (((b >> (7 - i)) & 1) == 1);
+				const c15 = (((crc >> 15) & 1) == 1);
 				crc <<= 1;
 				if (c15 ^ bit) crc ^= 0x1021;
 			}

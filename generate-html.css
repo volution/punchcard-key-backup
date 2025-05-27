@@ -2,8 +2,8 @@
 
 html:root,
 html:root > body {
-	margin : 0px;
-	padding : 0px;
+	margin : 0;
+	padding : 0;
 }
 
 
@@ -18,12 +18,12 @@ html:root > body {
 	flex-grow : 1;
 	flex-shrink : 1;
 	box-sizing : border-box;
-	left : 0px;
-	right : 0px;
-	top : 0px;
-	bottom : 0px;
-	margin : 0px;
-	padding : 0px;
+	left : 0;
+	right : 0;
+	top : 0;
+	bottom : 0;
+	margin : 0;
+	padding : 0;
 	color : inherit;
 	background : transparent;
 	font-family : inherit;
@@ -103,7 +103,7 @@ html:root > body {
 .pckb--output-label,
 .pckb--output-field,
 .pckb--button {
-	height : 1.1lh;
+	height : 2em;
 	margin : 0.5ex;
 }
 .pckb--output-field,
