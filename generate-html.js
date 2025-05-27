@@ -26,9 +26,9 @@ function pckb (pckb) {
 	let __key_hex_string = undefined;
 	let __paste_string = undefined;
 	
-	let __key_bits_count_x;
-	let __key_bits_count_y;
-	let __crc_bits_count;
+	let __key_bits_count_x = undefined;
+	let __key_bits_count_y = undefined;
+	let __crc_bits_count = undefined;
 	
 	
 	function __dom_initialize () {
@@ -56,7 +56,7 @@ function pckb (pckb) {
 		__key_random_button = document.getElementById ("pckb--key-random--button");
 		__key_reset_button = document.getElementById ("pckb--key-reset--button");
 		
-		if (__key_b10_number === undefined) {
+		if ((__key_b10_number === undefined) && __test__enabled) {
 			__dom_enable (false);
 			window.setTimeout (__test__execute, __test__interval);
 		}
@@ -348,7 +348,7 @@ function pckb (pckb) {
 		const _crc_bits = new Array (16);
 		const _crc_bits_count = new Array (2) .fill (0);
 		for (let _bit_index = 0; _bit_index < 16; _bit_index += 1) {
-			const _bit_value = (_crc >> _bit_index) & 1;
+			const _bit_value = (_crc >> (15 - _bit_index)) & 1;
 			_crc_bits[_bit_index] = _bit_value;
 			_crc_bits_count[(_bit_index - (_bit_index % 8)) / 8] += _bit_value;
 		}
@@ -541,6 +541,7 @@ function pckb (pckb) {
 	let __test__subindex = undefined;
 	let __test__failed = 0;
 	let __test__succeeded = true;
+	const __test__enabled = true;
 	const __test__interval = 0;
 	
 	function __test__execute () {
