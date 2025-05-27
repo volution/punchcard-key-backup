@@ -105,6 +105,10 @@ def _generate () :
 	_blocks.append ("<button id='pckb--key-reset--button' type='button' class='pckb--button' onclick='pckb.key_reset()'>reset</button>")
 	_blocks.append ("</div>")
 	
+	_blocks.append ("<div class='pckb--paste-wrapper'>")
+	_blocks.append ("<textarea id='pckb--paste--input' class='pckb--paste-field' rows='32' cols='63' disabled='disabled'></textarea>")
+	_blocks.append ("</div>")
+	
 	_blocks.append ("</div>")
 	_blocks.append ("</main>")
 	

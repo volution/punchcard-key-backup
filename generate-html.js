@@ -11,16 +11,24 @@ function pckb (pckb) {
 	let __key_txt_input = undefined;
 	let __key_b10_input = undefined;
 	let __key_hex_input = undefined;
+	let __paste_input = undefined;
 	
 	let __key_random_button = undefined;
 	let __key_reset_button = undefined;
 	
 	let __key_bytes = undefined;
+	let __key_bits = undefined;
 	let __crc_number = undefined;
+	let __crc_bits = undefined;
 	let __key_txt_string = undefined;
 	let __key_b10_number = undefined;
 	let __key_b10_string = undefined;
 	let __key_hex_string = undefined;
+	let __paste_string = undefined;
+	
+	let __key_bits_count_x;
+	let __key_bits_count_y;
+	let __crc_bits_count;
 	
 	
 	function __dom_initialize () {
@@ -43,6 +51,7 @@ function pckb (pckb) {
 		__key_txt_input = document.getElementById ("pckb--key-txt--input");
 		__key_b10_input = document.getElementById ("pckb--key-b10--input");
 		__key_hex_input = document.getElementById ("pckb--key-hex--input");
+		__paste_input = document.getElementById ("pckb--paste--input");
 		
 		__key_random_button = document.getElementById ("pckb--key-random--button");
 		__key_reset_button = document.getElementById ("pckb--key-reset--button");
@@ -57,19 +66,16 @@ function pckb (pckb) {
 	function __dom_refresh () {
 		
 		for (let _bit_index = 0; _bit_index < 128; _bit_index += 1) {
-			const _byte_subindex = _bit_index % 8;
-			const _byte_index = (_bit_index - _byte_subindex) / 8;
-			const _bit_value = (__key_bytes[_byte_index] >> (7 - _byte_subindex)) & 1;
-			__key_bit_checkboxes[_bit_index].checked = _bit_value ? true : false;
+			__key_bit_checkboxes[_bit_index].checked = __key_bits[_bit_index];
 		}
-		
 		for (let _bit_index = 0; _bit_index < 16; _bit_index += 1) {
-			__crc_bit_checkboxes[15 - _bit_index].checked = (__crc_number >> _bit_index) & 1;
+			__crc_bit_checkboxes[_bit_index].checked = __crc_bits[_bit_index];
 		}
 		
 		__key_txt_input.value = __key_txt_string;
 		__key_b10_input.value = __key_b10_string;
 		__key_hex_input.value = __key_hex_string;
+		__paste_input.value = __paste_string;
 		
 		if (__key_b10_number != 0) {
 			if (__key_txt_string == "") {
@@ -79,10 +85,12 @@ function pckb (pckb) {
 			}
 			__key_b10_input.placeholder = "";
 			__key_hex_input.placeholder = "";
+			__paste_input.placeholder = "";
 		} else {
 			__key_txt_input.placeholder = "(input)";
 			__key_b10_input.placeholder = "(input)";
 			__key_hex_input.placeholder = "(input)";
+			__paste_input.placeholder = "(waiting)";
 		}
 	}
 	
@@ -91,22 +99,21 @@ function pckb (pckb) {
 		for (const _bit_checkbox of __key_bit_checkboxes)
 			_bit_checkbox.disabled = !_enabled;
 		for (const _bit_checkbox of __crc_bit_checkboxes)
-			_bit_checkbox.disabled = !_enabled;
+			_bit_checkbox.disabled = true;
 		__key_txt_input.disabled = !_enabled;
 		__key_b10_input.disabled = !_enabled;
 		__key_hex_input.disabled = !_enabled;
 		__key_random_button.disabled = !_enabled;
 		__key_reset_button.disabled = !_enabled;
+		__paste_input.disabled = true;
 	}
 	
 	function __dom_break () {
 		__dom_enable (false);
-		for (const _bit_checkbox of __key_bit_checkboxes) {
+		for (const _bit_checkbox of __key_bit_checkboxes)
 			_bit_checkbox.checked = false;
-		}
-		for (const _bit_checkbox of __crc_bit_checkboxes) {
+		for (const _bit_checkbox of __crc_bit_checkboxes)
 			_bit_checkbox.checked = false;
-		}
 		__key_txt_input.value = "(tests failed)";
 		__key_b10_input.value = "(tests failed)";
 		__key_hex_input.value = "(tests failed)";
@@ -322,16 +329,107 @@ function pckb (pckb) {
 			}
 		}
 		
-		__key_bytes = _bytes;
-		__crc_number = _crc;
-		__key_b10_number = _key_b10;
+		const _key_bits = new Array (128);
+		const _key_bits_count_x = new Array (16) .fill (0);
+		const _key_bits_count_y = new Array (16) .fill (0);
+		for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
+			for (let _word_index = 0; _word_index < 2; _word_index += 1) {
+				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
+					const _bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column;
+					const _byte_subindex = _bit_index % 8;
+					const _byte_index = (_bit_index - _byte_subindex) / 8;
+					const _bit_value = (_bytes[_byte_index] >> (7 - _byte_subindex)) & 1;
+					_key_bits[_bit_index] = _bit_value;
+					_key_bits_count_x[(_word_index * 8) + _bit_row] += _bit_value;
+					_key_bits_count_y[(_word_index * 8) + _bit_column] += _bit_value;
+				}
+			}
+		}
+		const _crc_bits = new Array (16);
+		const _crc_bits_count = new Array (2) .fill (0);
+		for (let _bit_index = 0; _bit_index < 16; _bit_index += 1) {
+			const _bit_value = (_crc >> _bit_index) & 1;
+			_crc_bits[_bit_index] = _bit_value;
+			_crc_bits_count[(_bit_index - (_bit_index % 8)) / 8] += _bit_value;
+		}
 		
-		if (__key_b10_number > 0) {
+		const _key_b10_string = _key_b10.toString ();
+		
+		let _paste = [];
+		let _paste_cut = "|--------------------------------------------------------------|";
+		let _paste_bar = "|                                                              |";
+		_paste.push (_paste_cut);
+		if (_key_txt != "")
+			_paste.push (">>    key txt    >>    " + _key_txt);
+		_paste.push (">>    key b10    >>    " + _key_b10_string);
+		_paste.push (">>    key hex    >>    " + _key_hex);
+		_paste.push (_paste_cut);
+		_paste.push (_paste_bar);
+		for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
+			let _paste_line = "|  ";
+			_paste_line += "" + _key_bits_count_x[(0 * 8) + _bit_row] + "  ";
+			for (let _word_index = 0; _word_index < 2; _word_index += 1) {
+				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
+					const _bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column;
+					if ((_word_index == 1) && (_bit_column == 0))
+						_paste_line += "    ";
+					_paste_line += _key_bits[_bit_index] ? " @ " : " . ";
+				}
+			}
+			_paste_line += "  " + _key_bits_count_x[(1 * 8) + _bit_row] + "";
+			_paste_line += "  |";
+			_paste.push (_paste_line);
+			_paste.push (_paste_bar);
+		}
+		{
+			_paste.push (_paste_bar);
+			let _paste_line = "|     ";
+			for (let _word_index = 0; _word_index < 2; _word_index += 1) {
+				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
+					if ((_word_index == 1) && (_bit_column == 0))
+						_paste_line += "    ";
+					_paste_line += " " + _key_bits_count_y[(_word_index * 8) + _bit_column] + " ";
+				}
+			}
+			_paste_line += "     |";
+			_paste.push (_paste_line);
+			_paste.push (_paste_bar);
+		}
+		_paste.push (_paste_cut);
+		{
+			_paste.push (_paste_bar);
+			let _paste_line = "|  ";
+			_paste_line += "" + _crc_bits_count[0] + "  ";
+			for (let _bit_column = 0; _bit_column < 16; _bit_column += 1) {
+				if (_bit_column == 8)
+					_paste_line += "    ";
+				_paste_line += _crc_bits[_bit_column] ? " @ " : " . ";
+			}
+			_paste_line += "  " + _crc_bits_count[1] + "";
+			_paste_line += "  |";
+			_paste.push (_paste_line);
+			_paste.push (_paste_bar);
+		}
+		_paste.push (_paste_cut);
+		__paste_string = _paste.join ("\n");
+		
+		__key_bytes = _bytes;
+		__key_bits = _key_bits;
+		__key_bits_count_x = _key_bits_count_x;
+		__key_bits_count_y = _key_bits_count_y;
+		
+		__crc_number = _crc;
+		__crc_bits = _crc_bits;
+		__crc_bits_count = _crc_bits_count;
+		
+		if (_key_b10 > 0) {
 			__key_txt_string = _key_txt;
-			__key_b10_string = _key_b10.toString ();
+			__key_b10_number = _key_b10;
+			__key_b10_string = _key_b10_string;
 			__key_hex_string = _key_hex;
 		} else {
 			__key_txt_string = "";
+			__key_b10_number = BigInt (0);
 			__key_b10_string = "";
 			__key_hex_string = "";
 		}
@@ -443,7 +541,7 @@ function pckb (pckb) {
 	let __test__subindex = undefined;
 	let __test__failed = 0;
 	let __test__succeeded = true;
-	const __test__interval = 1;
+	const __test__interval = 0;
 	
 	function __test__execute () {
 		if (__test__index !== undefined) {

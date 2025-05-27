@@ -33,7 +33,7 @@ html:root > body {
 
 
 .pckb--bits-main {
-	font-family : "JetBrains Mono NL", "JetBrains Mono", "Fira Mono", "Fira Sans", "Verdana", "Trebuchet MS", sans-serif;
+	font-family : "JetBrains Mono NL", "JetBrains Mono", "Fira Mono", monospace;
 	font-size : 16px;
 	line-height : 24px;
 }
@@ -52,7 +52,8 @@ html:root > body {
 }
 .pckb--key-bits,
 .pckb--crc-bits,
-.pckb--outputs {
+.pckb--outputs,
+.pckb--paste-wrapper {
 	display : flex;
 	flex-direction : column;
 }
@@ -107,10 +108,16 @@ html:root > body {
 	margin : 0.5ex;
 }
 .pckb--output-field,
-.pckb--button {
+.pckb--button,
+.pckb--paste-field {
 	border : solid 1px;
 	padding-left : 0.5ch;
 	padding-right : 0.5ch;
+}
+.pckb--paste-field {
+	font-size : 0.5em;
+	line-height : 1.25em;
+	padding : 1ch;
 }
 
 
