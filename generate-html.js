@@ -135,6 +135,9 @@ function pckb (pckb) {
 	function key_b10_changed () {
 		if (!__test__succeeded) return;
 		const _key_b10_string = __key_b10_input.value.replaceAll (" ", "");
+		if (_key_b10_string == "") {
+			return key_refresh (BigInt (0));
+		}
 		if ((/^[0-9]*$/).test (_key_b10_string)) {
 			const _key_b10 = BigInt (_key_b10_string);
 			return key_refresh (_key_b10);
@@ -151,6 +154,9 @@ function pckb (pckb) {
 	function key_hex_changed () {
 		if (!__test__succeeded) return;
 		const _key_hex_string = __key_hex_input.value.replaceAll (" ", "");
+		if (_key_hex_string == "") {
+			return key_refresh (BigInt (0));
+		}
 		if ((/^[0-9a-fA-F]*$/).test (_key_hex_string)) {
 			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
 			return key_refresh (_key_b10);
@@ -170,8 +176,48 @@ function pckb (pckb) {
 		if (_key_txt_string == "") {
 			return key_refresh (BigInt (0));
 		}
-		const _limit = (BigInt (1) << BigInt (126)) - BigInt (1);
-		if ((/^[a-z]*$/).test (_key_txt_string)) {
+		if ((/^([bcdfghjlmnprstvz][aeiou])+$/).test (_key_txt_string)) {
+			const _limit = BigInt (1) << BigInt (128 - 2 - 2 - 2);
+			let _key_b10 = BigInt (1);
+			for (let _char_column = 0; _char_column < _key_txt_string.length; _char_column += 2) {
+				const _char_pair = _key_txt_string.substring (_char_column, _char_column + 2);
+				const _char_index = __cvs_pair_to_index[_char_pair];
+				_key_b10 = (_key_b10 * BigInt (__cvs_cardinality)) + BigInt (_char_index);
+				if (_key_b10 >= _limit) {
+					_key_b10 = _key_b10 / BigInt (__cvs_cardinality);
+					if (__test__index === undefined) {
+						alert ("key txt (cvs) truncated!");
+					} else {
+						__test__failed += 1;
+					}
+					break;
+				}
+			}
+			_key_b10 = _key_b10 & ~_limit;
+			_key_b10 = _key_b10 | (BigInt (1) << BigInt (126)) | (BigInt (2) << BigInt (124));
+			return key_refresh (_key_b10);
+		} else if ((/^([bcdfghjklmnpqrstvwxyz][aeiou])+$/).test (_key_txt_string)) {
+			const _limit = BigInt (1) << BigInt (128 - 2 - 2 - 2);
+			let _key_b10 = BigInt (1);
+			for (let _char_column = 0; _char_column < _key_txt_string.length; _char_column += 2) {
+				const _char_pair = _key_txt_string.substring (_char_column, _char_column + 2);
+				const _char_index = __cva_pair_to_index[_char_pair];
+				_key_b10 = (_key_b10 * BigInt (__cva_cardinality)) + BigInt (_char_index);
+				if (_key_b10 >= _limit) {
+					_key_b10 = _key_b10 / BigInt (__cva_cardinality);
+					if (__test__index === undefined) {
+						alert ("key txt (cva) truncated!");
+					} else {
+						__test__failed += 1;
+					}
+					break;
+				}
+			}
+			_key_b10 = _key_b10 & ~_limit;
+			_key_b10 = _key_b10 | (BigInt (1) << BigInt (126)) | (BigInt (1) << BigInt (124));
+			return key_refresh (_key_b10);
+		} else if ((/^[a-z]+$/).test (_key_txt_string)) {
+			const _limit = BigInt (1) << BigInt (128 - 2 - 2);
 			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
@@ -180,16 +226,18 @@ function pckb (pckb) {
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (26);
 					if (__test__index === undefined) {
-						alert ("key txt truncated!");
+						alert ("key txt (a-z) truncated!");
 					} else {
 						__test__failed += 1;
 					}
 					break;
 				}
 			}
+			_key_b10 = _key_b10 & ~_limit;
 			_key_b10 = _key_b10 | (BigInt (1) << BigInt (126));
 			return key_refresh (_key_b10);
-		} else if ((/^[a-z0-9]*$/).test (_key_txt_string)) {
+		} else if ((/^[a-z0-9]+$/).test (_key_txt_string)) {
+			const _limit = BigInt (1) << BigInt (128 - 2 - 0);
 			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
@@ -198,16 +246,18 @@ function pckb (pckb) {
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (36);
 					if (__test__index === undefined) {
-						alert ("key txt truncated!");
+						alert ("key txt (a-z0-9) truncated!");
 					} else {
 						__test__failed += 1;
 					}
 					break;
 				}
 			}
+			_key_b10 = _key_b10 & ~_limit;
 			_key_b10 = _key_b10 | (BigInt (2) << BigInt (126));
 			return key_refresh (_key_b10);
-		} else if ((/^[a-zA-Z0-9.-]*$/).test (_key_txt_string)) {
+		} else if ((/^[A-Za-z0-9.-]+$/).test (_key_txt_string)) {
+			const _limit = BigInt (1) << BigInt (128 - 2 - 5);
 			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
@@ -224,16 +274,18 @@ function pckb (pckb) {
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (64);
 					if (__test__index === undefined) {
-						alert ("key txt truncated!");
+						alert ("key txt (A-Za-z0-9) truncated!");
 					} else {
 						__test__failed += 1;
 					}
 					break;
 				}
 			}
+			_key_b10 = _key_b10 & ~_limit;
 			_key_b10 = _key_b10 | (BigInt (0) << BigInt (126));
 			return key_refresh (_key_b10);
-		} else if ((/^[!-~]*$/).test (_key_txt_string)) {
+		} else if ((/^[!-~]+$/).test (_key_txt_string)) {
+			const _limit = BigInt (1) << BigInt (128 - 2 - 0);
 			let _key_b10 = BigInt (1);
 			for (const _char_txt of _key_txt_string) {
 				const _char_code = _char_txt.codePointAt (0);
@@ -242,13 +294,14 @@ function pckb (pckb) {
 				if (_key_b10 >= _limit) {
 					_key_b10 = _key_b10 / BigInt (94);
 					if (__test__index === undefined) {
-						alert ("key txt truncated!");
+						alert ("key txt (*) truncated!");
 					} else {
 						__test__failed += 1;
 					}
 					break;
 				}
 			}
+			_key_b10 = _key_b10 & ~_limit;
 			_key_b10 = _key_b10 | (BigInt (3) << BigInt (126));
 			return key_refresh (_key_b10);
 		} else {
@@ -283,8 +336,13 @@ function pckb (pckb) {
 		let _key_txt = "";
 		{
 			let _key_txt_seed = _key_b10;
-			let _key_txt_mode = Number (_key_txt_seed >> BigInt (126));
-			_key_txt_seed = _key_txt_seed & ~ (BigInt (3) << BigInt (126));
+			let _key_txt_mask = 2;
+			let _key_txt_mode = (Number (_key_txt_seed >> BigInt (128 - 2)) & ~(1 << 2)) * 10;
+			if (_key_txt_mode == 10) {
+				_key_txt_mask += 2;
+				_key_txt_mode += Number (_key_txt_seed >> BigInt (128 - 4)) & ~(1 << 2);
+			}
+			_key_txt_seed = _key_txt_seed & (~ ((~ (BigInt (1) << BigInt (_key_txt_mask)) << BigInt (128 - _key_txt_mask))));
 			while (true) {
 				if (_key_txt_seed == 1) {
 					break;
@@ -292,19 +350,29 @@ function pckb (pckb) {
 					_key_txt = "";
 					break;
 				}
-				if (_key_txt_mode == 1) {
+				if (_key_txt_mode == 11) {
+					const _char_index = Number (_key_txt_seed % BigInt (__cva_cardinality));
+					_key_txt_seed = _key_txt_seed / BigInt (__cva_cardinality);
+					const _char_txt = __cva_index_to_pair[_char_index];
+					_key_txt = _char_txt + _key_txt;
+				} else if (_key_txt_mode == 12) {
+					const _char_index = Number (_key_txt_seed % BigInt (__cvs_cardinality));
+					_key_txt_seed = _key_txt_seed / BigInt (__cvs_cardinality);
+					const _char_txt = __cvs_index_to_pair[_char_index];
+					_key_txt = _char_txt + _key_txt;
+				} else if (_key_txt_mode == 10) {
 					const _char_index = Number (_key_txt_seed % BigInt (26));
 					_key_txt_seed = _key_txt_seed / BigInt (26);
 					const _char_code = 97 + _char_index;
 					const _char_txt = String.fromCodePoint (_char_code);
 					_key_txt = _char_txt + _key_txt;
-				} else if (_key_txt_mode == 2) {
+				} else if (_key_txt_mode == 20) {
 					const _char_index = Number (_key_txt_seed % BigInt (36));
 					_key_txt_seed = _key_txt_seed / BigInt (36);
 					const _char_code = (_char_index < 26) ? (97 + _char_index) : (48 + _char_index - 26);
 					const _char_txt = String.fromCodePoint (_char_code);
 					_key_txt = _char_txt + _key_txt;
-				} else if (_key_txt_mode == 3) {
+				} else if (_key_txt_mode == 30) {
 					const _char_index = Number (_key_txt_seed % BigInt (94));
 					_key_txt_seed = _key_txt_seed / BigInt (94);
 					const _char_code = 33 + _char_index;
@@ -363,6 +431,8 @@ function pckb (pckb) {
 		_paste.push (_paste_cut);
 		if (_key_txt != "")
 			_paste.push ("|" + ("   key txt  >>  " + _key_txt) .padEnd (_paste_cut.length - 2) + "|");
+		else
+			_paste.push ("|" + ("   key txt  !!") .padEnd (_paste_cut.length - 2) + "|");
 		_paste.push ("|" + ("   key b10  >>  " + _key_b10_string) .padEnd (_paste_cut.length - 2) + "|");
 		_paste.push ("|" + ("   key hex  >>  " + _key_hex) .padEnd (_paste_cut.length - 2) + "|");
 		_paste.push (_paste_cut);
@@ -499,11 +569,32 @@ function pckb (pckb) {
 			crc_number : 17147,
 		},
 		{ // 11
+			key_b10_number : BigInt ("286172883415773381985495046221813607292"),
+			key_b10_string : "286172883415773381985495046221813607292",
+			key_hex_string : "d74ae47dc6f599d3f9cb847bd77d6b7c",
+			key_txt_string : "!=:FX9NtvTmO/'~<\\>S",
+			crc_number : 46084,
+		},
+		{ // 11
 			key_b10_number : BigInt ("330858855078231141900554465331134321020"),
 			key_b10_string : "330858855078231141900554465331134321020",
 			key_hex_string : "f8e918feadaca5ace2f7a156bf37d17c",
 			key_txt_string : "",
 			crc_number : 7432,
+		},
+		{ // 0110
+			key_b10_number : BigInt ("129405715901649668340211268476941990266"),
+			key_b10_string : "129405715901649668340211268476941990266",
+			key_hex_string : "615aa262fdbda58aaf50326723ad797a",
+			key_txt_string : "fuvitiliderarutujeconifahifohogirihida",
+			crc_number : 54567,
+		},
+		{ // 0101
+			key_b10_number : BigInt ("110603640824904936687205456241932490496"),
+			key_b10_string : "110603640824904936687205456241932490496",
+			key_hex_string : "53357c838ccbecb861ea932a83a1d700",
+			key_txt_string : "vedajaxokokewekudipofocexesotequwote",
+			crc_number : 4951,
 		},
 		{ // 01
 			key_b10_number : BigInt ("108138067969091014373750355512456477050"),
@@ -526,19 +617,10 @@ function pckb (pckb) {
 			key_txt_string : "",
 			crc_number : 48784,
 		},
-		{ // 11
-			key_b10_number : BigInt ("286172883415773381985495046221813607292"),
-			key_b10_string : "286172883415773381985495046221813607292",
-			key_hex_string : "d74ae47dc6f599d3f9cb847bd77d6b7c",
-			key_txt_string : "!=:FX9NtvTmO/'~<\\>S",
-			crc_number : 46084,
-		},
 		null, null, null, null,
-	//	null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-	//	null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-	//	null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-	//	null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
 	];
+	while (__test__vectors.length < 512)
+		__test__vectors.push (null);
 	
 	let __test__index = undefined;
 	let __test__subindex = undefined;
@@ -645,6 +727,35 @@ function pckb (pckb) {
 		}
 		return (crc & 0xffff);
 	}
+	
+	
+	const __cvs_consonants = "bcdfghjlmnprstvz";
+	const __cvs_vowels = "aeiou";
+	const __cvs_pair_to_index = {};
+	const __cvs_index_to_pair = [];
+	for (const _consonant of __cvs_consonants) {
+		for (const _vowel of __cvs_vowels) {
+			const _pair = _consonant + _vowel;
+			const _index = __cvs_index_to_pair.length;
+			__cvs_pair_to_index[_pair] = _index;
+			__cvs_index_to_pair.push (_pair);
+		}
+	}
+	const __cvs_cardinality = __cvs_index_to_pair.length;
+	
+	const __cva_consonants = "bcdfghjklmnpqrstvwxyz";
+	const __cva_vowels = "aeiou";
+	const __cva_pair_to_index = {};
+	const __cva_index_to_pair = [];
+	for (const _consonant of __cva_consonants) {
+		for (const _vowel of __cva_vowels) {
+			const _pair = _consonant + _vowel;
+			const _index = __cva_index_to_pair.length;
+			__cva_pair_to_index[_pair] = _index;
+			__cva_index_to_pair.push (_pair);
+		}
+	}
+	const __cva_cardinality = __cva_index_to_pair.length;
 }
 
 

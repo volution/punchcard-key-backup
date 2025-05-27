@@ -85,19 +85,18 @@ def _generate () :
 	_blocks.append ("</div>")
 	_blocks.append ("</div>")
 	
-	_key_txt_length_max = math.floor (math.log (math.pow (2, 128), 26))
 	_key_b10_length_max = math.ceil (math.log (math.pow (2, 128), 10))
-	_key_hex_length_max = 128 // 8 * 2
+	_key_hex_length_max = (128 // 8) * 2
 	
 	_blocks.append ("<div class='pckb--outputs'>")
 	_blocks.append ("<div class='pckb--output-pair'><label class='pckb--output-label'>key txt</label>")
-	_blocks.append (f"<input id='pckb--key-txt--input' class='pckb--output-field' onchange='pckb.key_txt_changed()' pattern='[!-~]*' minlength='0' maxlength='{_key_txt_length_max}' />")
+	_blocks.append (f"<input id='pckb--key-txt--input' class='pckb--output-field' onchange='pckb.key_txt_changed()' pattern='[!-~ ]*' />")
 	_blocks.append ("</div>")
 	_blocks.append ("<div class='pckb--output-pair'><label class='pckb--output-label'>key b10</label>")
-	_blocks.append (f"<input id='pckb--key-b10--input' class='pckb--output-field' onchange='pckb.key_b10_changed()' pattern='[0-9]*' minlength='0' maxlength='{_key_b10_length_max}' />")
+	_blocks.append (f"<input id='pckb--key-b10--input' class='pckb--output-field' onchange='pckb.key_b10_changed()' pattern='[0-9 ]*' />")
 	_blocks.append ("</div>")
 	_blocks.append ("<div class='pckb--output-pair'><label class='pckb--output-label'>key hex</label>")
-	_blocks.append (f"<input id='pckb--key-hex--input' class='pckb--output-field' onchange='pckb.key_hex_changed()' pattern='[0-9a-fA-F]*' minlength='0' maxlength='{_key_hex_length_max}' />")
+	_blocks.append (f"<input id='pckb--key-hex--input' class='pckb--output-field' onchange='pckb.key_hex_changed()' pattern='[0-9a-fA-F ]*' />")
 	_blocks.append ("</div>")
 	_blocks.append ("</div>")
 	
@@ -107,7 +106,7 @@ def _generate () :
 	_blocks.append ("</div>")
 	
 	_blocks.append ("<div class='pckb--paste-wrapper'>")
-	_blocks.append ("<textarea id='pckb--paste--input' class='pckb--paste-field' rows='32' cols='65' disabled='disabled'></textarea>")
+	_blocks.append ("<textarea id='pckb--paste--input' class='pckb--paste-field' rows='30' cols='65' disabled='disabled'></textarea>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("</div>")
