@@ -6,8 +6,9 @@ html:root > body {
 	padding : 0px;
 }
 
-.bits-main,
-.bits-main * {
+
+.pckb--bits-main,
+.pckb--bits-main * {
 	display : block;
 	align-items : center;
 	align-content : center;
@@ -30,118 +31,119 @@ html:root > body {
 	line-height : inherit;
 }
 
-.bits-main {
+
+.pckb--bits-main {
 	font-family : "JetBrains Mono NL", "JetBrains Mono", "Fira Mono", "Fira Sans", "Verdana", "Trebuchet MS", sans-serif;
 	font-size : 16px;
 	line-height : 24px;
 }
 
-.bits-main {
+.pckb--bits-main {
 	overflow : auto;
 }
 
-.bits-main {
+.pckb--bits-main {
 	display : flex;
 	flex-direction : column;
 }
-.bits-main-content {
+.pckb--bits-main-content {
 	display : flex;
 	flex-direction : column;
 }
-.key-bits,
-.crc-bits,
-.outputs {
+.pckb--key-bits,
+.pckb--crc-bits,
+.pckb--outputs {
 	display : flex;
 	flex-direction : column;
 }
-.buttons {
+.pckb--buttons {
 	display : flex;
 	flex-direction : row;
 }
-.bits-wrapper {
+.pckb--bits-wrapper {
 	display : flex;
 	flex-direction : row;
 	flex-wrap : wrap;
 }
-.word-bits {
+.pckb--word-bits {
 	display : flex;
 	flex-direction : column;
 }
-.word-bits-row {
+.pckb--word-bits-row {
 	display : flex;
 	flex-direction : row;
 }
-.bit-wrapper {
+.pckb--bit-wrapper {
 	display : flex;
 	flex-direction : row;
 }
-.output-pair {
+.pckb--output-pair {
 	display : flex;
 	flex-direction : row;
 	flex-wrap : wrap;
 }
 
-.key-bits .bits-wrapper,
-.crc-bits .bits-wrapper {
+.pckb--key-bits .pckb--bits-wrapper,
+.pckb--crc-bits .pckb--bits-wrapper {
 	border : solid 1px;
 }
-.word-bits {
+.pckb--word-bits {
 	margin : 0.5ex;
 }
-.bit-wrapper {
+.pckb--bit-wrapper {
 	border : solid 1px;
 	margin : 0.5ex;
 }
-.bit-checkbox {
+.pckb--bit-checkbox {
 	width : 2ex;
 	height : 2ex;
 	border : none;
 }
 
-.output-label,
-.output-field,
-.button {
+.pckb--output-label,
+.pckb--output-field,
+.pckb--button {
 	height : 1.1lh;
 	margin : 0.5ex;
 }
-.output-field,
-.button {
+.pckb--output-field,
+.pckb--button {
 	border : solid 1px;
 	padding-left : 0.5ch;
 	padding-right : 0.5ch;
 }
 
 
-.bits-main-content > * {
+.pckb--bits-main-content > * {
 	margin : 0.5ex;
 }
-.bits-main {
+.pckb--bits-main {
 	max-width : 100vw;
 }
-.bits-main-content > * {
+.pckb--bits-main-content > * {
 	width : 100%;
 	width : -moz-available;
 	max-width : 95vw;
 }
-.output-pair {
+.pckb--output-pair {
 	width : 100%;
 	width : -moz-available;
 	max-width : 95vw;
 }
-.output-field {
+.pckb--output-field {
 	text-align: center;
 	min-width : 10ch;
 	max-width : 42ch;
 	flex-grow : 1;
 	flex-shrink : 1;
 }
-.output-label {
+.pckb--output-label {
 	text-align: center;
 	min-width : 8ch;
 	flex-grow : 0;
 	flex-shrink : 0;
 }
-.bits-main-content > h2 {
+.pckb--bits-main-content > h2 {
 	text-align : center;
 }
 
