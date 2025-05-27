@@ -12,14 +12,15 @@ function pckb (pckb) {
 	let __key_b10_input = undefined;
 	let __key_hex_input = undefined;
 	
+	let __key_random_button = undefined;
+	let __key_reset_button = undefined;
+	
 	let __key_bytes = undefined;
 	let __crc_number = undefined;
 	let __key_txt_string = undefined;
 	let __key_b10_number = undefined;
 	let __key_b10_string = undefined;
 	let __key_hex_string = undefined;
-	
-	__key_b10_number = BigInt ("286172883415773381985495046221813607292");
 	
 	
 	function __dom_initialize () {
@@ -43,7 +44,13 @@ function pckb (pckb) {
 		__key_b10_input = document.getElementById ("pckb--key-b10--input");
 		__key_hex_input = document.getElementById ("pckb--key-hex--input");
 		
-		return key_refresh (undefined);
+		__key_random_button = document.getElementById ("pckb--key-random--button");
+		__key_reset_button = document.getElementById ("pckb--key-reset--button");
+		
+		if (__key_b10_number === undefined) {
+			__dom_enable (false);
+			window.setTimeout (__test__execute, __test__interval);
+		}
 	}
 	
 	
@@ -80,7 +87,33 @@ function pckb (pckb) {
 	}
 	
 	
+	function __dom_enable (_enabled) {
+		for (const _bit_checkbox of __key_bit_checkboxes)
+			_bit_checkbox.disabled = !_enabled;
+		for (const _bit_checkbox of __crc_bit_checkboxes)
+			_bit_checkbox.disabled = !_enabled;
+		__key_txt_input.disabled = !_enabled;
+		__key_b10_input.disabled = !_enabled;
+		__key_hex_input.disabled = !_enabled;
+		__key_random_button.disabled = !_enabled;
+		__key_reset_button.disabled = !_enabled;
+	}
+	
+	function __dom_break () {
+		__dom_enable (false);
+		for (const _bit_checkbox of __key_bit_checkboxes) {
+			_bit_checkbox.checked = false;
+		}
+		for (const _bit_checkbox of __crc_bit_checkboxes) {
+			_bit_checkbox.checked = false;
+		}
+		__key_txt_input.value = "(tests failed)";
+		__key_b10_input.value = "(tests failed)";
+		__key_hex_input.value = "(tests failed)";
+	}
+	
 	function key_bit_changed () {
+		if (!__test__succeeded) return;
 		let _key_b10 = BigInt (0);
 		for (let _bit_index = 0; _bit_index < 128; _bit_index += 1) {
 			_key_b10 <<= BigInt (1);
@@ -91,6 +124,7 @@ function pckb (pckb) {
 	}
 	
 	function key_b10_changed () {
+		if (!__test__succeeded) return;
 		const _key_b10_string = __key_b10_input.value.replaceAll (" ", "");
 		if (/^[0-9]*$/.test (_key_b10_string)) {
 			const _key_b10 = BigInt (_key_b10_string);
@@ -102,6 +136,7 @@ function pckb (pckb) {
 	}
 	
 	function key_hex_changed () {
+		if (!__test__succeeded) return;
 		const _key_hex_string = __key_hex_input.value.replaceAll (" ", "");
 		if (/^[0-9a-fA-F]*$/.test (_key_hex_string)) {
 			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
@@ -113,6 +148,7 @@ function pckb (pckb) {
 	}
 	
 	function key_txt_changed () {
+		if (!__test__succeeded) return;
 		const _key_txt_string = __key_txt_input.value.replaceAll (" ", "");
 		if (_key_txt_string == "") {
 			return key_refresh (BigInt (0));
@@ -189,6 +225,8 @@ function pckb (pckb) {
 	
 	
 	function key_refresh (_key_b10_raw) {
+		
+		if (!__test__succeeded) return;
 		
 		if (_key_b10_raw === undefined) {
 			_key_b10_raw = __key_b10_number;
@@ -282,29 +320,21 @@ function pckb (pckb) {
 	}
 	
 	
-	function _crc16_ccitt (_bytes) {
-		let crc = 0;
-		for (const b of _bytes) {
-			for (let i = 0; i < 8; i++) {
-				const bit = ((b >> (7 - i) & 1) === 1);
-				const c15 = ((crc >> 15 & 1) === 1);
-				crc <<= 1;
-				if (c15 ^ bit) crc ^= 0x1021;
-			}
-		}
-		return (crc & 0xffff);
-	}
-	
-	
 	function key_reset () {
+		if (!__test__succeeded) return;
 		key_refresh (BigInt (0));
 	}
 	
 	function key_random () {
+		if (!__test__succeeded) return;
+		key_refresh (_key_generate ());
+	}
+	
+	function _key_generate () {
 		const _key_seeds = new BigUint64Array (2);
 		crypto.getRandomValues (_key_seeds);
-		const _key_b10 = _key_seeds[0] * _key_seeds[1];
-		key_refresh (BigInt (_key_b10));
+		const _key_b10 = BigInt (_key_seeds[0]) * BigInt (_key_seeds[1]);
+		return (_key_b10);
 	}
 	
 	
@@ -316,6 +346,174 @@ function pckb (pckb) {
 	pckb.key_hex_changed = key_hex_changed;
 	pckb.key_reset = key_reset;
 	pckb.key_random = key_random;
+	
+	
+	let __test__vectors = [
+		{ // 01
+			key_b10_number : BigInt ("92121336848414492145574597577827583888"),
+			key_b10_string : "92121336848414492145574597577827583888",
+			key_hex_string : "454dec92d2934cb05afc7c766c5a8790",
+			key_txt_string : "dugfctxapnlwqcxsnbzchxkppo",
+			crc_number : 18914,
+		},
+		{ // 10
+			key_b10_number : BigInt ("205269886151914689565406637013006327200"),
+			key_b10_string : "205269886151914689565406637013006327200",
+			key_hex_string : "9a6d8ac345470bb6062254a33f189da0",
+			key_txt_string : "ulz10pe6n44edg8op2kq0g72",
+			crc_number : 5235,
+		},
+		{ // 00
+			key_b10_number : BigInt ("47168027646745113250991940369283290814"),
+			key_b10_string : "47168027646745113250991940369283290814",
+			key_hex_string : "237c3b4fca58c46a264d37bb1ac816be",
+			key_txt_string : "",
+			crc_number : 17147,
+		},
+		{ // 11
+			key_b10_number : BigInt ("330858855078231141900554465331134321020"),
+			key_b10_string : "330858855078231141900554465331134321020",
+			key_hex_string : "f8e918feadaca5ace2f7a156bf37d17c",
+			key_txt_string : "",
+			crc_number : 7432,
+		},
+		{ // 01
+			key_b10_number : BigInt ("108138067969091014373750355512456477050"),
+			key_b10_string : "108138067969091014373750355512456477050",
+			key_hex_string : "515aa262fdbda58aaf50326723ad797a",
+			key_txt_string : "",
+			crc_number : 45113,
+		},
+		{ // 10
+			key_b10_number : BigInt ("235010124662613375119348511116225836300"),
+			key_b10_string : "235010124662613375119348511116225836300",
+			key_hex_string : "b0cd4dbad6d7ed8f0cb0c56ce3c6750c",
+			key_txt_string : "",
+			crc_number : 33605,
+		},
+		{ // 00
+			key_b10_number : BigInt ("44204631514214177107191510049129202120"),
+			key_b10_string : "44204631514214177107191510049129202120",
+			key_hex_string : "2141809a19a88de6d4d0fc500aaf81c8",
+			key_txt_string : "",
+			crc_number : 48784,
+		},
+		{ // 11
+			key_b10_number : BigInt ("286172883415773381985495046221813607292"),
+			key_b10_string : "286172883415773381985495046221813607292",
+			key_hex_string : "d74ae47dc6f599d3f9cb847bd77d6b7c",
+			key_txt_string : "!=:FX9NtvTmO/'~<\\>S",
+			crc_number : 46084,
+		},
+		null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+		null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+		null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+		null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+	];
+	
+	let __test__index = undefined;
+	let __test__subindex = undefined;
+	let __test__interval = 1;
+	let __test__failed = 0;
+	let __test__succeeded = true;
+	
+	function __test__execute () {
+		if (__test__index !== undefined) {
+			const _test_vector = __test__vectors[__test__index];
+			if (__key_b10_number != _test_vector.key_b10_number) {
+				console.log ("test vector failed", __test__index, "key b10 number", __key_b10_number, _test_vector);
+				__test__failed += 1;
+			}
+			if (__key_b10_string != _test_vector.key_b10_string) {
+				console.log ("test vector failed", __test__index, "key b10 string", __key_b10_string, _test_vector);
+				__test__failed += 1;
+			}
+			if (__key_hex_string != _test_vector.key_hex_string) {
+				console.log ("test vector failed", __test__index, "key hex string", __key_hex_string, _test_vector);
+				__test__failed += 1;
+			}
+			if (__key_txt_string != _test_vector.key_txt_string) {
+				console.log ("test vector failed", __test__index, "key txt string", __key_txt_string, _test_vector);
+				__test__failed += 1;
+			}
+			if (__crc_number != _test_vector.crc_number) {
+				console.log ("test vector failed", __test__index, "crc number", __crc_number, _test_vector);
+				__test__failed += 1;
+			}
+		}
+		if (__test__index === undefined) {
+			__test__index = 0;
+			__test__subindex = 0;
+		} else {
+			if (__test__subindex > 4) {
+				__test__index += 1;
+				__test__subindex = 0;
+			} else {
+				__test__subindex += 1;
+			}
+		}
+		if (__test__index >= __test__vectors.length) {
+			if (__test__failed == 0) {
+				__test__succeeded = true;
+				key_random ();
+				__dom_enable (true);
+			} else {
+				__test__succeeded = false;
+				__dom_break ();
+				alert ("tests failed (" + __test__failed + ")");
+			}
+			return;
+		}
+		{
+			if ((__test__vectors[__test__index] == null) || (__test__vectors[__test__index].generated)) {
+				let _key_b10 = _key_generate ();
+				key_refresh (_key_b10);
+				__test__vectors[__test__index] = {
+						key_b10_number : _key_b10,
+						key_b10_string : __key_b10_string,
+						key_hex_string : __key_hex_string,
+						key_txt_string : __key_txt_string,
+						crc_number : __crc_number,
+						generated : true,
+					};
+			}
+			const _test_vector = __test__vectors[__test__index];
+			window.setTimeout (__test__execute, __test__interval);
+			switch (__test__subindex) {
+				case 0 :
+					key_refresh (_test_vector.key_b10_number);
+					break;
+				case 1 :
+					__key_b10_input.value = _test_vector.key_b10_string;
+					key_b10_changed ();
+					break;
+				case 2 :
+					__key_hex_input.value = _test_vector.key_hex_string;
+					key_hex_changed ();
+					break;
+				case 3 :
+					if (_test_vector.key_txt_string != "") {
+						__key_txt_input.value = _test_vector.key_txt_string;
+						key_txt_changed ();
+					}
+					break;
+			}
+		}
+	}
+	
+	
+	function _crc16_ccitt (_bytes) {
+		let crc = 0;
+		for (const b of _bytes) {
+			for (let i = 0; i < 8; i++) {
+				const bit = ((b >> (7 - i) & 1) == 1);
+				const c15 = ((crc >> 15 & 1) == 1);
+				crc <<= 1;
+				if (c15 ^ bit) crc ^= 0x1021;
+			}
+		}
+		return (crc & 0xffff);
+	}
 }
 
 
