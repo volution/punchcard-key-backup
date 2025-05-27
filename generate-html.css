@@ -7,12 +7,13 @@ html:root > body {
 }
 
 
-.pckb--bits-main,
-.pckb--bits-main * {
+.pckb--main-wrapper,
+.pckb--main-wrapper * {
 	display : block;
-	align-items : center;
-	align-content : center;
-	justify-content : center;
+	align-items : stretch;
+	align-content : stretch;
+	justify-items : stretch;
+	justify-content : stretch;
 	flex-wrap : nowrap;
 	flex-basis : auto;
 	flex-grow : 1;
@@ -32,32 +33,30 @@ html:root > body {
 }
 
 
-.pckb--bits-main {
+.pckb--main-wrapper {
 	font-family : "JetBrains Mono NL", "JetBrains Mono", "Fira Mono", monospace;
 	font-size : 16px;
 	line-height : 24px;
 }
-
-.pckb--bits-main {
+.pckb--main-wrapper {
 	overflow : auto;
 }
 
-.pckb--bits-main {
+
+.pckb--main-content {
 	display : flex;
 	flex-direction : column;
-}
-.pckb--bits-main-content {
-	display : flex;
-	flex-direction : column;
+	margin-left : auto;
+	margin-right : auto;
 }
 .pckb--key-bits,
 .pckb--crc-bits,
-.pckb--outputs,
-.pckb--paste-wrapper {
+.pckb--outputs {
 	display : flex;
 	flex-direction : column;
 }
-.pckb--buttons {
+.pckb--buttons,
+.pckb--paste-wrapper {
 	display : flex;
 	flex-direction : row;
 }
@@ -74,22 +73,19 @@ html:root > body {
 	display : flex;
 	flex-direction : row;
 }
-.pckb--bit-wrapper {
-	display : flex;
-	flex-direction : row;
-}
 .pckb--output-pair {
 	display : flex;
 	flex-direction : row;
 	flex-wrap : wrap;
 }
 
+
 .pckb--key-bits .pckb--bits-wrapper,
 .pckb--crc-bits .pckb--bits-wrapper {
 	border : solid 1px;
 }
 .pckb--word-bits {
-	margin : 0.5ex;
+	margin : 1ex;
 }
 .pckb--bit-wrapper {
 	border : solid 1px;
@@ -99,13 +95,15 @@ html:root > body {
 	width : 2ex;
 	height : 2ex;
 	border : none;
+	flex-grow : 0;
+	flex-shrink : 0;
 }
+
 
 .pckb--output-label,
 .pckb--output-field,
 .pckb--button {
 	height : 2em;
-	margin : 0.5ex;
 }
 .pckb--output-field,
 .pckb--button,
@@ -115,44 +113,64 @@ html:root > body {
 	padding-right : 0.5ch;
 }
 .pckb--paste-field {
+	/*
 	font-size : 0.5em;
 	line-height : 1.25em;
-	text-align : center;
+	*/
 	padding : 1ch;
+	resize : none;
 }
 
 
-.pckb--bits-main-content > * {
-	margin : 0.5ex;
-}
-.pckb--bits-main {
-	max-width : 100vw;
-}
-.pckb--bits-main-content > * {
-	width : 100%;
-	width : -moz-available;
-	max-width : 95vw;
-}
-.pckb--output-pair {
-	width : 100%;
-	width : -moz-available;
-	max-width : 95vw;
-}
-.pckb--output-field {
+.pckb--word-label,
+.pckb--output-label,
+.pckb--output-field,
+.pckb--paste-field {
 	text-align: center;
-	min-width : 10ch;
-	max-width : 42ch;
-	flex-grow : 1;
-	flex-shrink : 1;
+	text-wrap : nowrap;
+	text-overflow : ellipsis;
+}
+.pckb--main-content > h2 {
+	text-align : center;
+}
+
+
+.pckb--main-content {
+	max-width : 70ch;
+	align-items : stretch;
+}
+.pckb--bits-wrapper {
+	justify-content : space-around;
+}
+.pckb--word-bits {
+	flex-grow : 0;
+}
+.pckb--buttons {
+	justify-content : space-around;
+}
+.pckb--button {
+	width : 20ch;
+	flex-grow : 0;
 }
 .pckb--output-label {
-	text-align: center;
-	min-width : 8ch;
+	width : 10ch;
 	flex-grow : 0;
-	flex-shrink : 0;
 }
-.pckb--bits-main-content > h2 {
-	text-align : center;
+.pckb--output-field,
+.pckb--paste-field {
+	min-width : 40ch;
+}
+.pckb--cr80 {
+	align-self : center;
+}
+
+
+.pckb--main-content > * {
+	margin : 1em;
+}
+.pckb--outputs > * {
+	margin-top : 0.5em;
+	margin-bottom : 0.5em;
 }
 
 

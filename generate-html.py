@@ -28,6 +28,7 @@ def _generate () :
 	_blocks.append ("<meta charset='utf-8' />")
 	_blocks.append ("<meta name='viewport' content='width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes' />")
 	_blocks.append ("<meta name='color-scheme' content='dark light' />")
+	_blocks.append ("<link rel='icon' href='data:image/x-icon;base64,' />")
 	
 	_blocks.append ("<style>")
 	_blocks.append (_style)
@@ -41,8 +42,8 @@ def _generate () :
 	
 	_blocks.append ("<body>")
 	
-	_blocks.append ("<main id='pckb--main' class='pckb--bits-main'>")
-	_blocks.append ("<div class='pckb--bits-main-content'>")
+	_blocks.append ("<main id='pckb--main' class='pckb--main-wrapper'>")
+	_blocks.append ("<div class='pckb--main-content'>")
 	
 	_blocks.append (f"<h2>PunchCard Key Backup</h2>")
 	

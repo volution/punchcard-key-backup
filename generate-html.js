@@ -59,6 +59,8 @@ function pckb (pckb) {
 		if ((__key_b10_number === undefined) && __test__enabled) {
 			__dom_enable (false);
 			window.setTimeout (__test__execute, __test__interval);
+		} else {
+			key_bit_changed ();
 		}
 	}
 	
@@ -541,7 +543,7 @@ function pckb (pckb) {
 	let __test__subindex = undefined;
 	let __test__failed = 0;
 	let __test__succeeded = true;
-	const __test__enabled = true;
+	const __test__enabled = false;
 	const __test__interval = 0;
 	
 	function __test__execute () {
