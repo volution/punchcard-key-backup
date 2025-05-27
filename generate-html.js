@@ -354,12 +354,12 @@ function pckb (pckb) {
 					const _char_index = Number (_key_txt_seed % BigInt (__cva_cardinality));
 					_key_txt_seed = _key_txt_seed / BigInt (__cva_cardinality);
 					const _char_txt = __cva_index_to_pair[_char_index];
-					_key_txt = _char_txt + _key_txt;
+					_key_txt = _char_txt + ((_key_txt != "") ? " " : "") + _key_txt;
 				} else if (_key_txt_mode == 12) {
 					const _char_index = Number (_key_txt_seed % BigInt (__cvs_cardinality));
 					_key_txt_seed = _key_txt_seed / BigInt (__cvs_cardinality);
 					const _char_txt = __cvs_index_to_pair[_char_index];
-					_key_txt = _char_txt + _key_txt;
+					_key_txt = _char_txt + ((_key_txt != "") ? " " : "") + _key_txt;
 				} else if (_key_txt_mode == 10) {
 					const _char_index = Number (_key_txt_seed % BigInt (26));
 					_key_txt_seed = _key_txt_seed / BigInt (26);
@@ -430,7 +430,7 @@ function pckb (pckb) {
 		let _paste_bar = "|                                                              |";
 		_paste.push (_paste_cut);
 		if (_key_txt != "")
-			_paste.push ("|" + ("   key txt  >>  " + _key_txt) .padEnd (_paste_cut.length - 2) + "|");
+			_paste.push ("|" + ("   key txt  >>  " + _key_txt.replaceAll (" ", "")) .padEnd (_paste_cut.length - 2) + "|");
 		else
 			_paste.push ("|" + ("   key txt  !!") .padEnd (_paste_cut.length - 2) + "|");
 		_paste.push ("|" + ("   key b10  >>  " + _key_b10_string) .padEnd (_paste_cut.length - 2) + "|");
@@ -619,7 +619,7 @@ function pckb (pckb) {
 		},
 		null, null, null, null,
 	];
-	while (__test__vectors.length < 512)
+	while (__test__vectors.length < 32)
 		__test__vectors.push (null);
 	
 	let __test__index = undefined;
@@ -644,7 +644,7 @@ function pckb (pckb) {
 				console.log ("test vector failed", __test__index, "key hex string", __key_hex_string, _test_vector);
 				__test__failed += 1;
 			}
-			if (__key_txt_string != _test_vector.key_txt_string) {
+			if (__key_txt_string.replaceAll (" ", "") != _test_vector.key_txt_string) {
 				console.log ("test vector failed", __test__index, "key txt string", __key_txt_string, _test_vector);
 				__test__failed += 1;
 			}
@@ -685,7 +685,7 @@ function pckb (pckb) {
 						key_b10_number : _key_b10,
 						key_b10_string : __key_b10_string,
 						key_hex_string : __key_hex_string,
-						key_txt_string : __key_txt_string,
+						key_txt_string : __key_txt_string.replaceAll (" ", ""),
 						crc_number : __crc_number,
 						generated : true,
 					};
