@@ -1,0 +1,22 @@
+#!/usr/bin/local/z-run --exec
+
+
+
+
+<< generate / html / watch
+	exec -- watchexec \
+			-w ./generate-html.py \
+			-w ./generate-html.js \
+			-w ./generate-html.css \
+			-n \
+			-- \
+			"${ZRUN}" ':: generate / html' \
+	#
+!!
+
+
+<< generate / html
+	test "${#}" -eq 0
+	exec -- python3 ./generate-html.py >| ./generate.html
+!!
+
