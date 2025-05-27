@@ -106,7 +106,7 @@ def _generate () :
 	_blocks.append ("</div>")
 	
 	_blocks.append ("<div class='pckb--paste-wrapper'>")
-	_blocks.append ("<textarea id='pckb--paste--input' class='pckb--paste-field' rows='32' cols='63' disabled='disabled'></textarea>")
+	_blocks.append ("<textarea id='pckb--paste--input' class='pckb--paste-field' rows='32' cols='65' disabled='disabled'></textarea>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("</div>")

@@ -360,9 +360,9 @@ function pckb (pckb) {
 		let _paste_bar = "|                                                              |";
 		_paste.push (_paste_cut);
 		if (_key_txt != "")
-			_paste.push (">>    key txt    >>    " + _key_txt);
-		_paste.push (">>    key b10    >>    " + _key_b10_string);
-		_paste.push (">>    key hex    >>    " + _key_hex);
+			_paste.push ("|" + ("   key txt  >>  " + _key_txt) .padEnd (_paste_cut.length - 2) + "|");
+		_paste.push ("|" + ("   key b10  >>  " + _key_b10_string) .padEnd (_paste_cut.length - 2) + "|");
+		_paste.push ("|" + ("   key hex  >>  " + _key_hex) .padEnd (_paste_cut.length - 2) + "|");
 		_paste.push (_paste_cut);
 		_paste.push (_paste_bar);
 		for (let _bit_row = 0; _bit_row < 8; _bit_row += 1) {
