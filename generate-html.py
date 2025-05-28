@@ -3,14 +3,20 @@
 
 
 
+import hashlib, base64
 import math
 
 
 
 
-_script = open ("./generate-html.js") .read ()
-_style = open ("./generate-html.css") .read ()
-_cr80_svg = open ("./cr80.svg.b64") .read ()
+_script = open ("./generate-html.js", "rt") .read ()
+_script_sha256 = base64.b64encode (hashlib.sha256 (_script.encode ("ascii")) .digest ()) .decode ("ascii")
+
+_style = open ("./generate-html.css", "rt") .read ()
+_style_sha256 = base64.b64encode (hashlib.sha256 (_style.encode ("ascii")) .digest ()) .decode ("ascii")
+
+_cr80_svg = open ("./cr80.svg", "rt") .read ()
+_cr80_svg_base64 = base64.b64encode (_cr80_svg.encode ("ascii")) .decode ("ascii")
 
 
 
@@ -26,17 +32,32 @@ def _generate () :
 	_blocks.append ("<title>PunchCard Key Backup</title>")
 	
 	_blocks.append ("<meta charset='utf-8' />")
+	
+	_csp_policy = [
+			
+			"base-uri 'none'",
+			"default-src 'none'",
+			f"script-src-elem 'unsafe-hashes' 'sha256-{_script_sha256}'",
+			f"style-src-elem 'unsafe-hashes' 'sha256-{_style_sha256}'",
+			"img-src data:",
+			"form-action 'none'",
+			
+			"upgrade-insecure-requests",
+			"block-all-mixed-content",
+			
+			#  NOTE:  Not allowed via `<meta>`!
+			"sandbox",
+			"frame-ancestors 'none'",
+		]
+	_csp_policy = "; ".join (_csp_policy)
+	_blocks.append (f"""<meta http-equiv="Content-Security-Policy" content="{_csp_policy}" />""")
+	
 	_blocks.append ("<meta name='viewport' content='width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes' />")
 	_blocks.append ("<meta name='color-scheme' content='dark light' />")
 	_blocks.append ("<link rel='icon' href='data:image/x-icon;base64,' />")
 	
-	_blocks.append ("<style>")
-	_blocks.append (_style)
-	_blocks.append ("</style>")
-	
-	_blocks.append ("<script>")
-	_blocks.append (_script)
-	_blocks.append ("</script>")
+	_blocks.append (f"<style>{_style}</style>")
+	_blocks.append (f"<script>{_script}</script>")
 	
 	_blocks.append ("</head>")
 	
@@ -47,7 +68,7 @@ def _generate () :
 	
 	_blocks.append (f"<h2>PunchCard Key Backup</h2>")
 	
-	_blocks.append (f"<img class='pckb--cr80' src='data:image/svg+xml;base64,{_cr80_svg}' />")
+	_blocks.append (f"<img class='pckb--cr80' src='data:image/svg+xml;base64,{_cr80_svg_base64}' />")
 	
 	_blocks.append ("<div class='pckb--key-bits'>")
 	_blocks.append ("<div class='pckb--bits-wrapper'>")
@@ -60,7 +81,7 @@ def _generate () :
 				_blocks.append ("<span class='pckb--bit-wrapper'>")
 				_bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column
 				_bit_tooltip = "key bit %03d, (word %d, row %d, column %d)" % (_bit_index, _word_index + 1, _bit_row + 1, _bit_column + 1)
-				_blocks.append (f"<input id='pckb--key-bit-checkbox--{_word_index}-{_bit_row}-{_bit_column}' type='checkbox' class='pckb--bit-checkbox' title='{_bit_tooltip}' onchange='pckb.key_bit_changed()' />")
+				_blocks.append (f"<input id='pckb--key-bit-checkbox--{_word_index}-{_bit_row}-{_bit_column}' type='checkbox' class='pckb--bit-checkbox' title='{_bit_tooltip}' />")
 				_blocks.append ("</span>")
 			_blocks.append ("</div>")
 		_blocks.append ("</div>")
@@ -90,19 +111,19 @@ def _generate () :
 	
 	_blocks.append ("<div class='pckb--outputs'>")
 	_blocks.append ("<div class='pckb--output-pair'><label class='pckb--output-label'>key txt</label>")
-	_blocks.append (f"<input id='pckb--key-txt--input' class='pckb--output-field' onchange='pckb.key_txt_changed()' pattern='[!-~ ]*' />")
+	_blocks.append (f"<input id='pckb--key-txt--input' class='pckb--output-field' pattern='[!-~ ]*' />")
 	_blocks.append ("</div>")
 	_blocks.append ("<div class='pckb--output-pair'><label class='pckb--output-label'>key b10</label>")
-	_blocks.append (f"<input id='pckb--key-b10--input' class='pckb--output-field' onchange='pckb.key_b10_changed()' pattern='[0-9 ]*' />")
+	_blocks.append (f"<input id='pckb--key-b10--input' class='pckb--output-field' pattern='[0-9 ]*' />")
 	_blocks.append ("</div>")
 	_blocks.append ("<div class='pckb--output-pair'><label class='pckb--output-label'>key hex</label>")
-	_blocks.append (f"<input id='pckb--key-hex--input' class='pckb--output-field' onchange='pckb.key_hex_changed()' pattern='[0-9a-fA-F ]*' />")
+	_blocks.append (f"<input id='pckb--key-hex--input' class='pckb--output-field' pattern='[0-9a-fA-F ]*' />")
 	_blocks.append ("</div>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("<div class='pckb--buttons'>")
-	_blocks.append ("<button id='pckb--key-random--button' type='button' class='pckb--button' onclick='pckb.key_random()'>random</button>")
-	_blocks.append ("<button id='pckb--key-reset--button' type='button' class='pckb--button' onclick='pckb.key_reset()'>reset</button>")
+	_blocks.append ("<button id='pckb--key-random--button' type='button' class='pckb--button'>random</button>")
+	_blocks.append ("<button id='pckb--key-reset--button' type='button' class='pckb--button'>reset</button>")
 	_blocks.append ("</div>")
 	
 	_blocks.append ("<div class='pckb--paste-wrapper'>")
