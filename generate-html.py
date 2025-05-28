@@ -18,6 +18,7 @@ _style = re.sub (r"\n+\s*\n+", "\n", "\n" + _style + "\n")
 _style_sha256 = base64.b64encode (hashlib.sha256 (_style.encode ("ascii")) .digest ()) .decode ("ascii")
 
 _cr80_svg = open ("./cr80.svg", "rt") .read ()
+_cr80_svg_sha256 = base64.b64encode (hashlib.sha256 (_cr80_svg.encode ("ascii")) .digest ()) .decode ("ascii")
 _cr80_svg_base64 = base64.b64encode (_cr80_svg.encode ("ascii")) .decode ("ascii")
 
 
@@ -33,7 +34,8 @@ def _generate () :
 	_blocks.append ("""<head>""")
 	_blocks.append ("""<title>PunchCard Key Backup</title>""")
 	
-	_blocks.append ("""<meta charset="utf-8" />""")
+	_blocks.append ("""<meta charset="UTF-8" />""")
+	_blocks.append ("""<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />""")
 	
 	_csp_policy = [
 			
@@ -58,8 +60,8 @@ def _generate () :
 	_blocks.append ("""<meta name="color-scheme" content="dark light" />""")
 	_blocks.append ("""<link rel="icon" href="data:image/x-icon;base64," />""")
 	
-	_blocks.append (f"""<style type="text/css">{_style}</style>""")
-	_blocks.append (f"""<script type="text/javascript">{_script}</script>""")
+	_blocks.append (f"""<style type="text/css" integrity="sha256-{_style_sha256}">{_style}</style>""")
+	_blocks.append (f"""<script type="text/javascript" integrity="sha256-{_script_sha256}">{_script}</script>""")
 	
 	_blocks.append ("""</head>""")
 	
@@ -71,11 +73,13 @@ def _generate () :
 	
 	_blocks.append ("""<h2 class="pckb--main-title pckb--text">PunchCard Key Backup</h2>""")
 	
-	_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
+	_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_svg_sha256}" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
 	
 	_blocks.append ("""<noscript class="pckb--knobs-admonition pckb--text">Unfortunately, JavaScript is required to execute the encoder / decoder!</noscript>""")
 	
+	
 	_blocks.append ("""<div id="pckb--knobs" class="pckb--knobs pckb--knobs-disabled">""")
+	
 	
 	_blocks.append ("""<div class="pckb--key-bits">""")
 	_blocks.append ("""<div class="pckb--bits-wrapper">""")
@@ -95,6 +99,7 @@ def _generate () :
 	_blocks.append ("""</div>""")
 	_blocks.append ("""</div>""")
 	
+	
 	_blocks.append ("""<div class="pckb--crc-bits">""")
 	_blocks.append ("""<div class="pckb--bits-wrapper">""")
 	for _word_index in range (2) :
@@ -113,29 +118,37 @@ def _generate () :
 	_blocks.append ("""</div>""")
 	_blocks.append ("""</div>""")
 	
-	_key_b10_length_max = math.ceil (math.log (math.pow (2, 128), 10))
-	_key_hex_length_max = (128 // 8) * 2
 	
 	_blocks.append ("""<div class="pckb--outputs">""")
-	_blocks.append ("""<div class="pckb--output-pair"><label class="pckb--output-label">key txt</label>""")
+	
+	_blocks.append ("""<div class="pckb--output-pair">""")
+	_blocks.append ("""<label class="pckb--output-label">key txt</label>""")
 	_blocks.append ("""<input id="pckb--key-txt--input" class="pckb--output-field" pattern="[!-~ ]*" />""")
 	_blocks.append ("""</div>""")
-	_blocks.append ("""<div class="pckb--output-pair"><label class="pckb--output-label">key b10</label>""")
+	
+	_blocks.append ("""<div class="pckb--output-pair">""")
+	_blocks.append ("""<label class="pckb--output-label">key b10</label>""")
 	_blocks.append ("""<input id="pckb--key-b10--input" class="pckb--output-field" pattern="[0-9 ]*" />""")
 	_blocks.append ("""</div>""")
-	_blocks.append ("""<div class="pckb--output-pair"><label class="pckb--output-label">key hex</label>""")
+	
+	_blocks.append ("""<div class="pckb--output-pair">""")
+	_blocks.append ("""<label class="pckb--output-label">key hex</label>""")
 	_blocks.append ("""<input id="pckb--key-hex--input" class="pckb--output-field" pattern="[0-9a-fA-F ]*" />""")
 	_blocks.append ("""</div>""")
+	
 	_blocks.append ("""</div>""")
+	
 	
 	_blocks.append ("""<div class="pckb--buttons">""")
 	_blocks.append ("""<button id="pckb--key-random--button" type="button" class="pckb--button">random</button>""")
 	_blocks.append ("""<button id="pckb--key-reset--button" type="button" class="pckb--button">reset</button>""")
 	_blocks.append ("""</div>""")
 	
+	
 	_blocks.append ("""<div class="pckb--paste-wrapper">""")
 	_blocks.append ("""<textarea id="pckb--paste--input" class="pckb--paste-field" rows="30" cols="65" disabled="disabled"></textarea>""")
 	_blocks.append ("""</div>""")
+	
 	
 	_blocks.append ("""</div>""")
 	
