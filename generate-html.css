@@ -158,7 +158,7 @@ html:root > body {
 }
 .pckb--output-field,
 .pckb--paste-field {
-	min-width : 40ch;
+	min-width : 30ch;
 }
 .pckb--cr80 {
 	align-self : center;
