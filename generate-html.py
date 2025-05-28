@@ -58,8 +58,8 @@ def _generate () :
 	_blocks.append ("""<meta name="color-scheme" content="dark light" />""")
 	_blocks.append ("""<link rel="icon" href="data:image/x-icon;base64," />""")
 	
-	_blocks.append (f"""<style>{_style}</style>""")
-	_blocks.append (f"""<script>{_script}</script>""")
+	_blocks.append (f"""<style type="text/css">{_style}</style>""")
+	_blocks.append (f"""<script type="text/javascript">{_script}</script>""")
 	
 	_blocks.append ("""</head>""")
 	
@@ -70,7 +70,7 @@ def _generate () :
 	
 	_blocks.append ("""<h2>PunchCard Key Backup</h2>""")
 	
-	_blocks.append (f"""<img class="pckb--cr80" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
+	_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
 	
 	_blocks.append ("""<div class="pckb--key-bits">""")
 	_blocks.append ("""<div class="pckb--bits-wrapper">""")

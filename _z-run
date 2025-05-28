@@ -27,3 +27,16 @@
 !!
 
 
+
+
+<< darkhttpd / open
+	exec -- x-www firefox-guest:pckb open https://punchcard-key-backup--demo.xiyipoke.olympus.volution.ro/generate.html
+!!
+
+
+<< darkhttpd / run
+	test "${#}" -eq 0
+	exec -- darkhttpd . --addr 127.61.248.176 --port 8080
+!!
+
+
