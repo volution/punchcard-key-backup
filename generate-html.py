@@ -39,8 +39,8 @@ def _generate () :
 			
 			"base-uri 'none'",
 			"default-src 'none'",
-			f"script-src-elem 'unsafe-hashes' 'sha256-{_script_sha256}'",
-			f"style-src-elem 'unsafe-hashes' 'sha256-{_style_sha256}'",
+			f"script-src-elem 'sha256-{_script_sha256}'",
+			f"style-src-elem 'sha256-{_style_sha256}'",
 			"img-src data:",
 			"form-action 'none'",
 			
@@ -68,9 +68,14 @@ def _generate () :
 	_blocks.append ("""<main id="pckb--main" class="pckb--main-wrapper">""")
 	_blocks.append ("""<div class="pckb--main-content">""")
 	
-	_blocks.append ("""<h2>PunchCard Key Backup</h2>""")
+	
+	_blocks.append ("""<h2 class="pckb--main-title pckb--text">PunchCard Key Backup</h2>""")
 	
 	_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
+	
+	_blocks.append ("""<noscript class="pckb--knobs-admonition pckb--text">Unfortunately, JavaScript is required to execute the encoder / decoder!</noscript>""")
+	
+	_blocks.append ("""<div id="pckb--knobs" class="pckb--knobs pckb--knobs-disabled">""")
 	
 	_blocks.append ("""<div class="pckb--key-bits">""")
 	_blocks.append ("""<div class="pckb--bits-wrapper">""")
@@ -131,6 +136,9 @@ def _generate () :
 	_blocks.append ("""<div class="pckb--paste-wrapper">""")
 	_blocks.append ("""<textarea id="pckb--paste--input" class="pckb--paste-field" rows="30" cols="65" disabled="disabled"></textarea>""")
 	_blocks.append ("""</div>""")
+	
+	_blocks.append ("""</div>""")
+	
 	
 	_blocks.append ("""</div>""")
 	_blocks.append ("""</main>""")

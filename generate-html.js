@@ -67,6 +67,8 @@ function pckb (pckb) {
 		__key_reset_button = document.getElementById ("pckb--key-reset--button");
 		__key_reset_button.onclick = key_reset;
 		
+		document.getElementById ("pckb--knobs") .classList.remove ("pckb--knobs-disabled");
+		
 		if ((__key_b10_number === undefined) && __test__enabled) {
 			window.setTimeout (__test__execute, __test__interval);
 		} else {

@@ -49,6 +49,10 @@ html:root > body {
 	margin-left : auto;
 	margin-right : auto;
 }
+.pckb--knobs {
+	display : flex;
+	flex-direction : column;
+}
 .pckb--key-bits,
 .pckb--crc-bits,
 .pckb--outputs {
@@ -130,7 +134,7 @@ html:root > body {
 	text-wrap : nowrap;
 	text-overflow : ellipsis;
 }
-.pckb--main-content > h2 {
+.pckb--main-title {
 	text-align : center;
 }
 
@@ -165,12 +169,19 @@ html:root > body {
 }
 
 
-.pckb--main-content > * {
+.pckb--text {
+	margin : 1em;
+}
+.pckb--knobs > * {
 	margin : 1em;
 }
 .pckb--outputs > * {
 	margin-top : 0.5em;
 	margin-bottom : 0.5em;
+}
+
+.pckb--knobs-disabled {
+	display : none;
 }
 
 
