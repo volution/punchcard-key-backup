@@ -20,6 +20,7 @@ function pckb (pckb) {
 	let __key_bits = undefined;
 	let __crc_number = undefined;
 	let __crc_bits = undefined;
+	let __key_txt_mode = undefined;
 	let __key_txt_string = undefined;
 	let __key_b10_number = undefined;
 	let __key_b10_string = undefined;
@@ -39,6 +40,7 @@ function pckb (pckb) {
 				for (let _bit_column = 0; _bit_column < 8; _bit_column += 1) {
 					const _bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column;
 					__key_bit_checkboxes[_bit_index] = document.getElementById ("pckb--key-bit-checkbox--" + _word_index + "-" + _bit_row + "-" + _bit_column);
+					__key_bit_checkboxes[_bit_index].onchange = key_bit_changed;
 				}
 			}
 		}
@@ -49,15 +51,23 @@ function pckb (pckb) {
 		}
 		
 		__key_txt_input = document.getElementById ("pckb--key-txt--input");
+		__key_txt_input.onchange = key_txt_changed;
+		
 		__key_b10_input = document.getElementById ("pckb--key-b10--input");
+		__key_b10_input.onchange = key_b10_changed;
+		
 		__key_hex_input = document.getElementById ("pckb--key-hex--input");
+		__key_hex_input.onchange = key_hex_changed;
+		
 		__paste_input = document.getElementById ("pckb--paste--input");
 		
 		__key_random_button = document.getElementById ("pckb--key-random--button");
+		__key_random_button.onclick = key_random;
+		
 		__key_reset_button = document.getElementById ("pckb--key-reset--button");
+		__key_reset_button.onclick = key_reset;
 		
 		if ((__key_b10_number === undefined) && __test__enabled) {
-			__dom_enable (false);
 			window.setTimeout (__test__execute, __test__interval);
 		} else {
 			key_bit_changed ();
@@ -334,10 +344,11 @@ function pckb (pckb) {
 		let _crc = _crc16_ccitt (_bytes);
 		
 		let _key_txt = "";
+		let _key_txt_mode;
 		{
 			let _key_txt_seed = _key_b10;
 			let _key_txt_mask = 2;
-			let _key_txt_mode = (Number (_key_txt_seed >> BigInt (128 - 2)) & ~(1 << 2)) * 10;
+			_key_txt_mode = (Number (_key_txt_seed >> BigInt (128 - 2)) & ~(1 << 2)) * 10;
 			if (_key_txt_mode == 10) {
 				_key_txt_mask += 2;
 				_key_txt_mode += Number (_key_txt_seed >> BigInt (128 - 4)) & ~(1 << 2);
@@ -348,6 +359,7 @@ function pckb (pckb) {
 					break;
 				} else if (_key_txt_seed == 0) {
 					_key_txt = "";
+					_key_txt_mode = -1;
 					break;
 				}
 				if (_key_txt_mode == 11) {
@@ -394,6 +406,7 @@ function pckb (pckb) {
 					_key_txt = _char_txt + _key_txt;
 				} else {
 					_key_txt = "";
+					_key_txt_mode = -1;
 					break;
 				}
 			}
@@ -496,11 +509,13 @@ function pckb (pckb) {
 		
 		if (_key_b10 > 0) {
 			__key_txt_string = _key_txt;
+			__key_txt_mode = _key_txt_mode;
 			__key_b10_number = _key_b10;
 			__key_b10_string = _key_b10_string;
 			__key_hex_string = _key_hex;
 		} else {
 			__key_txt_string = "";
+			__key_txt_mode = -2;
 			__key_b10_number = BigInt (0);
 			__key_b10_string = "";
 			__key_hex_string = "";
@@ -531,7 +546,7 @@ function pckb (pckb) {
 	function _key_generate () {
 		const _key_seeds = new BigUint64Array (2);
 		crypto.getRandomValues (_key_seeds);
-		const _key_b10 = BigInt (_key_seeds[0]) * BigInt (_key_seeds[1]);
+		const _key_b10 = (BigInt (_key_seeds[0]) << BigInt (64)) | BigInt (_key_seeds[1]);
 		return (_key_b10);
 	}
 	
@@ -546,81 +561,128 @@ function pckb (pckb) {
 	pckb.key_random = key_random;
 	
 	
+	
+	
 	let __test__vectors = [
-		{ // 01
-			key_b10_number : BigInt ("92121336848414492145574597577827583888"),
-			key_b10_string : "92121336848414492145574597577827583888",
-			key_hex_string : "454dec92d2934cb05afc7c766c5a8790",
-			key_txt_string : "dugfctxapnlwqcxsnbzchxkppo",
-			crc_number : 18914,
-		},
-		{ // 10
-			key_b10_number : BigInt ("205269886151914689565406637013006327200"),
-			key_b10_string : "205269886151914689565406637013006327200",
-			key_hex_string : "9a6d8ac345470bb6062254a33f189da0",
-			key_txt_string : "ulz10pe6n44edg8op2kq0g72",
-			crc_number : 5235,
-		},
-		{ // 00
-			key_b10_number : BigInt ("47168027646745113250991940369283290814"),
-			key_b10_string : "47168027646745113250991940369283290814",
-			key_hex_string : "237c3b4fca58c46a264d37bb1ac816be",
-			key_txt_string : "",
-			crc_number : 17147,
-		},
-		{ // 11
-			key_b10_number : BigInt ("286172883415773381985495046221813607292"),
-			key_b10_string : "286172883415773381985495046221813607292",
-			key_hex_string : "d74ae47dc6f599d3f9cb847bd77d6b7c",
-			key_txt_string : "!=:FX9NtvTmO/'~<\\>S",
-			crc_number : 46084,
-		},
-		{ // 11
-			key_b10_number : BigInt ("330858855078231141900554465331134321020"),
-			key_b10_string : "330858855078231141900554465331134321020",
-			key_hex_string : "f8e918feadaca5ace2f7a156bf37d17c",
-			key_txt_string : "",
-			crc_number : 7432,
-		},
-		{ // 0110
-			key_b10_number : BigInt ("129405715901649668340211268476941990266"),
+		
+		{
 			key_b10_string : "129405715901649668340211268476941990266",
 			key_hex_string : "615aa262fdbda58aaf50326723ad797a",
 			key_txt_string : "fuvitiliderarutujeconifahifohogirihida",
+			key_txt_mode : 12,
 			crc_number : 54567,
 		},
-		{ // 0101
-			key_b10_number : BigInt ("110603640824904936687205456241932490496"),
+		{
+			key_b10_string : "127634112437235862071206592176394812654",
+			key_hex_string : "60056f9796cec4b6a3903edf45df3cee",
+			key_txt_string : "nahilogajahudafolulijinahojulematezo",
+			key_txt_mode : 12,
+			crc_number : 29140,
+			key_hex_string_dual : "52ad5d1d808a4906ac3160ac2b830823",
+		},
+		
+		{
 			key_b10_string : "110603640824904936687205456241932490496",
 			key_hex_string : "53357c838ccbecb861ea932a83a1d700",
 			key_txt_string : "vedajaxokokewekudipofocexesotequwote",
+			key_txt_mode : 11,
 			crc_number : 4951,
 		},
-		{ // 01
-			key_b10_number : BigInt ("108138067969091014373750355512456477050"),
+		
+		{
+			key_b10_string : "92121336848414492145574597577827583888",
+			key_hex_string : "454dec92d2934cb05afc7c766c5a8790",
+			key_txt_string : "dugfctxapnlwqcxsnbzchxkppo",
+			key_txt_mode : 10,
+			crc_number : 18914,
+		},
+		{
+			key_b10_string : "85088214802972242082704378106661119942",
+			key_hex_string : "400364e273262d1c851d115fa06127c6",
+			key_txt_string : "yiesqtbjhkupxyljrnxavjba",
+			key_txt_mode : 10,
+			crc_number : 50696,
+			key_hex_string_dual : "9c4205e941bb9558d136a38ae87eecf4",
+		},
+		
+		{
+			key_b10_string : "205269886151914689565406637013006327200",
+			key_hex_string : "9a6d8ac345470bb6062254a33f189da0",
+			key_txt_string : "ulz10pe6n44edg8op2kq0g72",
+			key_txt_mode : 20,
+			crc_number : 5235,
+		},
+		
+		{
+			key_b10_string : "286172883415773381985495046221813607292",
+			key_hex_string : "d74ae47dc6f599d3f9cb847bd77d6b7c",
+			key_txt_string : "!=:FX9NtvTmO/'~<\\>S",
+			key_txt_mode : 30,
+			crc_number : 46084,
+		},
+		
+		{
+			key_b10_string : "1684294727800762451474004771769973215",
+			key_hex_string : "0144622437d611d79555caa8209c79df",
+			key_txt_string : "RGIkN9YR15VVyqggnHnf",
+			key_txt_mode : 0,
+			crc_number : 2445,
+		},
+		{
+			key_b10_string : "33532900053985126750087528707880000",
+			key_hex_string : "0006754cb3c755ba2abecdcd08ed7440",
+			key_txt_string : "nVMs8dVuiq-zc0I7XRA",
+			key_txt_mode : 0,
+			crc_number : 50548,
+			key_hex_string_dual : "ea60c4b6f975180d032175d72d94c96a",
+		},
+		
+		{
+			key_b10_string : "47168027646745113250991940369283290814",
+			key_hex_string : "237c3b4fca58c46a264d37bb1ac816be",
+			key_txt_string : "",
+			key_txt_mode : -1,
+			crc_number : 17147,
+		},
+		{
+			key_b10_string : "330858855078231141900554465331134321020",
+			key_hex_string : "f8e918feadaca5ace2f7a156bf37d17c",
+			key_txt_string : "",
+			key_txt_mode : -1,
+			crc_number : 7432,
+		},
+		{
 			key_b10_string : "108138067969091014373750355512456477050",
 			key_hex_string : "515aa262fdbda58aaf50326723ad797a",
 			key_txt_string : "",
+			key_txt_mode : -1,
 			crc_number : 45113,
 		},
-		{ // 10
-			key_b10_number : BigInt ("235010124662613375119348511116225836300"),
+		{
 			key_b10_string : "235010124662613375119348511116225836300",
 			key_hex_string : "b0cd4dbad6d7ed8f0cb0c56ce3c6750c",
 			key_txt_string : "",
+			key_txt_mode : -1,
 			crc_number : 33605,
 		},
-		{ // 00
-			key_b10_number : BigInt ("44204631514214177107191510049129202120"),
+		{
 			key_b10_string : "44204631514214177107191510049129202120",
 			key_hex_string : "2141809a19a88de6d4d0fc500aaf81c8",
 			key_txt_string : "",
+			key_txt_mode : -1,
 			crc_number : 48784,
 		},
-		null, null, null, null,
+		
+		/*
+		{
+			key_b10_string : "",
+			key_hex_string : "",
+			key_txt_string : "",
+			key_txt_mode : -2,
+			crc_number : 0,
+		},
+		*/
 	];
-	while (__test__vectors.length < 32)
-		__test__vectors.push (null);
 	
 	let __test__index = undefined;
 	let __test__subindex = undefined;
@@ -630,38 +692,42 @@ function pckb (pckb) {
 	const __test__interval = 0;
 	
 	function __test__execute () {
+		let _test_failed = false;
 		if (__test__index !== undefined) {
 			const _test_vector = __test__vectors[__test__index];
-			if (__key_b10_number != _test_vector.key_b10_number) {
-				console.log ("test vector failed", __test__index, "key b10 number", __key_b10_number, _test_vector);
-				__test__failed += 1;
+			const _test_failure = {};
+			if (__key_b10_number != _test_vector.key_b10_number)
+				_test_failure.key_b10_number = __key_b10_number;
+			if (__key_b10_string != _test_vector.key_b10_string)
+				_test_failure.key_b10_string = __key_b10_string;
+			if (__key_hex_string != _test_vector.key_hex_string)
+				_test_failure.key_hex_string = __key_hex_string;
+			if (__key_txt_string.replaceAll (" ", "") != _test_vector.key_txt_string)
+				_test_failure.key_txt_string = __key_txt_string;
+			if (__key_txt_mode != _test_vector.key_txt_mode)
+				_test_failure.key_txt_mode = __key_txt_mode;
+			if (__crc_number != _test_vector.crc_number)
+				_test_failure.crc_number = __crc_number;
+			if (Object.keys (_test_failure) .length == 0) {
+				_test_failed = false;
+			} else {
+				console.log ("test failed", __test__index, _test_failure, _test_vector);
+				_test_failed = true;
 			}
-			if (__key_b10_string != _test_vector.key_b10_string) {
-				console.log ("test vector failed", __test__index, "key b10 string", __key_b10_string, _test_vector);
-				__test__failed += 1;
-			}
-			if (__key_hex_string != _test_vector.key_hex_string) {
-				console.log ("test vector failed", __test__index, "key hex string", __key_hex_string, _test_vector);
-				__test__failed += 1;
-			}
-			if (__key_txt_string.replaceAll (" ", "") != _test_vector.key_txt_string) {
-				console.log ("test vector failed", __test__index, "key txt string", __key_txt_string, _test_vector);
-				__test__failed += 1;
-			}
-			if (__crc_number != _test_vector.crc_number) {
-				console.log ("test vector failed", __test__index, "crc number", __crc_number, _test_vector);
-				__test__failed += 1;
-			}
-		}
-		if (__test__index === undefined) {
+		} else {
+			__dom_enable (false);
 			__test__index = 0;
 			__test__subindex = 0;
-		} else {
-			if (__test__subindex > 4) {
+		}
+		if (_test_failed) {
+			__test__failed += 1;
+		}
+		if ((__test__subindex > 3) || _test_failed) {
+			if (__test__vectors[__test__index].loop > 0) {
+				__test__vectors[__test__index].loop -= 1;
+			} else {
 				__test__index += 1;
 				__test__subindex = 0;
-			} else {
-				__test__subindex += 1;
 			}
 		}
 		if (__test__index >= __test__vectors.length) {
@@ -678,19 +744,35 @@ function pckb (pckb) {
 			return;
 		}
 		{
-			if ((__test__vectors[__test__index] == null) || (__test__vectors[__test__index].generated)) {
-				const _key_b10 = _key_generate ();
-				key_refresh (_key_b10);
+			if (__test__vectors[__test__index] === null)
 				__test__vectors[__test__index] = {
-						key_b10_number : _key_b10,
-						key_b10_string : __key_b10_string,
-						key_hex_string : __key_hex_string,
-						key_txt_string : __key_txt_string.replaceAll (" ", ""),
-						crc_number : __crc_number,
-						generated : true,
+						generate : true,
 					};
+			const _test_vector = {};
+			Object.assign (_test_vector, __test__vectors[__test__index]);
+			__test__vectors[__test__index] = _test_vector;
+			if (_test_vector.generate) {
+				while (true) {
+					const _key_b10 = _key_generate ();
+					key_refresh (_key_b10);
+					Object.assign (_test_vector, {
+							key_b10_number : _key_b10,
+							key_b10_string : __key_b10_string,
+							key_hex_string : __key_hex_string,
+							key_txt_string : __key_txt_string.replaceAll (" ", ""),
+							key_txt_mode : __key_txt_mode,
+							crc_number : __crc_number,
+						});
+					if (__key_txt_string == "")
+						continue;
+					else
+						break;
+				}
+				__test__subindex = 3;
 			}
-			const _test_vector = __test__vectors[__test__index];
+			if (_test_vector.key_b10_number === undefined) {
+				_test_vector.key_b10_number = BigInt (_test_vector.key_b10_string);
+			}
 			window.setTimeout (__test__execute, __test__interval);
 			switch (__test__subindex) {
 				case 0 :
@@ -711,8 +793,26 @@ function pckb (pckb) {
 					}
 					break;
 			}
+			__test__subindex += 1;
 		}
 	}
+	
+	function __test__execute_loop () {
+		__test__vectors.push ({
+				generate : true,
+				loop : 128 * 1024 * 1024,
+			});
+		__test__execute ();
+	}
+	
+	pckb.__test_once = function () {
+			window.setTimeout (__test__execute, __test__interval);
+		};
+	pckb.__test_loop = function () {
+			window.setTimeout (__test__execute_loop, __test__interval);
+		};
+	
+	
 	
 	
 	function _crc16_ccitt (_bytes) {
