@@ -40,3 +40,54 @@
 !!
 
 
+
+
+<< qrencode / generate / purl
+	test "${#}" -eq 0
+	_types=(
+			ASCIIi:-ascii-positive.txt
+			ASCII:-ascii-negative.txt
+			UTF8i:-utf8-positive.txt
+			UTF8:-utf8-negative.txt
+			ANSI:-ansi.txt
+			PNG:.png
+			SVG:.svg
+		)
+	for _type in "${_types[@]}" ; do
+		_extension="${_type#*:}"
+		_type="${_type%%:*}"
+		case "${_type}" in
+			( UTF8 )
+				_margin=2
+				_extra=()
+			;;
+			( PNG )
+				_extra=( --size 8 )
+			;;
+			( SVG )
+				_extra=(
+						--size 32
+						--svg-path
+					)
+			;;
+			( * )
+				_margin=1
+				_extra=()
+			;;
+		esac
+		qrencode \
+				--micro \
+				--level L \
+				--strict-version \
+				--symversion 3 \
+				--ignorecase \
+				--margin "${_margin}" \
+				--type "${_type}" \
+				"${_extra[@]}" \
+				--output "./qrcode/purl${_extension}" \
+				-- \
+				purl.org/999 \
+		#
+	done
+!!
+
