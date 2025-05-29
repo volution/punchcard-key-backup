@@ -169,6 +169,9 @@ html:root > body {
 }
 .pckb--cr80 {
 	align-self : center;
+	max-width : 95vw;
+	max-height : 95vh;
+	height : auto;
 }
 
 
