@@ -44,18 +44,22 @@
 
 << qrencode / generate / purl
 	test "${#}" -eq 0
+	
 	_types=(
-			ASCIIi:-ascii-positive.txt
-			ASCII:-ascii-negative.txt
-			UTF8i:-utf8-positive.txt
-			UTF8:-utf8-negative.txt
-			ANSI:-ansi.txt
+			ASCIIi:--ascii--positive.txt
+			ASCII:--ascii--negative.txt
+			UTF8i:--utf8--positive.txt
+			UTF8:--utf8--negative.txt
 			PNG:.png
 			SVG:.svg
 		)
+	
 	for _type in "${_types[@]}" ; do
 		_extension="${_type#*:}"
 		_type="${_type%%:*}"
+		
+		_margin=1
+		_extra=()
 		case "${_type}" in
 			( UTF8 )
 				_margin=2
@@ -65,16 +69,10 @@
 				_extra=( --size 8 )
 			;;
 			( SVG )
-				_extra=(
-						--size 32
-						--svg-path
-					)
-			;;
-			( * )
-				_margin=1
-				_extra=()
+				_extra=( --size 32 --svg-path )
 			;;
 		esac
+		
 		qrencode \
 				--micro \
 				--level L \
@@ -84,10 +82,87 @@
 				--margin "${_margin}" \
 				--type "${_type}" \
 				"${_extra[@]}" \
-				--output "./qrcode/purl${_extension}" \
+				--output "./qrcode/purl--bare${_extension}" \
 				-- \
 				purl.org/999 \
 		#
+		
+		qrencode \
+				--level L \
+				--strict-version \
+				--symversion 1 \
+				--ignorecase \
+				--margin "${_margin}" \
+				--type "${_type}" \
+				"${_extra[@]}" \
+				--output "./qrcode/purl--https${_extension}" \
+				-- \
+				https://purl.org/999 \
+		#
 	done
+!!
+
+
+<< inkscape / export / cr80
+	test "${#}" -eq 0
+	inkscape \
+			--export-type=svg \
+			--export-filename=./stencils/cr80--export.svg \
+			--export-overwrite \
+			--export-area-drawing \
+			--export-dpi=96 \
+			--export-plain-svg \
+			--export-text-to-path \
+			./stencils/cr80--inkscape.svg \
+	#
+	inkscape \
+			--export-type=png \
+			--export-filename=./stencils/cr80--export.png \
+			--export-overwrite \
+			--export-area-drawing \
+			--export-dpi=480 \
+			--export-png-color-mode=Gray_8 \
+			--export-png-compression=9 \
+			--export-png-antialias=0 \
+			--export-png-use-dithering=false \
+			./stencils/cr80--inkscape.svg \
+	#
+!!
+
+
+<< inkscape / export / stencil / one
+	test "${#}" -eq 0
+	inkscape \
+			--export-type=pdf \
+			--export-filename=./stencils/stencil--one--export.pdf \
+			--export-overwrite \
+			--export-area-page \
+			--export-dpi=96 \
+			--export-pdf-version=1.4 \
+			--export-text-to-path \
+			./stencils/stencil--one--inkscape.svg \
+	#
+	inkscape \
+			--export-type=svg \
+			--export-filename=./stencils/stencil--one--export.svg \
+			--export-overwrite \
+			--export-area-page \
+			--export-dpi=96 \
+			--export-plain-svg \
+			--export-text-to-path \
+			./stencils/stencil--one--inkscape.svg \
+	#
+	inkscape \
+			--export-type=png \
+			--export-filename=./stencils/stencil--one--export.png \
+			--export-overwrite \
+			--export-area-page \
+			--export-dpi=480 \
+			--export-png-color-mode=Gray_8 \
+			--export-png-compression=9 \
+			--export-png-antialias=0 \
+			--export-png-use-dithering=false \
+			./stencils/stencil--one--inkscape.svg \
+	#
 !!
 
