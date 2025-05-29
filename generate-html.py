@@ -21,6 +21,10 @@ _cr80_svg = open ("./cr80.svg", "rt") .read ()
 _cr80_svg_sha256 = base64.b64encode (hashlib.sha256 (_cr80_svg.encode ("ascii")) .digest ()) .decode ("ascii")
 _cr80_svg_base64 = base64.b64encode (_cr80_svg.encode ("ascii")) .decode ("ascii")
 
+_cr80_png = open ("./cr80.png", "rb") .read ()
+_cr80_png_sha256 = base64.b64encode (hashlib.sha256 (_cr80_png) .digest ()) .decode ("ascii")
+_cr80_png_base64 = base64.b64encode (_cr80_png) .decode ("ascii")
+
 
 
 
@@ -73,7 +77,10 @@ def _generate () :
 	
 	_blocks.append ("""<h2 class="pckb--main-title pckb--text">PunchCard Key Backup</h2>""")
 	
-	_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_svg_sha256}" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
+	if True :
+		_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_png_sha256}" width="480" height="320" src="data:image/png;base64,{_cr80_png_base64}" />""")
+	else :
+		_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_svg_sha256}" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
 	
 	_blocks.append ("""<noscript class="pckb--knobs-admonition pckb--text">Unfortunately, JavaScript is required to execute the encoder / decoder!</noscript>""")
 	
