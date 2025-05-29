@@ -134,6 +134,9 @@ html:root > body {
 	text-wrap : nowrap;
 	text-overflow : ellipsis;
 }
+.pckb--stencil-link {
+	text-align : center;
+}
 .pckb--main-title {
 	text-align : center;
 }

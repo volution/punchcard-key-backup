@@ -17,13 +17,17 @@ _style = open ("./generate-html.css", "rt") .read ()
 _style = re.sub (r"\n+\s*\n+", "\n", "\n" + _style + "\n")
 _style_sha256 = base64.b64encode (hashlib.sha256 (_style.encode ("ascii")) .digest ()) .decode ("ascii")
 
-_cr80_svg = open ("./cr80.svg", "rt") .read ()
+_cr80_svg = open ("./stencils/cr80--export.svg", "rt") .read ()
 _cr80_svg_sha256 = base64.b64encode (hashlib.sha256 (_cr80_svg.encode ("ascii")) .digest ()) .decode ("ascii")
 _cr80_svg_base64 = base64.b64encode (_cr80_svg.encode ("ascii")) .decode ("ascii")
 
-_cr80_png = open ("./cr80.png", "rb") .read ()
+_cr80_png = open ("./stencils/cr80--export.png", "rb") .read ()
 _cr80_png_sha256 = base64.b64encode (hashlib.sha256 (_cr80_png) .digest ()) .decode ("ascii")
 _cr80_png_base64 = base64.b64encode (_cr80_png) .decode ("ascii")
+
+_stencil_pdf = open ("./stencils/stencil--one--export.pdf", "rb") .read ()
+_stencil_pdf_sha256 = base64.b64encode (hashlib.sha256 (_stencil_pdf) .digest ()) .decode ("ascii")
+_stencil_pdf_base64 = base64.b64encode (_stencil_pdf) .decode ("ascii")
 
 
 
@@ -82,10 +86,19 @@ def _generate () :
 	else :
 		_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_svg_sha256}" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
 	
+	
+	_blocks.append (f"""<a class="pckb--stencil-link pckb--text" download="pckb-stencil.pdf" href="data:application/pdf;base64,{_stencil_pdf_base64}">download template (PDF A4)</a>""")
+	
+	
 	_blocks.append ("""<noscript class="pckb--knobs-admonition pckb--text">Unfortunately, JavaScript is required to execute the encoder / decoder!</noscript>""")
 	
 	
 	_blocks.append ("""<div id="pckb--knobs" class="pckb--knobs pckb--knobs-disabled">""")
+	
+	_blocks.append ("""<div class="pckb--buttons">""")
+	_blocks.append ("""<button id="pckb--key-random--button" type="button" class="pckb--button">random</button>""")
+	_blocks.append ("""<button id="pckb--key-reset--button" type="button" class="pckb--button">reset</button>""")
+	_blocks.append ("""</div>""")
 	
 	
 	_blocks.append ("""<div class="pckb--key-bits">""")
@@ -143,12 +156,6 @@ def _generate () :
 	_blocks.append ("""<input id="pckb--key-hex--input" class="pckb--output-field" pattern="[0-9a-fA-F ]*" />""")
 	_blocks.append ("""</div>""")
 	
-	_blocks.append ("""</div>""")
-	
-	
-	_blocks.append ("""<div class="pckb--buttons">""")
-	_blocks.append ("""<button id="pckb--key-random--button" type="button" class="pckb--button">random</button>""")
-	_blocks.append ("""<button id="pckb--key-reset--button" type="button" class="pckb--button">reset</button>""")
 	_blocks.append ("""</div>""")
 	
 	
