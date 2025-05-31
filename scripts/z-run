@@ -113,6 +113,7 @@
 << inkscape / export / all
 	test "${#}" -eq 0
 	"${ZRUN}" ':: inkscape / export / cr80'
+	"${ZRUN}" ':: inkscape / export / cr80 / banner'
 	"${ZRUN}" ':: inkscape / export / stencil / one'
 	"${ZRUN}" ':: inkscape / export / stencil / many'
 !!
@@ -141,6 +142,32 @@
 			--export-png-antialias=0 \
 			--export-png-use-dithering=false \
 			./stencils/cr80--inkscape.svg \
+	#
+!!
+
+
+<< inkscape / export / cr80 / banner
+	test "${#}" -eq 0
+	inkscape \
+			--export-type=png \
+			--export-filename=./documentation/assets/github-banner.png \
+			--export-overwrite \
+			--export-area-drawing \
+			--export-height=640 \
+			--export-png-color-mode=RGB_8 \
+			--export-png-compression=9 \
+			--export-png-antialias=1 \
+			--export-png-use-dithering=false \
+			--export-background='#000000' \
+			./stencils/cr80--inkscape.svg \
+	#
+	magick convert \
+			-size x640 \
+			-background '#000000' \
+			./documentation/assets/github-banner.png \
+			-background '#000000' \
+			-resize 1280x640 -gravity center -extent 1280x640 \
+			./documentation/assets/github-banner.png \
 	#
 !!
 
