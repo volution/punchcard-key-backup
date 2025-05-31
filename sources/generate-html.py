@@ -29,6 +29,9 @@ _stencil_pdf = open ("../stencils/stencil--one--export.pdf", "rb") .read ()
 _stencil_pdf_sha256 = base64.b64encode (hashlib.sha256 (_stencil_pdf) .digest ()) .decode ("ascii")
 _stencil_pdf_base64 = base64.b64encode (_stencil_pdf) .decode ("ascii")
 
+_help = open ("./generate-help.txt", "rt") .read ()
+_help = _help.split ("\n\n")
+
 
 
 
@@ -79,7 +82,7 @@ def _generate () :
 	_blocks.append ("""<div class="pckb--main-content">""")
 	
 	
-	_blocks.append ("""<h2 class="pckb--main-title pckb--text">PunchCard Key Backup</h2>""")
+	_blocks.append ("""<div><h2 class="pckb--main-title pckb--text">PunchCard Key Backup</h2></div>""")
 	
 	if True :
 		_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_png_sha256}" width="480" height="320" src="data:image/png;base64,{_cr80_png_base64}" />""")
@@ -87,7 +90,21 @@ def _generate () :
 		_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_svg_sha256}" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
 	
 	
-	_blocks.append (f"""<a class="pckb--stencil-link pckb--text" download="pckb-stencil.pdf" href="data:application/pdf;base64,{_stencil_pdf_base64}">download template (PDF A4)</a>""")
+	_blocks.append ("""<div><a class="pckb--project-link pckb--text" href="https://github.com/volution/punchcard-key-backup" target="_blank" rel="canonical noreferrer noopener">github.com/volution/punchcard-key-backup</a></div>""")
+	
+	_blocks.append (f"""<details class="pckb--help-wrapper">""")
+	_blocks.append (f"""<summary class="pckb--help-summary pckb--text">How to use this tool?</summary>""")
+	_blocks.append ("""<div class="pckb--help-details">""")
+	for _help_line in _help :
+		if _help_line == "" :
+			continue;
+		_help_line = _help_line.replace ("&", "&amp;") .replace ("<", "&lt;") .replace (">", "&gt;")
+		_blocks.append (f"""<p class="pckb--text">{_help_line}</p>""")
+	_blocks.append ("""</div>""")
+	_blocks.append (f"""</details>""")
+	
+	
+	_blocks.append (f"""<div><a class="pckb--stencil-link pckb--text" download="pckb-stencil.pdf" href="data:application/pdf;base64,{_stencil_pdf_base64}">download template (PDF A4)</a></div>""")
 	
 	
 	_blocks.append ("""<noscript class="pckb--knobs-admonition pckb--text">Unfortunately, JavaScript is required to execute the encoder / decoder!</noscript>""")
@@ -111,7 +128,7 @@ def _generate () :
 			for _bit_column in range (8) :
 				_blocks.append ("""<span class="pckb--bit-wrapper">""")
 				_bit_index = (_word_index * 64) + (_bit_row * 8) + _bit_column
-				_bit_tooltip = "key bit %03d, (word %d, row %d, column %d)" % (_bit_index, _word_index + 1, _bit_row + 1, _bit_column + 1)
+				_bit_tooltip = "key bit %03d, (word %d, row %d, column %d)" % (_bit_index + 1, _word_index + 1, _bit_row + 1, _bit_column + 1)
 				_blocks.append (f"""<input id="pckb--key-bit-checkbox--{_word_index}-{_bit_row}-{_bit_column}" type="checkbox" class="pckb--bit-checkbox" title="{_bit_tooltip}" />""")
 				_blocks.append ("""</span>""")
 			_blocks.append ("""</div>""")
@@ -130,7 +147,7 @@ def _generate () :
 			for _bit_column in range (8) :
 				_blocks.append ("""<span class="pckb--bit-wrapper">""")
 				_bit_index = (_word_index * 8) + _bit_column
-				_bit_tooltip = "crc bit %02d, (word %d, column %d)" % (_bit_index, _word_index + 1, _bit_column + 1)
+				_bit_tooltip = "crc bit %02d, (word %d, column %d)" % (_bit_index + 1, _word_index + 1, _bit_column + 1)
 				_blocks.append (f"""<input id="pckb--crc-bit-checkbox--{_bit_index}" type="checkbox" class="pckb--bit-checkbox" title="{_bit_tooltip}" disabled="disabled" />""")
 				_blocks.append ("""</span>""")
 			_blocks.append ("""</span>""")

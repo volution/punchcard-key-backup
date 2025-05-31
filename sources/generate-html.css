@@ -120,10 +120,6 @@ html:root > body {
 	padding-right : 0.5ch;
 }
 .pckb--paste-field {
-	/*
-	font-size : 0.5em;
-	line-height : 1.25em;
-	*/
 	padding : 1ch;
 	resize : none;
 }
@@ -137,8 +133,17 @@ html:root > body {
 	text-wrap : nowrap;
 	text-overflow : ellipsis;
 }
-.pckb--stencil-link {
+.pckb--project-link,
+.pckb--stencil-link,
+.pckb--help-wrapper > summary {
 	text-align : center;
+}
+.pckb--project-link,
+.pckb--stencil-link,
+.pckb--help-wrapper > .pckb--help-summary,
+.pckb--help-wrapper > .pckb--help-details {
+	border : 1px solid;
+	padding : 0.5ex;
 }
 .pckb--main-title {
 	text-align : center;
@@ -200,5 +205,11 @@ html:root > body {
 }
 .pckb--license > * {
 	display : inline-block;
+}
+
+.pckb--main-wrapper a,
+.pckb--main-wrapper summary,
+.pckb--license-wrapper a {
+	text-decoration : underline;
 }
 

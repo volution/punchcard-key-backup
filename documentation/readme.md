@@ -38,10 +38,11 @@ All of this can be achieved by anyone at home, with access only to the following
 * using the self-contained HTML at the link above (<https://volution.ro/pckb>),
   either by entering the data manually, or by generating random data,
   one can get the hole punching pattern;
-  (see the embedded help for more details;)
+* (this whole procedure is described in the [help](<./sources/generate-help.txt>),
+  and you could consult it for more details;)
 * from the same link above, or from [here](<./stencils/stencil--one--export.pdf>),
   one can print a standard (CR80 ID) card sized stencil,
-  to be used as guide for the hole punching;
+  to be used as a guide for the hole punching;
 * a small sheet of aluminium;
   (I've used a 0.5mm thick one I've bought from the hardware store for ~4 EUR;)
 * a [punch tool](<https://en.wikipedia.org/wiki/Punch_(tool)>),
@@ -51,9 +52,9 @@ All of this can be achieved by anyone at home, with access only to the following
   used to actually punch the holes;
   (I've used a 1.00mm drill bit adapted to a standard screwdriver;)
 * a cutter, to cut the aluminium steel sheet to the standard (CR80 ID) card size;
-  (I've just used a ruller, and passed the cutter multiple times over the aluminium sheet,
+  (I've just used a ruler, and passed the cutter multiple times over the aluminium sheet,
   and in the end, it passed through;)
-* (obviously, one can just use a wood plank, nail and rock;)  :)
+* (obviously, one can just use a wood plank, nail, and rock;)  :)
 
 The recovery is as simple as:
 * use the same self-contained HTML at the link above;
@@ -80,8 +81,8 @@ just use simple binary to decimal (or other base) conversion as described
 
 You can (and should) save it locally, and use it from your computer.
 
-It doesn't load any external resource.
-None, even the images and attachments are saved as `data:` URIs,
+It doesn't load any external resources.
+None;  even the images and attachments are saved as `data:` URIs,
 thus embedded into the HTML itself.
 
 

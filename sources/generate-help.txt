@@ -1,0 +1,85 @@
+
+
+#### How to recover your secret
+
+Find the three holes in the corners,
+then flip and/or rotate the card until they are positioned as
+upper-left corner, bottom-left corner, and bottom-right corner.
+
+Download and print the template, and align it to match the card.
+
+Alternatively, imagine (or draw with a pencil)
+two grids of 8x8 (one for each key word),
+then another two 1x8 (one for each CRC word).
+
+Use the `reset` button to clear the page checkboxes.
+
+Click each key checkbox that matches a hole on your card.
+
+Check that the CRC checkboxes pattern matches the one on your card.
+
+Now, depending on what you've used when creating the backup,
+either use the `key txt`, `key hex`, or `key b10` input boxes
+to recover your secret.
+
+
+
+
+#### How to backup your secret
+
+(1) Selecting your secret
+
+Recommended, if you don't yet have a secret to backup,
+then it's best to just generate a truly random 128 bit number,
+represent it in hexadecimal, and use the `key hex` input box.
+(Just ignore the `key b10` and `key txt` inputs.)
+
+If you already have a secret to backup,
+use the `key txt` input box,
+and hopefully it fits into 128 bits and it won't be truncated
+(else a warning message would be given).
+(The code uses a few heuristics to choose an optimal representation,
+depending on which characters you are actually using.)
+
+(2) Preparing to punch holes
+
+Download and print the template,
+and use it as a guide for the hole punching that follows.
+
+Use an aluminium, or stainless steel, sheet as the physical medium.
+(Although, cardboard, wood planks, or other material could be used.)
+
+Use a center punch tool to mark where the holes are to be drilled.
+Use a small drill bit (1mm) to drill the holes.
+
+(3) Punching holes
+
+* tape the template to the aluminium sheet;
+
+* use the punch tool to mark where the holes are to be drilled;
+
+* mark the three (green) corners (upper-left, bottom-left, bottom-right);
+  (these are to be used as alignment markers on recovery,
+  to make sure the card isn't flipped;)
+
+* mark the key (blue) holes and the CRC (orange) holes as seen on the page;
+
+* count and check if you've marked all the proper holes;
+
+* drill the holes you've just marked;
+
+* count and check again that you've drilled all the proper holes;
+
+* cut the aluminium sheet;
+  (there are 4 dots in the corners to help place a ruler,
+  then using a cutter, tracing it many times on aluminium,
+  one can easily cut the sheet;)
+
+* polish the sheet with sandpaper;
+
+(4) Check the secret recovery
+
+Follow the recovery section to make sure you've punched the proper holes,
+and to make sure you know how to recover your secret.
+
+
