@@ -143,17 +143,17 @@ def _generate () :
 	
 	_blocks.append ("""<div class="pckb--output-pair">""")
 	_blocks.append ("""<label class="pckb--output-label">key txt</label>""")
-	_blocks.append ("""<input id="pckb--key-txt--input" class="pckb--output-field" pattern="[!-~ ]*" />""")
+	_blocks.append ("""<input id="pckb--key-txt--input" type="text" class="pckb--output-field" pattern="[!-~ ]*" autocomplete="off" autocapitalize="off" />""")
 	_blocks.append ("""</div>""")
 	
 	_blocks.append ("""<div class="pckb--output-pair">""")
 	_blocks.append ("""<label class="pckb--output-label">key b10</label>""")
-	_blocks.append ("""<input id="pckb--key-b10--input" class="pckb--output-field" pattern="[0-9 ]*" />""")
+	_blocks.append ("""<input id="pckb--key-b10--input" type="text" class="pckb--output-field" pattern="[0-9 ]*" />""")
 	_blocks.append ("""</div>""")
 	
 	_blocks.append ("""<div class="pckb--output-pair">""")
 	_blocks.append ("""<label class="pckb--output-label">key hex</label>""")
-	_blocks.append ("""<input id="pckb--key-hex--input" class="pckb--output-field" pattern="[0-9a-fA-F ]*" />""")
+	_blocks.append ("""<input id="pckb--key-hex--input" type="text" class="pckb--output-field" pattern="[0-9a-fA-F ]*" />""")
 	_blocks.append ("""</div>""")
 	
 	_blocks.append ("""</div>""")
@@ -170,6 +170,9 @@ def _generate () :
 	_blocks.append ("""</div>""")
 	_blocks.append ("""</main>""")
 	
+	_blocks.append ("""<footer class="pckb--license-wrapper">""")
+	_blocks.append ("""<p class="pckb--license"><a href="https://github.com/volution/punchcard-key-backup" target="_blank" rel="canonical noreferrer noopener">PunchCard Key Backup</a> <span>by</span> <a href="https://volution.ro/ciprian" target="_blank" rel="author noreferrer noopener">Ciprian Dorin Craciun</a> <span>is licensed under</span> <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noreferrer noopener nofollow">Creative Commons Attribution 4.0 International</a></p>""")
+	_blocks.append ("""</footer>""")
 	_blocks.append ("""</body>""")
 	
 	_blocks.append ("""</html>""")

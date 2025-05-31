@@ -30,7 +30,7 @@
 
 
 << darkhttpd / open
-	exec -- x-www firefox-guest:pckb open https://punchcard-key-backup--demo.xiyipoke.olympus.volution.ro/generate.html
+	exec -- x-www firefox-guest:pckb open http://punchcard-key-backup--demo.xiyipoke.olympus.volution.ro:81/generate.html
 !!
 
 
@@ -103,6 +103,20 @@
 !!
 
 
+
+
+
+
+
+
+<< inkscape / export / all
+	test "${#}" -eq 0
+	"${ZRUN}" ':: inkscape / export / cr80'
+	"${ZRUN}" ':: inkscape / export / stencil / one'
+	"${ZRUN}" ':: inkscape / export / stencil / many'
+!!
+
+
 << inkscape / export / cr80
 	test "${#}" -eq 0
 	inkscape \
@@ -121,7 +135,7 @@
 			--export-overwrite \
 			--export-area-drawing \
 			--export-dpi=480 \
-			--export-png-color-mode=Gray_8 \
+			--export-png-color-mode=RGB_8 \
 			--export-png-compression=9 \
 			--export-png-antialias=0 \
 			--export-png-use-dithering=false \
@@ -142,27 +156,20 @@
 			--export-text-to-path \
 			./stencils/stencil--one--inkscape.svg \
 	#
+!!
+
+
+<< inkscape / export / stencil / many
+	test "${#}" -eq 0
 	inkscape \
-			--export-type=svg \
-			--export-filename=./stencils/stencil--one--export.svg \
+			--export-type=pdf \
+			--export-filename=./stencils/stencil--many--export.pdf \
 			--export-overwrite \
 			--export-area-page \
 			--export-dpi=96 \
-			--export-plain-svg \
+			--export-pdf-version=1.4 \
 			--export-text-to-path \
-			./stencils/stencil--one--inkscape.svg \
-	#
-	inkscape \
-			--export-type=png \
-			--export-filename=./stencils/stencil--one--export.png \
-			--export-overwrite \
-			--export-area-page \
-			--export-dpi=480 \
-			--export-png-color-mode=Gray_8 \
-			--export-png-compression=9 \
-			--export-png-antialias=0 \
-			--export-png-use-dithering=false \
-			./stencils/stencil--one--inkscape.svg \
+			./stencils/stencil--many--inkscape.svg \
 	#
 !!
 

@@ -8,7 +8,9 @@ html:root > body {
 
 
 .pckb--main-wrapper,
-.pckb--main-wrapper * {
+.pckb--main-wrapper *,
+.pckb--license-wrapper,
+.pckb--license-wrapper * {
 	display : block;
 	align-items : stretch;
 	align-content : stretch;
@@ -33,7 +35,8 @@ html:root > body {
 }
 
 
-.pckb--main-wrapper {
+.pckb--main-wrapper,
+.pckb--license-wrapper {
 	font-family : "JetBrains Mono NL", "JetBrains Mono", "Fira Mono", monospace;
 	font-size : 16px;
 	line-height : 24px;
@@ -190,4 +193,12 @@ html:root > body {
 	display : none;
 }
 
+.pckb--license {
+	margin : auto;
+	max-width : 60ch;
+	text-align : center;
+}
+.pckb--license > * {
+	display : inline-block;
+}
 
