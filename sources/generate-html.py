@@ -43,7 +43,7 @@ def _generate () :
 	_blocks.append ("""<html lang="en">""")
 	
 	_blocks.append ("""<head>""")
-	_blocks.append ("""<title>PunchCard Key Backup</title>""")
+	_blocks.append ("""<title>PunchCard Key Backup (v0.1)</title>""")
 	
 	_blocks.append ("""<meta charset="UTF-8" />""")
 	_blocks.append ("""<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />""")
@@ -82,7 +82,7 @@ def _generate () :
 	_blocks.append ("""<div class="pckb--main-content">""")
 	
 	
-	_blocks.append ("""<div><h2 class="pckb--main-title pckb--text">PunchCard Key Backup</h2></div>""")
+	_blocks.append ("""<div><h2 class="pckb--main-title pckb--text">PunchCard Key Backup (v0.1)</h2></div>""")
 	
 	if True :
 		_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_png_sha256}" width="480" height="320" src="data:image/png;base64,{_cr80_png_base64}" />""")
@@ -90,21 +90,25 @@ def _generate () :
 		_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_svg_sha256}" src="data:image/svg+xml;base64,{_cr80_svg_base64}" />""")
 	
 	
-	_blocks.append ("""<div><a class="pckb--project-link pckb--text" href="https://github.com/volution/punchcard-key-backup" target="_blank" rel="canonical noreferrer noopener">github.com/volution/punchcard-key-backup</a></div>""")
 	
 	_blocks.append (f"""<details class="pckb--help-wrapper">""")
-	_blocks.append (f"""<summary class="pckb--help-summary pckb--text">How to use this tool?</summary>""")
+	_blocks.append (f"""<summary class="pckb--help-summary pckb--text">help and links</summary>""")
 	_blocks.append ("""<div class="pckb--help-details">""")
+	
 	for _help_line in _help :
 		if _help_line == "" :
 			continue;
 		_help_line = _help_line.replace ("&", "&amp;") .replace ("<", "&lt;") .replace (">", "&gt;")
 		_blocks.append (f"""<p class="pckb--text">{_help_line}</p>""")
+	
+	_blocks.append (f"""<p class="pckb--text"><a class="pckb--stencil-link" download="pckb-stencil.pdf" href="data:application/pdf;base64,{_stencil_pdf_base64}">hole punching template (PDF A4)</a></p>""")
+	
+	_blocks.append ("""<p class="pckb--text"><a class="pckb--project-link" href="https://github.com/volution/punchcard-key-backup" target="_blank" rel="canonical noreferrer noopener">github.com/volution/punchcard-key-backup</a></p>""")
+	
 	_blocks.append ("""</div>""")
 	_blocks.append (f"""</details>""")
 	
 	
-	_blocks.append (f"""<div><a class="pckb--stencil-link pckb--text" download="pckb-stencil.pdf" href="data:application/pdf;base64,{_stencil_pdf_base64}">download template (PDF A4)</a></div>""")
 	
 	
 	_blocks.append ("""<noscript class="pckb--knobs-admonition pckb--text">Unfortunately, JavaScript is required to execute the encoder / decoder!</noscript>""")
