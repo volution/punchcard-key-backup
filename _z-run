@@ -5,9 +5,9 @@
 
 << generate / html / watch
 	exec -- watchexec \
-			-w ./generate-html.py \
-			-w ./generate-html.js \
-			-w ./generate-html.css \
+			-w ./sources/generate-html.py \
+			-w ./sources/generate-html.js \
+			-w ./sources/generate-html.css \
 			-n \
 			-- \
 			"${ZRUN}" ':: generate / html' \
@@ -17,20 +17,21 @@
 
 << generate / html
 	test "${#}" -eq 0
+	cd -- ./sources
 	exec -- python3 ./generate-html.py >| ./generate.html
 !!
 
 
 << generate / html / open
 	test "${#}" -eq 0
-	exec -- x-www firefox-guest:pckb open file://"$( exec -- readlink -e -- ./generate.html )"
+	exec -- x-www firefox-guest:pckb open file://"$( exec -- readlink -e -- ./sources/generate.html )"
 !!
 
 
 
 
 << darkhttpd / open
-	exec -- x-www firefox-guest:pckb open http://punchcard-key-backup--demo.xiyipoke.olympus.volution.ro:81/generate.html
+	exec -- x-www firefox-guest:pckb open http://punchcard-key-backup--demo.xiyipoke.olympus.volution.ro:81/sources/generate.html
 !!
 
 

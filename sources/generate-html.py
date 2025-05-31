@@ -17,15 +17,15 @@ _style = open ("./generate-html.css", "rt") .read ()
 _style = re.sub (r"\n+\s*\n+", "\n", "\n" + _style + "\n")
 _style_sha256 = base64.b64encode (hashlib.sha256 (_style.encode ("ascii")) .digest ()) .decode ("ascii")
 
-_cr80_svg = open ("./stencils/cr80--export.svg", "rt") .read ()
+_cr80_svg = open ("../stencils/cr80--export.svg", "rt") .read ()
 _cr80_svg_sha256 = base64.b64encode (hashlib.sha256 (_cr80_svg.encode ("ascii")) .digest ()) .decode ("ascii")
 _cr80_svg_base64 = base64.b64encode (_cr80_svg.encode ("ascii")) .decode ("ascii")
 
-_cr80_png = open ("./stencils/cr80--export.png", "rb") .read ()
+_cr80_png = open ("../stencils/cr80--export.png", "rb") .read ()
 _cr80_png_sha256 = base64.b64encode (hashlib.sha256 (_cr80_png) .digest ()) .decode ("ascii")
 _cr80_png_base64 = base64.b64encode (_cr80_png) .decode ("ascii")
 
-_stencil_pdf = open ("./stencils/stencil--one--export.pdf", "rb") .read ()
+_stencil_pdf = open ("../stencils/stencil--one--export.pdf", "rb") .read ()
 _stencil_pdf_sha256 = base64.b64encode (hashlib.sha256 (_stencil_pdf) .digest ()) .decode ("ascii")
 _stencil_pdf_base64 = base64.b64encode (_stencil_pdf) .decode ("ascii")
 
