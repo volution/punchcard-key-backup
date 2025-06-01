@@ -8,3 +8,9 @@ https://en.wikipedia.org/wiki/ISO/IEC_7810
 
 https://github.com/dflook/python-minifier
 
+https://jlopp.github.io/metal-bitcoin-storage-reviews/
+https://blog.lopp.net/a-treatise-on-bitcoin-seed-backup-device-design/
+https://blog.lopp.net/how-to-back-up-a-seed-phrase/
+https://blog.lopp.net/how-bury-bitcoin-seed-phrase-backup/
+https://diyseed.net/generator
+
