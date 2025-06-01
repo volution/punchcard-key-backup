@@ -95,7 +95,7 @@ mainly meant for experimentation.
 
 You can easily just write the following snippet to generate the bit pattern:
 ```
-python -c '_secret = "d74ae47dc6f599d3f9cb847bd77d6b7c" ; print (bin(int(_secret,16))[2:])'
+python -c '_secret = "d74ae47dc6f599d3f9cb847bd77d6b7c" ; print (bin(int(_secret,16))[2:].rjust(128,"0"))'
 ```
 
 And, for the reverse just write the following snippet:
