@@ -265,7 +265,30 @@ function pckb (__pckb) {
 		
 		if (!__test__succeeded) return;
 		
-		key_refresh (_key_generate ());
+		while (true) {
+			
+			const _key_b10_random = _key_generate ();
+			const _key_txt_mode_and_string = _key_b10_to_txt (_key_b10_random);
+			const _key_txt_mode = _key_txt_mode_and_string[0];
+			const _key_txt_string = _key_txt_mode_and_string[1];
+			if (_key_txt_mode != 0)
+				continue;
+			const _key_b10_reversed = _key_txt_to_b10 (_key_txt_string);
+			if (_key_b10_reversed != _key_b10_random)
+				continue;
+			
+			key_refresh (_key_b10_random);
+			
+			let _empty_lines = 0;
+			for (const _counts of [__key_bits_count_x, __key_bits_count_y, __crc_bits_count])
+				for (const _count of _counts)
+					if (_count == 0)
+						_empty_lines += 1;
+			if (_empty_lines > 0)
+				continue;
+			
+			break;
+		}
 	}
 	
 	
@@ -474,7 +497,7 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (1) << BigInt (128 - 2)) | (BigInt (2) << BigInt (128 - 2 - 2));
+			_key_b10 = _key_b10 | (BigInt (0 + 1) << BigInt (128 - 2)) | (BigInt (2 + 1) << BigInt (128 - 2 - 2));
 			
 			return (_key_b10);
 			
@@ -501,14 +524,14 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (1) << BigInt (128 - 2)) | (BigInt (1) << BigInt (128 - 2 - 2));
+			_key_b10 = _key_b10 | (BigInt (0 + 1) << BigInt (128 - 2)) | (BigInt (2 + 0) << BigInt (128 - 2 - 2));
 			
 			return (_key_b10);
 			
 		} else if ((/^[a-z]+$/).test (_key_txt_string)) {
 			
-			const _unused_bits = 2;
-			const _limit = BigInt (1) << BigInt (128 - 2 - _unused_bits);
+			const _unused_bits = 0;
+			const _limit = BigInt (1) << BigInt (128 - 2 - 2 - _unused_bits);
 			
 			let _key_b10 = BigInt (1);
 			
@@ -528,7 +551,7 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (1) << BigInt (128 - 2));
+			_key_b10 = _key_b10 | (BigInt (0 + 1) << BigInt (128 - 2)) | (BigInt (0 + 1) << BigInt (128 - 2 - 2));
 			
 			return (_key_b10);
 			
@@ -555,7 +578,7 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (2) << BigInt (128 - 2));
+			_key_b10 = _key_b10 | (BigInt (2 + 1) << BigInt (128 - 2));
 			
 			return (_key_b10);
 			
@@ -590,7 +613,7 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (0) << BigInt (128 - 2));
+			_key_b10 = _key_b10 | (BigInt (2 + 0) << BigInt (128 - 2));
 			
 			return (_key_b10);
 			
@@ -617,7 +640,7 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (3) << BigInt (128 - 2));
+			_key_b10 = _key_b10 | (BigInt (0 + 0) << BigInt (128 - 2));
 			
 			return (_key_b10);
 			
@@ -635,8 +658,8 @@ function pckb (__pckb) {
 		let _key_txt_seed = _key_b10;
 		
 		let _key_txt_seed_mask = 2;
-		let _key_txt_mode = (Number (_key_txt_seed >> BigInt (128 - 2)) & ~(1 << 2)) * 10;
-		if (_key_txt_mode == 10) {
+		let _key_txt_mode = 10 * (Number (_key_txt_seed >> BigInt (128 - 2)) & ~(1 << 2));
+		if (_key_txt_mode == (10 * (0 + 1))) {
 			_key_txt_seed_mask += 2;
 			_key_txt_mode += Number (_key_txt_seed >> BigInt (128 - 4)) & ~(1 << 2);
 		}
@@ -659,16 +682,7 @@ function pckb (__pckb) {
 				
 			}
 			
-			if (_key_txt_mode == 11) {
-				
-				const _char_index = Number (_key_txt_seed % BigInt (__cva_cardinality));
-				_key_txt_seed = _key_txt_seed / BigInt (__cva_cardinality);
-				
-				const _char_txt = __cva_index_to_pair[_char_index];
-				
-				_key_txt_string = _char_txt + ((_key_txt_string != "") ? " " : "") + _key_txt_string;
-				
-			} else if (_key_txt_mode == 12) {
+			if (_key_txt_mode == (10 * (0 + 1) + (2 + 1))) {
 				
 				const _char_index = Number (_key_txt_seed % BigInt (__cvs_cardinality));
 				_key_txt_seed = _key_txt_seed / BigInt (__cvs_cardinality);
@@ -677,7 +691,16 @@ function pckb (__pckb) {
 				
 				_key_txt_string = _char_txt + ((_key_txt_string != "") ? " " : "") + _key_txt_string;
 				
-			} else if (_key_txt_mode == 10) {
+			} else if (_key_txt_mode == (10 * (0 + 1) + (2 + 0))) {
+				
+				const _char_index = Number (_key_txt_seed % BigInt (__cva_cardinality));
+				_key_txt_seed = _key_txt_seed / BigInt (__cva_cardinality);
+				
+				const _char_txt = __cva_index_to_pair[_char_index];
+				
+				_key_txt_string = _char_txt + ((_key_txt_string != "") ? " " : "") + _key_txt_string;
+				
+			} else if (_key_txt_mode == (10 * (0 + 1) + (0 + 1))) {
 				
 				const _char_index = Number (_key_txt_seed % BigInt (26));
 				_key_txt_seed = _key_txt_seed / BigInt (26);
@@ -687,7 +710,7 @@ function pckb (__pckb) {
 				
 				_key_txt_string = _char_txt + _key_txt_string;
 				
-			} else if (_key_txt_mode == 20) {
+			} else if (_key_txt_mode == (10 * (2 + 1))) {
 				
 				const _char_index = Number (_key_txt_seed % BigInt (36));
 				_key_txt_seed = _key_txt_seed / BigInt (36);
@@ -697,17 +720,7 @@ function pckb (__pckb) {
 				
 				_key_txt_string = _char_txt + _key_txt_string;
 				
-			} else if (_key_txt_mode == 30) {
-				
-				const _char_index = Number (_key_txt_seed % BigInt (94));
-				_key_txt_seed = _key_txt_seed / BigInt (94);
-				
-				const _char_code = 33 + _char_index;
-				const _char_txt = String.fromCodePoint (_char_code);
-				
-				_key_txt_string = _char_txt + _key_txt_string;
-				
-			} else if (_key_txt_mode == 0) {
+			} else if (_key_txt_mode == (10 * (2 + 0))) {
 				
 				const _char_index = Number (_key_txt_seed % BigInt (64));
 				_key_txt_seed = _key_txt_seed / BigInt (64);
@@ -721,6 +734,16 @@ function pckb (__pckb) {
 					_char_code = (48 + _char_index - 26 - 26);
 				else
 					_char_code = (45 + _char_index - 26 - 26 - 10);
+				const _char_txt = String.fromCodePoint (_char_code);
+				
+				_key_txt_string = _char_txt + _key_txt_string;
+				
+			} else if (_key_txt_mode == (10 * (0 + 0))) {
+				
+				const _char_index = Number (_key_txt_seed % BigInt (94));
+				_key_txt_seed = _key_txt_seed / BigInt (94);
+				
+				const _char_code = 33 + _char_index;
 				const _char_txt = String.fromCodePoint (_char_code);
 				
 				_key_txt_string = _char_txt + _key_txt_string;
@@ -762,85 +785,103 @@ function pckb (__pckb) {
 	
 	let __test__vectors = [
 		
+		
 		{
-			key_b10_string : "129405715901649668340211268476941990266",
-			key_hex_string : "615aa262fdbda58aaf50326723ad797a",
+			key_b10_string : "150673363834208322306672181441427503482",
+			key_hex_string : "715aa262fdbda58aaf50326723ad797a",
 			key_txt_string : "fuvitiliderarutujeconifahifohogirihida",
-			key_txt_mode : 12,
-			crc_number : 54567,
+			key_txt_mode : 13,
+			crc_number : 63021,
 		},
 		{
-			key_b10_string : "127634112437235862071206592176394812654",
-			key_hex_string : "60056f9796cec4b6a3903edf45df3cee",
-			key_txt_string : "nahilogajahudafolulijinahojulematezo",
-			key_txt_mode : 12,
-			crc_number : 29140,
-			key_hex_string_dual : "52ad5d1d808a4906ac3160ac2b830823",
+			key_b10_string : "151163194717201883656133035911920766057",
+			key_hex_string : "71b8f8e9ee6fa6b1d1f957cc83884c69",
+			key_txt_string : "nicodahodotafogahiroberivotipugutunuha",
+			key_txt_mode : 13,
+			crc_number : 55075,
 		},
 		
+		
 		{
-			key_b10_string : "110603640824904936687205456241932490496",
-			key_hex_string : "53357c838ccbecb861ea932a83a1d700",
+			key_b10_string : "131871288757463590653666369206418003712",
+			key_hex_string : "63357c838ccbecb861ea932a83a1d700",
 			key_txt_string : "vedajaxokokewekudipofocexesotequwote",
-			key_txt_mode : 11,
-			crc_number : 4951,
+			key_txt_mode : 12,
+			crc_number : 30281,
+		},
+		{
+			key_b10_string : "130260144699429160147704513855266973160",
+			key_hex_string : "61ff30fa96c7d56cea451502e9f365e8",
+			key_txt_string : "davumocagoyowanelohoxuwiwuzimupozitu",
+			key_txt_mode : 12,
+			crc_number : 31961,
 		},
 		
+		
 		{
-			key_b10_string : "92121336848414492145574597577827583888",
-			key_hex_string : "454dec92d2934cb05afc7c766c5a8790",
+			key_b10_string : "113388984780973146112035510542313097104",
+			key_hex_string : "554dec92d2934cb05afc7c766c5a8790",
 			key_txt_string : "dugfctxapnlwqcxsnbzchxkppo",
-			key_txt_mode : 10,
-			crc_number : 18914,
+			key_txt_mode : 11,
+			crc_number : 27368,
 		},
 		{
-			key_b10_string : "85088214802972242082704378106661119942",
-			key_hex_string : "400364e273262d1c851d115fa06127c6",
-			key_txt_string : "yiesqtbjhkupxyljrnxavjba",
-			key_txt_mode : 10,
-			crc_number : 50696,
-			key_hex_string_dual : "9c4205e941bb9558d136a38ae87eecf4",
+			key_b10_string : "112913611911843072889768173658842099628",
+			key_hex_string : "54f25ee1ac3d3201a970b665d75c6fac",
+			key_txt_string : "buazqckdhhhznnjkdigwfkwiim",
+			key_txt_mode : 11,
+			crc_number : 29103,
 		},
 		
+		
 		{
-			key_b10_string : "205269886151914689565406637013006327200",
-			key_hex_string : "9a6d8ac345470bb6062254a33f189da0",
-			key_txt_string : "ulz10pe6n44edg8op2kq0g72",
+			key_b10_string : "171825478188269994183161308487654078943",
+			key_hex_string : "8144622437d611d79555caa8209c79df",
+			key_txt_string : "RGIkN9YR15VVyqggnHnf",
 			key_txt_mode : 20,
-			crc_number : 5235,
+			crc_number : 508,
 		},
+		{
+			key_b10_string : "172282233953603082099706973463396836367",
+			key_hex_string : "819c59f07b716b9a2dd3c5e7b551640f",
+			key_txt_string : "nFnwe3Frmi3Txee1UWQP",
+			key_txt_mode : 20,
+			crc_number : 58029,
+		},
+		
 		
 		{
 			key_b10_string : "286172883415773381985495046221813607292",
 			key_hex_string : "d74ae47dc6f599d3f9cb847bd77d6b7c",
-			key_txt_string : "!=:FX9NtvTmO/'~<\\>S",
+			key_txt_string : "nxfq7wmc8s457hnz0d54462m",
 			key_txt_mode : 30,
 			crc_number : 46084,
 		},
+		{
+			key_b10_string : "290340477882149305431250288870948380064",
+			key_hex_string : "da6d8ac345470bb6062254a33f189da0",
+			key_txt_string : "ulz10pe6n44edg8op2kq0g72",
+			key_txt_mode : 30,
+			crc_number : 39003,
+		},
 		
-		{
-			key_b10_string : "1684294727800762451474004771769973215",
-			key_hex_string : "0144622437d611d79555caa8209c79df",
-			key_txt_string : "RGIkN9YR15VVyqggnHnf",
-			key_txt_mode : 0,
-			crc_number : 2445,
-		},
-		{
-			key_b10_string : "33532900053985126750087528707880000",
-			key_hex_string : "0006754cb3c755ba2abecdcd08ed7440",
-			key_txt_string : "nVMs8dVuiq-zc0I7XRA",
-			key_txt_mode : 0,
-			crc_number : 50548,
-			key_hex_string_dual : "ea60c4b6f975180d032175d72d94c96a",
-		},
 		
 		{
 			key_b10_string : "47168027646745113250991940369283290814",
 			key_hex_string : "237c3b4fca58c46a264d37bb1ac816be",
-			key_txt_string : "",
-			key_txt_mode : -1,
+			key_txt_string : "R_CHK6hh.v~g4M+Z<7G",
+			key_txt_mode : 0,
 			crc_number : 17147,
 		},
+		{
+			key_b10_string : "44204631514214177107191510049129202120",
+			key_hex_string : "2141809a19a88de6d4d0fc500aaf81c8",
+			key_txt_string : "I\\x{neUH{t7mg}+l?HW",
+			key_txt_mode : 0,
+			crc_number : 48784,
+		},
+		
+		
 		{
 			key_b10_string : "330858855078231141900554465331134321020",
 			key_hex_string : "f8e918feadaca5ace2f7a156bf37d17c",
@@ -855,20 +896,7 @@ function pckb (__pckb) {
 			key_txt_mode : -1,
 			crc_number : 45113,
 		},
-		{
-			key_b10_string : "235010124662613375119348511116225836300",
-			key_hex_string : "b0cd4dbad6d7ed8f0cb0c56ce3c6750c",
-			key_txt_string : "",
-			key_txt_mode : -1,
-			crc_number : 33605,
-		},
-		{
-			key_b10_string : "44204631514214177107191510049129202120",
-			key_hex_string : "2141809a19a88de6d4d0fc500aaf81c8",
-			key_txt_string : "",
-			key_txt_mode : -1,
-			crc_number : 48784,
-		},
+		
 		
 		/*
 		{
@@ -908,8 +936,15 @@ function pckb (__pckb) {
 			if (Object.keys (_test_failure) .length == 0) {
 				_test_failed = false;
 			} else {
-				console.log ("test failed", __test__index, _test_failure, _test_vector);
-				_test_failed = true;
+				if (_test_failure.key_txt_string === undefined) {
+					if (true)
+						console.log ("test alternative", __test__index, _test_failure, _test_vector);
+					if (!_test_vector.generate)
+						_test_failed = true;
+				} else {
+					console.log ("test failed", __test__index, _test_failure, _test_vector);
+					_test_failed = true;
+				}
 			}
 		} else {
 			__dom_enable (false);
