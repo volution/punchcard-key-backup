@@ -253,6 +253,22 @@ function pckb (__pckb) {
 	}
 	
 	
+	function key_reset () {
+		
+		if (!__test__succeeded) return;
+		
+		key_refresh (BigInt (0));
+	}
+	
+	
+	function key_random () {
+		
+		if (!__test__succeeded) return;
+		
+		key_refresh (_key_generate ());
+	}
+	
+	
 	
 	
 	
@@ -408,28 +424,6 @@ function pckb (__pckb) {
 		}
 		
 		return __dom_refresh ();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	function key_reset () {
-		
-		if (!__test__succeeded) return;
-		
-		key_refresh (BigInt (0));
-	}
-	
-	
-	function key_random () {
-		
-		if (!__test__succeeded) return;
-		
-		key_refresh (_key_generate ());
 	}
 	
 	

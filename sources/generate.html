@@ -4,7 +4,7 @@
 <title>PunchCard Key Backup (v0.1)</title>
 <meta charset="UTF-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="base-uri 'none'; default-src 'none'; script-src-elem 'sha256-QvNmaktsxtWWZOTe/jISXEET8NQzI9y+j23IY4oD7uE='; style-src-elem 'sha256-1SySj+MpAIz5vglpnhWeYa0LDC2/YjrQsc/sc8voRxc='; img-src data:; form-action 'none'; upgrade-insecure-requests; block-all-mixed-content; sandbox; frame-ancestors 'none'" />
+<meta http-equiv="Content-Security-Policy" content="base-uri 'none'; default-src 'none'; script-src-elem 'sha256-O5AwvUucO7er5nBBcrhHi5vC0KzZjPOb+Nayp/ukyjE='; style-src-elem 'sha256-1SySj+MpAIz5vglpnhWeYa0LDC2/YjrQsc/sc8voRxc='; img-src data:; form-action 'none'; upgrade-insecure-requests; block-all-mixed-content; sandbox; frame-ancestors 'none'" />
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
 <meta name="color-scheme" content="dark light" />
 <link rel="icon" href="data:image/x-icon;base64," />
@@ -203,7 +203,7 @@ html:root > body {
 	text-decoration : underline;
 }
 </style>
-<script type="text/javascript" integrity="sha256-QvNmaktsxtWWZOTe/jISXEET8NQzI9y+j23IY4oD7uE=">
+<script type="text/javascript" integrity="sha256-O5AwvUucO7er5nBBcrhHi5vC0KzZjPOb+Nayp/ukyjE=">
 "use strict";
 function pckb (__pckb) {
 	let __key_bit_checkboxes = undefined;
@@ -364,6 +364,14 @@ function pckb (__pckb) {
 		const _key_b10 = _key_txt_to_b10 (_key_txt_string);
 		return key_refresh (_key_b10);
 	}
+	function key_reset () {
+		if (!__test__succeeded) return;
+		key_refresh (BigInt (0));
+	}
+	function key_random () {
+		if (!__test__succeeded) return;
+		key_refresh (_key_generate ());
+	}
 	function key_refresh (_key_b10_raw) {
 		if (!__test__succeeded) return;
 		if (_key_b10_raw === undefined) {
@@ -501,14 +509,6 @@ function pckb (__pckb) {
 			}
 		}
 		return __dom_refresh ();
-	}
-	function key_reset () {
-		if (!__test__succeeded) return;
-		key_refresh (BigInt (0));
-	}
-	function key_random () {
-		if (!__test__succeeded) return;
-		key_refresh (_key_generate ());
 	}
 	function _key_generate () {
 		const _key_seeds = new BigUint64Array (2);
