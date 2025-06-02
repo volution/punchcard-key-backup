@@ -453,7 +453,8 @@ function pckb (__pckb) {
 			
 		} else if ((/^([bcdfghjlmnprstvz][aeiou])+$/).test (_key_txt_string)) {
 			
-			const _limit = BigInt (1) << BigInt (128 - 2 - 2 - 2);
+			const _unused_bits = 2;
+			const _limit = BigInt (1) << BigInt (128 - 2 - 2 - _unused_bits);
 			
 			let _key_b10 = BigInt (1);
 			
@@ -473,13 +474,14 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (1) << BigInt (126)) | (BigInt (2) << BigInt (124));
+			_key_b10 = _key_b10 | (BigInt (1) << BigInt (128 - 2)) | (BigInt (2) << BigInt (128 - 2 - 2));
 			
 			return (_key_b10);
 			
 		} else if ((/^([bcdfghjklmnpqrstvwxyz][aeiou])+$/).test (_key_txt_string)) {
 			
-			const _limit = BigInt (1) << BigInt (128 - 2 - 2 - 2);
+			const _unused_bits = 2;
+			const _limit = BigInt (1) << BigInt (128 - 2 - 2 - _unused_bits);
 			
 			let _key_b10 = BigInt (1);
 			
@@ -499,13 +501,14 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (1) << BigInt (126)) | (BigInt (1) << BigInt (124));
+			_key_b10 = _key_b10 | (BigInt (1) << BigInt (128 - 2)) | (BigInt (1) << BigInt (128 - 2 - 2));
 			
 			return (_key_b10);
 			
 		} else if ((/^[a-z]+$/).test (_key_txt_string)) {
 			
-			const _limit = BigInt (1) << BigInt (128 - 2 - 2);
+			const _unused_bits = 2;
+			const _limit = BigInt (1) << BigInt (128 - 2 - _unused_bits);
 			
 			let _key_b10 = BigInt (1);
 			
@@ -525,13 +528,14 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (1) << BigInt (126));
+			_key_b10 = _key_b10 | (BigInt (1) << BigInt (128 - 2));
 			
 			return (_key_b10);
 			
 		} else if ((/^[a-z0-9]+$/).test (_key_txt_string)) {
 			
-			const _limit = BigInt (1) << BigInt (128 - 2 - 0);
+			const _unused_bits = 0;
+			const _limit = BigInt (1) << BigInt (128 - 2 - _unused_bits);
 			
 			let _key_b10 = BigInt (1);
 			
@@ -551,13 +555,14 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (2) << BigInt (126));
+			_key_b10 = _key_b10 | (BigInt (2) << BigInt (128 - 2));
 			
 			return (_key_b10);
 			
 		} else if ((/^[A-Za-z0-9.-]+$/).test (_key_txt_string)) {
 			
-			const _limit = BigInt (1) << BigInt (128 - 2 - 5);
+			const _unused_bits = 5;
+			const _limit = BigInt (1) << BigInt (128 - 2 - _unused_bits);
 			
 			let _key_b10 = BigInt (1);
 			
@@ -585,13 +590,14 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (0) << BigInt (126));
+			_key_b10 = _key_b10 | (BigInt (0) << BigInt (128 - 2));
 			
 			return (_key_b10);
 			
 		} else if ((/^[!-~]+$/).test (_key_txt_string)) {
 			
-			const _limit = BigInt (1) << BigInt (128 - 2 - 0);
+			const _unused_bits = 0;
+			const _limit = BigInt (1) << BigInt (128 - 2 - _unused_bits);
 			
 			let _key_b10 = BigInt (1);
 			
@@ -611,7 +617,7 @@ function pckb (__pckb) {
 			}
 			
 			_key_b10 = _key_b10 & ~_limit;
-			_key_b10 = _key_b10 | (BigInt (3) << BigInt (126));
+			_key_b10 = _key_b10 | (BigInt (3) << BigInt (128 - 2));
 			
 			return (_key_b10);
 			
