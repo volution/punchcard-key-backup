@@ -4,7 +4,7 @@
 <title>PunchCard Key Backup (v0.1)</title>
 <meta charset="UTF-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="base-uri 'none'; default-src 'none'; script-src-elem 'sha256-O5AwvUucO7er5nBBcrhHi5vC0KzZjPOb+Nayp/ukyjE='; style-src-elem 'sha256-1SySj+MpAIz5vglpnhWeYa0LDC2/YjrQsc/sc8voRxc='; img-src data:; form-action 'none'; upgrade-insecure-requests; block-all-mixed-content; sandbox; frame-ancestors 'none'" />
+<meta http-equiv="Content-Security-Policy" content="base-uri 'none'; default-src 'none'; script-src-elem 'sha256-SdfzFEpOftTmXHQYOMVb6JrIQGvtvt+AFO6oRC0zb6o='; style-src-elem 'sha256-1SySj+MpAIz5vglpnhWeYa0LDC2/YjrQsc/sc8voRxc='; img-src data:; form-action 'none'; upgrade-insecure-requests; block-all-mixed-content; sandbox; frame-ancestors 'none'" />
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
 <meta name="color-scheme" content="dark light" />
 <link rel="icon" href="data:image/x-icon;base64," />
@@ -203,7 +203,7 @@ html:root > body {
 	text-decoration : underline;
 }
 </style>
-<script type="text/javascript" integrity="sha256-O5AwvUucO7er5nBBcrhHi5vC0KzZjPOb+Nayp/ukyjE=">
+<script type="text/javascript" integrity="sha256-SdfzFEpOftTmXHQYOMVb6JrIQGvtvt+AFO6oRC0zb6o=">
 "use strict";
 function pckb (__pckb) {
 	let __key_bit_checkboxes = undefined;
@@ -520,8 +520,7 @@ function pckb (__pckb) {
 		_key_txt_string = _key_txt_string.replaceAll (" ", "");
 		if (_key_txt_string == "") {
 			return (BigInt (0));
-		}
-		if ((/^([bcdfghjlmnprstvz][aeiou])+$/).test (_key_txt_string)) {
+		} else if ((/^([bcdfghjlmnprstvz][aeiou])+$/).test (_key_txt_string)) {
 			const _limit = BigInt (1) << BigInt (128 - 2 - 2 - 2);
 			let _key_b10 = BigInt (1);
 			for (let _char_column = 0; _char_column < _key_txt_string.length; _char_column += 2) {
@@ -654,7 +653,6 @@ function pckb (__pckb) {
 		}
 	}
 	function _key_b10_to_txt (_key_b10) {
-		let _key_txt_string = "";
 		let _key_txt_seed = _key_b10;
 		let _key_txt_seed_mask = 2;
 		let _key_txt_mode = (Number (_key_txt_seed >> BigInt (128 - 2)) & ~(1 << 2)) * 10;
@@ -663,6 +661,7 @@ function pckb (__pckb) {
 			_key_txt_mode += Number (_key_txt_seed >> BigInt (128 - 4)) & ~(1 << 2);
 		}
 		_key_txt_seed = _key_txt_seed & (~ ((~ (BigInt (1) << BigInt (_key_txt_seed_mask)) << BigInt (128 - _key_txt_seed_mask))));
+		let _key_txt_string = "";
 		while (true) {
 			if (_key_txt_seed == 1) {
 				break;
