@@ -19,7 +19,7 @@ Click each key checkbox that matches a hole on your card.
 Check that the CRC checkboxes pattern matches the one on your card.
 
 Now, depending on what you've used when creating the backup,
-either use the `key txt`, `key hex`, or `key b10` input boxes
+either use the `key hex` or `key b10` input boxes
 to recover your secret.
 
 
@@ -32,14 +32,7 @@ to recover your secret.
 Recommended, if you don't yet have a secret to backup,
 then it's best to just generate a truly random 128 bit number,
 represent it in hexadecimal, and use the `key hex` input box.
-(Just ignore the `key b10` and `key txt` inputs.)
-
-If you already have a secret to backup,
-use the `key txt` input box,
-and hopefully it fits into 128 bits and it won't be truncated
-(else a warning message would be given).
-(The code uses a few heuristics to choose an optimal representation,
-depending on which characters you are actually using.)
+(Just ignore the `key b10` input.)
 
 (2) Preparing to punch holes
 

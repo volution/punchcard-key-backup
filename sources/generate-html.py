@@ -43,7 +43,7 @@ def _generate () :
 	_blocks.append ("""<html lang="en">""")
 	
 	_blocks.append ("""<head>""")
-	_blocks.append ("""<title>PunchCard Key Backup (v0.1)</title>""")
+	_blocks.append ("""<title>PunchCard Key Backup (v1.0)</title>""")
 	
 	_blocks.append ("""<meta charset="UTF-8" />""")
 	_blocks.append ("""<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />""")
@@ -82,7 +82,7 @@ def _generate () :
 	_blocks.append ("""<div class="pckb--main-content">""")
 	
 	
-	_blocks.append ("""<div><h2 class="pckb--main-title pckb--text">PunchCard Key Backup (v0.1)</h2></div>""")
+	_blocks.append ("""<div><h2 class="pckb--main-title pckb--text">PunchCard Key Backup (v1.0)</h2></div>""")
 	
 	if True :
 		_blocks.append (f"""<img class="pckb--cr80" alt="CR80 (standard ID card) stencil" integrity="sha256-{_cr80_png_sha256}" width="480" height="320" src="data:image/png;base64,{_cr80_png_base64}" />""")
@@ -161,11 +161,6 @@ def _generate () :
 	
 	
 	_blocks.append ("""<div class="pckb--outputs">""")
-	
-	_blocks.append ("""<div class="pckb--output-pair">""")
-	_blocks.append ("""<label class="pckb--output-label">key txt</label>""")
-	_blocks.append ("""<input id="pckb--key-txt--input" type="text" class="pckb--output-field" pattern="[!-~ ]*" autocomplete="off" autocapitalize="off" />""")
-	_blocks.append ("""</div>""")
 	
 	_blocks.append ("""<div class="pckb--output-pair">""")
 	_blocks.append ("""<label class="pckb--output-label">key b10</label>""")
