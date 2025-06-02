@@ -4,7 +4,7 @@
 <title>PunchCard Key Backup (v0.1)</title>
 <meta charset="UTF-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="base-uri 'none'; default-src 'none'; script-src-elem 'sha256-kEy5KW/bRQ69gVLFgOy552hncTJcXHWWYo/r1fTfMd8='; style-src-elem 'sha256-1SySj+MpAIz5vglpnhWeYa0LDC2/YjrQsc/sc8voRxc='; img-src data:; form-action 'none'; upgrade-insecure-requests; block-all-mixed-content; sandbox; frame-ancestors 'none'" />
+<meta http-equiv="Content-Security-Policy" content="base-uri 'none'; default-src 'none'; script-src-elem 'sha256-QvNmaktsxtWWZOTe/jISXEET8NQzI9y+j23IY4oD7uE='; style-src-elem 'sha256-1SySj+MpAIz5vglpnhWeYa0LDC2/YjrQsc/sc8voRxc='; img-src data:; form-action 'none'; upgrade-insecure-requests; block-all-mixed-content; sandbox; frame-ancestors 'none'" />
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
 <meta name="color-scheme" content="dark light" />
 <link rel="icon" href="data:image/x-icon;base64," />
@@ -203,9 +203,9 @@ html:root > body {
 	text-decoration : underline;
 }
 </style>
-<script type="text/javascript" integrity="sha256-kEy5KW/bRQ69gVLFgOy552hncTJcXHWWYo/r1fTfMd8=">
+<script type="text/javascript" integrity="sha256-QvNmaktsxtWWZOTe/jISXEET8NQzI9y+j23IY4oD7uE=">
 "use strict";
-function pckb (pckb) {
+function pckb (__pckb) {
 	let __key_bit_checkboxes = undefined;
 	let __crc_bit_checkboxes = undefined;
 	let __key_txt_input = undefined;
@@ -227,6 +227,11 @@ function pckb (pckb) {
 	let __key_bits_count_x = undefined;
 	let __key_bits_count_y = undefined;
 	let __crc_bits_count = undefined;
+	function __dom_bootstrap () {
+		document.addEventListener ("DOMContentLoaded", function () {
+				__dom_initialize ();
+			});
+	}
 	function __dom_initialize () {
 		__key_bit_checkboxes = new Array (128);
 		for (let _word_index = 0; _word_index < 2; _word_index += 1) {
@@ -716,13 +721,13 @@ function pckb (pckb) {
 		}
 		return ([_key_txt_mode, _key_txt_string]);
 	}
-	pckb.__initialize = __dom_initialize;
-	pckb.key_bit_changed = key_bit_changed;
-	pckb.key_txt_changed = key_txt_changed;
-	pckb.key_b10_changed = key_b10_changed;
-	pckb.key_hex_changed = key_hex_changed;
-	pckb.key_reset = key_reset;
-	pckb.key_random = key_random;
+	__pckb.__bootstrap = __dom_bootstrap;
+	__pckb.key_bit_changed = key_bit_changed;
+	__pckb.key_txt_changed = key_txt_changed;
+	__pckb.key_b10_changed = key_b10_changed;
+	__pckb.key_hex_changed = key_hex_changed;
+	__pckb.key_reset = key_reset;
+	__pckb.key_random = key_random;
 	let __test__vectors = [
 		{
 			key_b10_string : "129405715901649668340211268476941990266",
@@ -953,10 +958,10 @@ function pckb (pckb) {
 			});
 		__test__execute ();
 	}
-	pckb.__test_once = function () {
+	__pckb.__test_once = function () {
 			window.setTimeout (__test__execute, __test__interval);
 		};
-	pckb.__test_loop = function () {
+	__pckb.__test_loop = function () {
 			window.setTimeout (__test__execute_loop, __test__interval);
 		};
 	function _crc16_ccitt (_bytes) {
@@ -998,10 +1003,10 @@ function pckb (pckb) {
 	}
 	const __cva_cardinality = __cva_index_to_pair.length;
 }
-pckb (pckb);
-document.addEventListener ("DOMContentLoaded", function () {
-		pckb.__initialize ();
-	});
+(function () {
+	pckb (pckb);
+	pckb.__bootstrap ();
+} ());
 </script>
 </head>
 <body>

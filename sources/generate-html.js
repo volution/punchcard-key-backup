@@ -9,7 +9,7 @@
 
 
 
-function pckb (pckb) {
+function pckb (__pckb) {
 	
 	
 	
@@ -52,6 +52,13 @@ function pckb (pckb) {
 	
 	
 	
+	
+	
+	function __dom_bootstrap () {
+		document.addEventListener ("DOMContentLoaded", function () {
+				__dom_initialize ();
+			});
+	}
 	
 	
 	function __dom_initialize () {
@@ -659,14 +666,14 @@ function pckb (pckb) {
 	
 	
 	
-	pckb.__initialize = __dom_initialize;
+	__pckb.__bootstrap = __dom_bootstrap;
 	
-	pckb.key_bit_changed = key_bit_changed;
-	pckb.key_txt_changed = key_txt_changed;
-	pckb.key_b10_changed = key_b10_changed;
-	pckb.key_hex_changed = key_hex_changed;
-	pckb.key_reset = key_reset;
-	pckb.key_random = key_random;
+	__pckb.key_bit_changed = key_bit_changed;
+	__pckb.key_txt_changed = key_txt_changed;
+	__pckb.key_b10_changed = key_b10_changed;
+	__pckb.key_hex_changed = key_hex_changed;
+	__pckb.key_reset = key_reset;
+	__pckb.key_random = key_random;
 	
 	
 	
@@ -917,10 +924,10 @@ function pckb (pckb) {
 		__test__execute ();
 	}
 	
-	pckb.__test_once = function () {
+	__pckb.__test_once = function () {
 			window.setTimeout (__test__execute, __test__interval);
 		};
-	pckb.__test_loop = function () {
+	__pckb.__test_loop = function () {
 			window.setTimeout (__test__execute_loop, __test__interval);
 		};
 	
@@ -992,11 +999,9 @@ function pckb (pckb) {
 
 
 
-pckb (pckb);
-
-
-document.addEventListener ("DOMContentLoaded", function () {
-		pckb.__initialize ();
-	});
+(function () {
+	pckb (pckb);
+	pckb.__bootstrap ();
+} ());
 
 
