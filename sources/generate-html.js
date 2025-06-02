@@ -189,7 +189,6 @@ function pckb (pckb) {
 		return key_refresh (_key_b10);
 	}
 	
-	
 	function key_refresh (_key_b10_raw) {
 		
 		if (!__test__succeeded) return;
@@ -213,12 +212,12 @@ function pckb (pckb) {
 		}
 		let _crc = _crc16_ccitt (_bytes);
 		
-		let _key_txt;
+		let _key_txt_string;
 		let _key_txt_mode;
 		{
 			const _key_txt_mode_and_string = _key_b10_to_txt (_key_b10);
 			_key_txt_mode = _key_txt_mode_and_string[0];
-			_key_txt = _key_txt_mode_and_string[1];
+			_key_txt_string = _key_txt_mode_and_string[1];
 		}
 		
 		const _key_bits = new Array (128);
@@ -251,8 +250,8 @@ function pckb (pckb) {
 		let _paste_cut = "|--------------------------------------------------------------|";
 		let _paste_bar = "|                                                              |";
 		_paste.push (_paste_cut);
-		if (_key_txt != "")
-			_paste.push ("|" + ("   key txt  >>  " + _key_txt.replaceAll (" ", "")) .padEnd (_paste_cut.length - 2) + "|");
+		if (_key_txt_string != "")
+			_paste.push ("|" + ("   key txt  >>  " + _key_txt_string.replaceAll (" ", "")) .padEnd (_paste_cut.length - 2) + "|");
 		else
 			_paste.push ("|" + ("   key txt  !!") .padEnd (_paste_cut.length - 2) + "|");
 		_paste.push ("|" + ("   key b10  >>  " + _key_b10_string) .padEnd (_paste_cut.length - 2) + "|");
@@ -317,7 +316,7 @@ function pckb (pckb) {
 		__crc_bits_count = _crc_bits_count;
 		
 		if (_key_b10 > 0) {
-			__key_txt_string = _key_txt;
+			__key_txt_string = _key_txt_string;
 			__key_txt_mode = _key_txt_mode;
 			__key_b10_number = _key_b10;
 			__key_b10_string = _key_b10_string;
@@ -504,21 +503,20 @@ function pckb (pckb) {
 	
 	
 	function _key_b10_to_txt (_key_b10) {
-		let _key_txt = "";
-		let _key_txt_mode;
+		let _key_txt_string = "";
 		let _key_txt_seed = _key_b10;
-		let _key_txt_mask = 2;
-		_key_txt_mode = (Number (_key_txt_seed >> BigInt (128 - 2)) & ~(1 << 2)) * 10;
+		let _key_txt_seed_mask = 2;
+		let _key_txt_mode = (Number (_key_txt_seed >> BigInt (128 - 2)) & ~(1 << 2)) * 10;
 		if (_key_txt_mode == 10) {
-			_key_txt_mask += 2;
+			_key_txt_seed_mask += 2;
 			_key_txt_mode += Number (_key_txt_seed >> BigInt (128 - 4)) & ~(1 << 2);
 		}
-		_key_txt_seed = _key_txt_seed & (~ ((~ (BigInt (1) << BigInt (_key_txt_mask)) << BigInt (128 - _key_txt_mask))));
+		_key_txt_seed = _key_txt_seed & (~ ((~ (BigInt (1) << BigInt (_key_txt_seed_mask)) << BigInt (128 - _key_txt_seed_mask))));
 		while (true) {
 			if (_key_txt_seed == 1) {
 				break;
 			} else if (_key_txt_seed == 0) {
-				_key_txt = "";
+				_key_txt_string = "";
 				_key_txt_mode = -1;
 				break;
 			}
@@ -526,30 +524,30 @@ function pckb (pckb) {
 				const _char_index = Number (_key_txt_seed % BigInt (__cva_cardinality));
 				_key_txt_seed = _key_txt_seed / BigInt (__cva_cardinality);
 				const _char_txt = __cva_index_to_pair[_char_index];
-				_key_txt = _char_txt + ((_key_txt != "") ? " " : "") + _key_txt;
+				_key_txt_string = _char_txt + ((_key_txt_string != "") ? " " : "") + _key_txt_string;
 			} else if (_key_txt_mode == 12) {
 				const _char_index = Number (_key_txt_seed % BigInt (__cvs_cardinality));
 				_key_txt_seed = _key_txt_seed / BigInt (__cvs_cardinality);
 				const _char_txt = __cvs_index_to_pair[_char_index];
-				_key_txt = _char_txt + ((_key_txt != "") ? " " : "") + _key_txt;
+				_key_txt_string = _char_txt + ((_key_txt_string != "") ? " " : "") + _key_txt_string;
 			} else if (_key_txt_mode == 10) {
 				const _char_index = Number (_key_txt_seed % BigInt (26));
 				_key_txt_seed = _key_txt_seed / BigInt (26);
 				const _char_code = 97 + _char_index;
 				const _char_txt = String.fromCodePoint (_char_code);
-				_key_txt = _char_txt + _key_txt;
+				_key_txt_string = _char_txt + _key_txt_string;
 			} else if (_key_txt_mode == 20) {
 				const _char_index = Number (_key_txt_seed % BigInt (36));
 				_key_txt_seed = _key_txt_seed / BigInt (36);
 				const _char_code = (_char_index < 26) ? (97 + _char_index) : (48 + _char_index - 26);
 				const _char_txt = String.fromCodePoint (_char_code);
-				_key_txt = _char_txt + _key_txt;
+				_key_txt_string = _char_txt + _key_txt_string;
 			} else if (_key_txt_mode == 30) {
 				const _char_index = Number (_key_txt_seed % BigInt (94));
 				_key_txt_seed = _key_txt_seed / BigInt (94);
 				const _char_code = 33 + _char_index;
 				const _char_txt = String.fromCodePoint (_char_code);
-				_key_txt = _char_txt + _key_txt;
+				_key_txt_string = _char_txt + _key_txt_string;
 			} else if (_key_txt_mode == 0) {
 				const _char_index = Number (_key_txt_seed % BigInt (64));
 				_key_txt_seed = _key_txt_seed / BigInt (64);
@@ -563,14 +561,14 @@ function pckb (pckb) {
 				else
 					_char_code = (45 + _char_index - 26 - 26 - 10);
 				const _char_txt = String.fromCodePoint (_char_code);
-				_key_txt = _char_txt + _key_txt;
+				_key_txt_string = _char_txt + _key_txt_string;
 			} else {
-				_key_txt = "";
+				_key_txt_string = "";
 				_key_txt_mode = -1;
 				break;
 			}
 		}
-		return ([_key_txt_mode, _key_txt]);
+		return ([_key_txt_mode, _key_txt_string]);
 	}
 	
 	
