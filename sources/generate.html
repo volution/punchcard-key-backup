@@ -4,7 +4,7 @@
 <title>PunchCard Key Backup (v0.1)</title>
 <meta charset="UTF-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="base-uri 'none'; default-src 'none'; script-src-elem 'sha256-M6jofzIJ/+WQ7/VvLFjg4Ue5vEEjGevuOgS8Q6Hje9Q='; style-src-elem 'sha256-1SySj+MpAIz5vglpnhWeYa0LDC2/YjrQsc/sc8voRxc='; img-src data:; form-action 'none'; upgrade-insecure-requests; block-all-mixed-content; sandbox; frame-ancestors 'none'" />
+<meta http-equiv="Content-Security-Policy" content="base-uri 'none'; default-src 'none'; script-src-elem 'sha256-kEy5KW/bRQ69gVLFgOy552hncTJcXHWWYo/r1fTfMd8='; style-src-elem 'sha256-1SySj+MpAIz5vglpnhWeYa0LDC2/YjrQsc/sc8voRxc='; img-src data:; form-action 'none'; upgrade-insecure-requests; block-all-mixed-content; sandbox; frame-ancestors 'none'" />
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
 <meta name="color-scheme" content="dark light" />
 <link rel="icon" href="data:image/x-icon;base64," />
@@ -203,7 +203,7 @@ html:root > body {
 	text-decoration : underline;
 }
 </style>
-<script type="text/javascript" integrity="sha256-M6jofzIJ/+WQ7/VvLFjg4Ue5vEEjGevuOgS8Q6Hje9Q=">
+<script type="text/javascript" integrity="sha256-kEy5KW/bRQ69gVLFgOy552hncTJcXHWWYo/r1fTfMd8=">
 "use strict";
 function pckb (pckb) {
 	let __key_bit_checkboxes = undefined;
@@ -324,8 +324,7 @@ function pckb (pckb) {
 		const _key_b10_string = __key_b10_input.value.replaceAll (" ", "");
 		if (_key_b10_string == "") {
 			return key_refresh (BigInt (0));
-		}
-		if ((/^[0-9]*$/).test (_key_b10_string)) {
+		} else if ((/^[0-9]*$/).test (_key_b10_string)) {
 			const _key_b10 = BigInt (_key_b10_string);
 			return key_refresh (_key_b10);
 		} else {
@@ -342,8 +341,7 @@ function pckb (pckb) {
 		const _key_hex_string = __key_hex_input.value.replaceAll (" ", "");
 		if (_key_hex_string == "") {
 			return key_refresh (BigInt (0));
-		}
-		if ((/^[0-9a-fA-F]*$/).test (_key_hex_string)) {
+		} else if ((/^[0-9a-fA-F]*$/).test (_key_hex_string)) {
 			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
 			return key_refresh (_key_b10);
 		} else {

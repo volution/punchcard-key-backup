@@ -1,8 +1,21 @@
 
+
 "use strict";
 
 
+
+
+
+
+
+
 function pckb (pckb) {
+	
+	
+	
+	
+	
+	
 	
 	
 	let __key_bit_checkboxes = undefined;
@@ -15,6 +28,9 @@ function pckb (pckb) {
 	
 	let __key_random_button = undefined;
 	let __key_reset_button = undefined;
+	
+	
+	
 	
 	let __key_bytes = undefined;
 	let __key_bits = undefined;
@@ -30,6 +46,12 @@ function pckb (pckb) {
 	let __key_bits_count_x = undefined;
 	let __key_bits_count_y = undefined;
 	let __crc_bits_count = undefined;
+	
+	
+	
+	
+	
+	
 	
 	
 	function __dom_initialize () {
@@ -110,49 +132,73 @@ function pckb (pckb) {
 	
 	
 	function __dom_enable (_enabled) {
+		
 		for (const _bit_checkbox of __key_bit_checkboxes)
 			_bit_checkbox.disabled = !_enabled;
 		for (const _bit_checkbox of __crc_bit_checkboxes)
 			_bit_checkbox.disabled = true;
+		
 		__key_txt_input.disabled = !_enabled;
 		__key_b10_input.disabled = !_enabled;
 		__key_hex_input.disabled = !_enabled;
 		__key_random_button.disabled = !_enabled;
 		__key_reset_button.disabled = !_enabled;
+		
 		__paste_input.disabled = true;
 	}
 	
+	
 	function __dom_break () {
+		
 		__dom_enable (false);
+		
 		for (const _bit_checkbox of __key_bit_checkboxes)
 			_bit_checkbox.checked = false;
 		for (const _bit_checkbox of __crc_bit_checkboxes)
 			_bit_checkbox.checked = false;
+		
 		__key_txt_input.value = "(tests failed)";
 		__key_b10_input.value = "(tests failed)";
 		__key_hex_input.value = "(tests failed)";
 	}
 	
+	
+	
+	
+	
+	
+	
+	
 	function key_bit_changed () {
+		
 		if (!__test__succeeded) return;
+		
 		let _key_b10 = BigInt (0);
 		for (let _bit_index = 0; _bit_index < 128; _bit_index += 1) {
 			_key_b10 <<= BigInt (1);
 			if (__key_bit_checkboxes[_bit_index].checked)
 				_key_b10 |= BigInt (1);
 		}
+		
 		return key_refresh (_key_b10);
 	}
 	
+	
 	function key_b10_changed () {
+		
 		if (!__test__succeeded) return;
+		
 		const _key_b10_string = __key_b10_input.value.replaceAll (" ", "");
+		
 		if (_key_b10_string == "") {
+			
 			return key_refresh (BigInt (0));
-		}
-		if ((/^[0-9]*$/).test (_key_b10_string)) {
+			
+		} else if ((/^[0-9]*$/).test (_key_b10_string)) {
+			
 			const _key_b10 = BigInt (_key_b10_string);
 			return key_refresh (_key_b10);
+			
 		} else {
 			if (__test__index === undefined) {
 				alert ("key b10 invalid!");
@@ -163,15 +209,22 @@ function pckb (pckb) {
 		}
 	}
 	
+	
 	function key_hex_changed () {
+		
 		if (!__test__succeeded) return;
+		
 		const _key_hex_string = __key_hex_input.value.replaceAll (" ", "");
+		
 		if (_key_hex_string == "") {
+			
 			return key_refresh (BigInt (0));
-		}
-		if ((/^[0-9a-fA-F]*$/).test (_key_hex_string)) {
+			
+		} else if ((/^[0-9a-fA-F]*$/).test (_key_hex_string)) {
+			
 			const _key_b10 = BigInt ((_key_hex_string != "") ? ("0x" + _key_hex_string) : 0);
 			return key_refresh (_key_b10);
+			
 		} else {
 			if (__test__index === undefined) {
 				alert ("key hex invalid!");
@@ -182,12 +235,22 @@ function pckb (pckb) {
 		}
 	}
 	
+	
 	function key_txt_changed () {
+		
 		if (!__test__succeeded) return;
+		
 		const _key_txt_string = __key_txt_input.value;
 		const _key_b10 = _key_txt_to_b10 (_key_txt_string);
 		return key_refresh (_key_b10);
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	function key_refresh (_key_b10_raw) {
 		
@@ -341,15 +404,33 @@ function pckb (pckb) {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
 	function key_reset () {
+		
 		if (!__test__succeeded) return;
+		
 		key_refresh (BigInt (0));
 	}
 	
+	
 	function key_random () {
+		
 		if (!__test__succeeded) return;
+		
 		key_refresh (_key_generate ());
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	function _key_generate () {
 		const _key_seeds = new BigUint64Array (2);
@@ -574,6 +655,10 @@ function pckb (pckb) {
 	
 	
 	
+	
+	
+	
+	
 	pckb.__initialize = __dom_initialize;
 	
 	pckb.key_bit_changed = key_bit_changed;
@@ -582,6 +667,10 @@ function pckb (pckb) {
 	pckb.key_hex_changed = key_hex_changed;
 	pckb.key_reset = key_reset;
 	pckb.key_random = key_random;
+	
+	
+	
+	
 	
 	
 	
@@ -838,6 +927,10 @@ function pckb (pckb) {
 	
 	
 	
+	
+	
+	
+	
 	function _crc16_ccitt (_bytes) {
 		let crc = 0;
 		for (const b of _bytes) {
@@ -852,10 +945,17 @@ function pckb (pckb) {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
 	const __cvs_consonants = "bcdfghjlmnprstvz";
 	const __cvs_vowels = "aeiou";
 	const __cvs_pair_to_index = {};
 	const __cvs_index_to_pair = [];
+	
 	for (const _consonant of __cvs_consonants) {
 		for (const _vowel of __cvs_vowels) {
 			const _pair = _consonant + _vowel;
@@ -864,12 +964,15 @@ function pckb (pckb) {
 			__cvs_index_to_pair.push (_pair);
 		}
 	}
+	
 	const __cvs_cardinality = __cvs_index_to_pair.length;
+	
 	
 	const __cva_consonants = "bcdfghjklmnpqrstvwxyz";
 	const __cva_vowels = "aeiou";
 	const __cva_pair_to_index = {};
 	const __cva_index_to_pair = [];
+	
 	for (const _consonant of __cva_consonants) {
 		for (const _vowel of __cva_vowels) {
 			const _pair = _consonant + _vowel;
@@ -878,8 +981,15 @@ function pckb (pckb) {
 			__cva_index_to_pair.push (_pair);
 		}
 	}
+	
 	const __cva_cardinality = __cva_index_to_pair.length;
 }
+
+
+
+
+
+
 
 
 pckb (pckb);
@@ -888,4 +998,5 @@ pckb (pckb);
 document.addEventListener ("DOMContentLoaded", function () {
 		pckb.__initialize ();
 	});
+
 
